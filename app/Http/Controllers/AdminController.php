@@ -9,6 +9,7 @@ class AdminController extends Controller
 {
     public function admin_dashboard() {
         return view("admin.admin_dashboard");
+
     }
 
     public function manage_departments() {
