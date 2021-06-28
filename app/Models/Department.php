@@ -15,6 +15,9 @@ class Department extends Model
         "department_code",
         "department_pic",
         "department_desc",
-        "department_members",
     ];
+
+    public function Staff() {
+        return $this->hasMany(Staff::class, "department_id", "department_id");
+    }
 }

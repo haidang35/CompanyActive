@@ -27,11 +27,11 @@
                                 <td>{{$item->department_code}}</td>
                                 <td>{{$item->department_pic}}</td>
                                 <td>{{$item->department_desc}}</td>
-                                <td>{{$item->department_members}}</td>
+                                <td>{{$item->staff_count}}</td>
                                 <td>
                                     <div class="buttons">
-                                        <button class="btn btn-primary rounded-pill">View</button>
-                                        <button class="btn btn-warning rounded-pill">Edit</button>
+                                        <a href="{{url("/department-details/".$item->department_id)}}" class="btn btn-primary rounded-pill">View</a>
+                                        <a class="btn btn-warning rounded-pill">Edit</a>
                                     </div>
 
                                 </td>
@@ -40,6 +40,7 @@
                         </tbody>
                     </table>
                 </div>
+                {{ $departments->links("vendor.pagination.default")  }}
             </div>
         </div>
     </div>
