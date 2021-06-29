@@ -2,12 +2,20 @@
 @extends("admin_layout")
 @section("admin_main")
     <section id="input-with-icons">
+        <?php $message = Session::get("message_success") ?>
+        @if($message)
+            <div class="alert alert-success col-sm-6">{{$message}}</div>
+        @endif
+        <?php Session::put("message_success", "") ?>
         <div class="row match-height">
             <div class="col-12">
                 <div class="card-content">
                 </div>
                 <div class="card">
                     <div class="card-header">
+                        <div class="buttons float-md-end">
+                            <a href="{{url("admin/manage-staffs/add-new-staff")}}" class="btn btn-primary">Add new staff</a>
+                        </div>
                         <h4 class="card-title">Members</h4>
 
                     </div>
@@ -46,10 +54,44 @@
                                             </td>
                                             <td>
                                                 <div class="buttons">
-                                                    <a class="btn btn-primary rounded-pill">View</a>
-                                                    <a href="{{url("".$item->staff_id)}}" class="btn btn-danger rounded-pill">Delete</a>
+                                                    <a href="{{url("admin/manage-staffs/".$item->staff_id."/details")}}" class="btn btn-primary rounded-pill">View</a>
+                                                    <a data-bs-toggle="modal" data-bs-target="{{"#danger".$item->staff_id}}"  class="btn btn-danger rounded-pill">Delete</a>
                                                 </div>
                                             </td>
+                                            <div class="modal fade text-left" id="{{"danger".$item->staff_id}}" tabindex="-1"
+                                                 role="dialog" aria-labelledby="myModalLabel120"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                                                     role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-danger">
+                                                            <h5 class="modal-title white" id="myModalLabel120">
+                                                                Warning !!
+                                                            </h5>
+                                                            <button type="button" class="close"
+                                                                    data-bs-dismiss="modal" aria-label="Close">
+                                                                <i data-feather="x"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure delete member {{$item->staff_name}}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button"
+                                                                    class="btn btn-light-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">Close</span>
+                                                            </button>
+                                                            <a href="{{url("admin/manage-staffs/delete/".$item->staff_id)}}" class="btn btn-danger ml-1"
+                                                            >
+                                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">Accept</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                     @endforeach
                                     </tbody>
