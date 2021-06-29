@@ -13,22 +13,23 @@
         <div class="sidebar-menu">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-
-                <li class="sidebar-item  ">
+                <li class="sidebar-item ">
                     <a href="{{url("/admin")}}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-
-                <li class="sidebar-item active ">
+                <li class="sidebar-item active">
                     <a href="{{url("/manage-departments")}}" class='sidebar-link'>
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Departments</span>
                     </a>
+                    <ul class="submenu active" style="color: lightgrey">
+                        <li class="submenu-item ">
+                            <a href="{{url("/customer-department")}}">Customer management</a>
+                        </li>
+                    </ul>
                 </li>
-
-
 
             </ul>
         </div>

@@ -2,8 +2,16 @@
 @section("admin_main")
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Mange departments</h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 class="card-title">Mange departments</h4>
+                </div>
+                <div class="col-sm-6">
+                    <a style="float: right" href="{{url("/form-create-department")}}" class="btn btn-primary">New department</a>
+                </div>
+            </div>
         </div>
+
         <div class="card-content">
             <div class="card-body">
                 <div class="table-responsive">
@@ -29,11 +37,10 @@
                                 <td>{{$item->department_desc}}</td>
                                 <td>{{$item->department_members}}</td>
                                 <td>
-                                    <div class="buttons">
-                                        <button class="btn btn-primary rounded-pill">View</button>
-                                        <button class="btn btn-warning rounded-pill">Edit</button>
-                                    </div>
-
+                                    <ul class="buttons" style="list-style: none;display: inline-flex">
+                                        <li><button class="btn btn-primary">View</button></li>
+                                        <li><button class="btn btn-warning"><a href="{{url("/edit-department",["department_id"=>$item->department_id])}}">Edit</a></button></li>
+                                    </ul>
                                 </td>
                             </tr>
                         @endforeach
