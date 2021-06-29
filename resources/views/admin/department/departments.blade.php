@@ -30,7 +30,7 @@
                                 <td>{{$item->staff_count}}</td>
                                 <td>
                                     <div class="buttons">
-                                        <a href="{{url("/department-details/".$item->department_id)}}" class="btn btn-primary rounded-pill">View</a>
+                                        <a href="{{url("/admin/department-details/".$item->department_id)}}" class="btn btn-primary rounded-pill">View</a>
                                         <a class="btn btn-warning rounded-pill">Edit</a>
                                     </div>
 

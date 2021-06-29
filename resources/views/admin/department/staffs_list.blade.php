@@ -39,7 +39,7 @@
                                             <td>
                                                 <div class="buttons">
                                                     <a class="btn btn-primary rounded-pill">View</a>
-                                                    <a href="{{url("/department/". $department_id ."/update-member/".$item->staff_id)}}" class="btn btn-success rounded-pill">Add</a>
+                                                    <a href="{{url("/admin/department/". $department_id ."/update-member/".$item->staff_id)}}" class="btn btn-success rounded-pill">Add</a>
                                                 </div>
                                             </td>
                                         </tr>

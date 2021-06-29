@@ -16,9 +16,9 @@
                     <div class="buttons float-sm-end">
                         @if($edit == true)
                             <button form="form-edit" class="btn btn-primary">Save</button>
-                            <a href="{{url("/department-details/".$department->department_id)}}" class="btn btn-warning">Cancel</a>
+                            <a href="{{url("/admin/department-details/".$department->department_id)}}" class="btn btn-warning">Cancel</a>
                         @else
-                            <a href="{{url("/department-details/edit/".$department->department_id)}}" class="btn btn-primary">Edit</a>
+                            <a href="{{url("/admin/department-details/edit/".$department->department_id)}}" class="btn btn-primary">Edit</a>
                         @endif
 
                     </div>
@@ -28,7 +28,7 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <form id="form-edit" class="col-sm-12" action="{{url("/department-details/update/".$department->department_id)}}" method="post">
+                        <form id="form-edit" class="col-sm-12" action="{{url("/admin/department-details/update/".$department->department_id)}}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-sm-6">
@@ -89,7 +89,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="buttons float-md-end">
-                        <a href="{{url("/department/add-member/".$department->department_id)}}" class="btn btn-primary">Add member</a>
+                        <a href="{{url("/admin/department/add-member/".$department->department_id)}}" class="btn btn-primary">Add member</a>
                     </div>
                     <h4 class="card-title">Members</h4>
 
@@ -148,7 +148,7 @@
                                                                 <i class="bx bx-x d-block d-sm-none"></i>
                                                                 <span class="d-none d-sm-block">Close</span>
                                                             </button>
-                                                            <a href="{{url("/department/remove-member/".$item->staff_id)}}" class="btn btn-danger ml-1"
+                                                            <a href="{{url("/admin/department/remove-member/".$item->staff_id)}}" class="btn btn-danger ml-1"
                                                             >
                                                                 <i class="bx bx-check d-block d-sm-none"></i>
                                                                 <span class="d-none d-sm-block">Accept</span>

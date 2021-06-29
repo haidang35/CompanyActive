@@ -22,7 +22,7 @@
                 </li>
 
                 <li class="sidebar-item ">
-                    <a href="{{url("/manage-departments")}}" class='sidebar-link'>
+                    <a href="{{url("/admin/manage-departments")}}" class='sidebar-link'>
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Departments</span>
                     </a>

@@ -51,7 +51,7 @@ class AdminController extends Controller
         $get_department = Department::findOrFail($department_id);
         $get_department->update($data);
         Session::put("message", "Update information department success !!");
-        return Redirect::to("/department-details/".$department_id);
+        return Redirect::to("/admin/department-details/".$department_id);
 
     }
 
@@ -63,7 +63,7 @@ class AdminController extends Controller
                 "department_id" => null
             ]);
             Session::put("message", "Remove member from department success ");
-            return Redirect::to("/department-details/".$department_id);
+            return Redirect::to("/admin/department-details/".$department_id);
 
         }catch (\Exception $e) {
             abort(404);
@@ -85,7 +85,7 @@ class AdminController extends Controller
                 "department_id" => $department_id
             ]);
             Session::put("message", "Add new member to department success !!");
-            return Redirect::to("/department-details/".$department_id);
+            return Redirect::to("/admin/department-details/".$department_id);
         }catch (\Exception $e) {
             abort(404);
         }
