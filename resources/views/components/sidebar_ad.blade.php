@@ -29,8 +29,12 @@
                             <a href="{{url("/customer-department")}}">Customer management</a>
                         </li>
                     </ul>
+                    <ul class="submenu active" style="color: lightgrey">
+                        <li class="submenu-item ">
+                            <a href="{{url("/customers")}}">Information customer</a>
+                        </li>
+                    </ul>
                 </li>
-
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

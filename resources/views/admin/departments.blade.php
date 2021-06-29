@@ -38,7 +38,7 @@
                                 <td>{{$item->department_members}}</td>
                                 <td>
                                     <ul class="buttons" style="list-style: none;display: inline-flex">
-                                        <li><button class="btn btn-primary">View</button></li>
+                                        <li><button class="btn btn-primary"><a style="color: white" href="{{url("/customers")}}">View</a> </button></li>
                                         <li><button class="btn btn-warning"><a href="{{url("/edit-department",["department_id"=>$item->department_id])}}">Edit</a></button></li>
                                     </ul>
                                 </td>
