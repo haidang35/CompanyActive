@@ -71,7 +71,7 @@
                                 <div class="col-sm-6">
                                     <h6>Members</h6>
                                     <div class="form-group position-relative has-icon-left">
-                                        <input type="text" class="form-control" @if(!$edit) disabled @endif
+                                        <input type="text" class="form-control" disabled
                                                value="{{$department->staff_count}}"/>
                                         <div class="form-control-icon">
                                             <i class="bi bi-person"></i>

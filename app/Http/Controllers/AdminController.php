@@ -92,5 +92,12 @@ class AdminController extends Controller
 
     }
 
+    public function manage_staffs() {
+        $staffs = Staff::with("Department")->paginate(20);
+        return view("admin.staff.staffs_list", [
+            "staffs" => $staffs
+        ]);
+    }
+
 
 }
