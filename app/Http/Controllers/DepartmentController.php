@@ -50,7 +50,7 @@ class DepartmentController extends Controller
 
     }
 
-    public function departmentRemoveMmember($staff_id) {
+    public function departmentRemoveMember($staff_id) {
         try {
             $staff = Staff::findOrFail($staff_id);
             $department_id = $staff->department_id;
@@ -85,5 +85,62 @@ class DepartmentController extends Controller
             abort(404);
         }
 
+    }
+
+    public function addNewDepartment() {
+        $pics = Staff::all();
+        return view("admin.department.add_new_department", [
+            "pics" => $pics
+        ]);
+    }
+
+    public function saveNewDepartment(Request $request) {
+        $request->validate([
+           "department_name" => "required",
+           "department_code" => "required",
+        ], [
+            "department_name.required" => "Department Name does not empty",
+            "department_code.required" => "Department Code does not empty",
+        ]);
+
+        $data = array();
+        $data["department_name"] = $request->get("department_name");
+        $data["department_code"] = $request->get("department_code");
+        $data["department_pic"] = $request->get("department_pic");
+        $data["department_desc"] = $request->get("department_desc");
+        try {
+            Department::create($data);
+            Session::put("message_success", "Add new department success !!");
+            return Redirect::to("admin/manage-departments");
+        }catch (\Exception $exception) {
+            dd($exception->getMessage());
+        }
+
+    }
+
+    public function deleteDepartment($department_id) {
+        try {
+            $department = Department::findOrFail($department_id);
+            if($department->staff_count == 0) {
+                $department->delete();
+                Session::put("message_success", "Delete department ".$department->department_name. " success !!");
+                Session::put("department_delete", $department);
+                return Redirect::to("admin/manage-departments");
+            }
+        }catch (\Exception $exception) {
+            dd($exception->getMessage());
+        }
+    }
+
+    public function restoreDepartment($department_id) {
+        try {
+            $department = Department::withTrashed()->find($department_id);
+            $department->restore();
+            Session::put("message_success", "Restore department ".$department->department_name." success !!");
+            return Redirect::to("admin/manage-departments");
+
+        }catch (\Exception $exception) {
+            dd($exception->getMessage());
+        }
     }
 }

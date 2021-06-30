@@ -15,7 +15,7 @@
                 <div class="card-header">
                     <div class="buttons float-sm-end">
                         @if($edit == true)
-                            <button form="form-edit" class="btn btn-primary">Save</button>
+                            <button form="form-edit" type="submit" class="btn btn-primary">Save</button>
                             <a href="{{url("/admin/department-details/".$department->department_id)}}" class="btn btn-warning">Cancel</a>
                         @else
                             <a href="{{url("/admin/department-details/edit/".$department->department_id)}}" class="btn btn-primary">Edit</a>
@@ -27,10 +27,9 @@
 
                 <div class="card-body">
                     <div class="row">
-
                         <form id="form-edit" class="col-sm-12" action="{{url("/admin/department-details/update/".$department->department_id)}}" method="post">
-                            @csrf
-                            <div class="row">
+                                @csrf
+                                <div class="row">
                                 <div class="col-sm-6">
                                     <h6>Department name</h6>
                                     <div class="form-group position-relative has-icon-left">
@@ -90,6 +89,7 @@
                 <div class="card-header">
                     <div class="buttons float-md-end">
                         <a href="{{url("/admin/department/add-member/".$department->department_id)}}" class="btn btn-primary">Add member</a>
+                        <a href="{{url("/admin/department/".$department->department_id."/remove-all")}}" class="btn btn-danger">Remove all</a>
                     </div>
                     <h4 class="card-title">Members</h4>
 
@@ -120,7 +120,7 @@
                                         <td>{{$item->staff_address}}</td>
                                         <td>
                                             <div class="buttons">
-                                                <a class="btn btn-primary rounded-pill">View</a>
+                                                <a href="{{url("admin/manage-staffs/".$item->staff_id."/details")}}" class="btn btn-primary rounded-pill">View</a>
                                                 <a  data-bs-toggle="modal" data-bs-target="{{"#danger".$item->staff_id}}" class="btn btn-danger rounded-pill">Remove</a>
                                             </div>
                                             <div class="modal fade text-left" id="{{"danger".$item->staff_id}}" tabindex="-1"
