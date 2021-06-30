@@ -89,6 +89,7 @@
                 <div class="card-header">
                     <div class="buttons float-md-end">
                         <a href="{{url("/admin/department/add-member/".$department->department_id)}}" class="btn btn-primary">Add member</a>
+                        <a href="{{url("/admin/department/".$department->department_id."/remove-all")}}" class="btn btn-danger">Remove all</a>
                     </div>
                     <h4 class="card-title">Members</h4>
 
@@ -119,7 +120,7 @@
                                         <td>{{$item->staff_address}}</td>
                                         <td>
                                             <div class="buttons">
-                                                <a class="btn btn-primary rounded-pill">View</a>
+                                                <a href="{{url("admin/manage-staffs/".$item->staff_id."/details")}}" class="btn btn-primary rounded-pill">View</a>
                                                 <a  data-bs-toggle="modal" data-bs-target="{{"#danger".$item->staff_id}}" class="btn btn-danger rounded-pill">Remove</a>
                                             </div>
                                             <div class="modal fade text-left" id="{{"danger".$item->staff_id}}" tabindex="-1"

@@ -65,7 +65,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#"><i
+                            <li><a class="dropdown-item" href="{{url("admin/logout")}}"><i
                                         class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
                         </ul>
                     </div>

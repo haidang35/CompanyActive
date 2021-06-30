@@ -27,6 +27,10 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/department/remove-member/{staff_id}', [DepartmentController::class, "departmentRemoveMember"]);
     Route::get('/department/add-member/{department_id}', [DepartmentController::class, "departmentAddMember"]);
     Route::get('/department/{department_id}/update-member/{staff_id}', [DepartmentController::class, "departmentUpdateMember"]);
+    Route::get('/manage-departments/add-new', [DepartmentController::class, "addNewDepartment"]);
+    Route::post('/manage-departments/save', [DepartmentController::class, "saveNewDepartment"]);
+    Route::get('/manage-departments/delete/{department_id}', [DepartmentController::class, "deleteDepartment"]);
+    Route::get('/manage-departments/restore/{department_id}', [DepartmentController::class, "restoreDepartment"]);
 
     //Staff
     Route::get('/manage-staffs', [StaffController::class, "manageStaffs"]);
