@@ -25,12 +25,15 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/department-details/edit/{department_id}', [DepartmentController::class, "departmentEdit"]);
     Route::post('/department-details/update/{department_id}', [DepartmentController::class, "departmentUpdate"]);
     Route::get('/department/remove-member/{staff_id}', [DepartmentController::class, "departmentRemoveMember"]);
+    Route::get('/department/{department_id}/remove-all', [DepartmentController::class, "removeAllMember"]);
     Route::get('/department/add-member/{department_id}', [DepartmentController::class, "departmentAddMember"]);
     Route::get('/department/{department_id}/update-member/{staff_id}', [DepartmentController::class, "departmentUpdateMember"]);
     Route::get('/manage-departments/add-new', [DepartmentController::class, "addNewDepartment"]);
     Route::post('/manage-departments/save', [DepartmentController::class, "saveNewDepartment"]);
     Route::get('/manage-departments/delete/{department_id}', [DepartmentController::class, "deleteDepartment"]);
     Route::get('/manage-departments/restore/{department_id}', [DepartmentController::class, "restoreDepartment"]);
+    Route::get('/manage-departments/{department_id}/restore-members', [DepartmentController::class, "restoreAllMember"]);
+    Route::get('/manage-departments/{department_id}/restore/{staff_id}', [DepartmentController::class, "restoreMember"]);
 
     //Staff
     Route::get('/manage-staffs', [StaffController::class, "manageStaffs"]);
@@ -42,7 +45,7 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::post('/manage-staffs/new-staff', [StaffController::class, "updateNewStaff"]);
 
     //Customer
-    Route::get('/as',[StaffController::class,""]);
+
 });
 
 

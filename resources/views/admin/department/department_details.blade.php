@@ -5,11 +5,11 @@
     <div class="row match-height">
         <div class="col-12">
             <div class="card-content">
-                <?php $message = Session::get("message") ?>
+                <?php $message = Session::get("message_success") ?>
                 @if($message)
                     <div class="alert alert-success col-sm-6">{{$message}}</div>
                 @endif
-                <?php Session::put("message", "") ?>
+                <?php Session::put("message_success", "") ?>
             </div>
             <div class="card">
                 <div class="card-header">
@@ -85,11 +85,26 @@
                 </div>
 
             </div>
+
+            <?php $staff_removed = Session::get("staff_removed") ?>
+            @if($staff_removed)
+                <div class="alert alert-warning col-sm-4">
+                    <span>You can restore  {{$staff_removed->staff_name}}</span>
+                    <a href="{{url("admin/manage-departments/".$department->department_id."/restore/".$staff_removed->staff_id)}}" class="btn btn-primary" style="margin-left: 40px">Restore</a>
+                </div>
+
+            @endif
+            <?php Session::put("staff_removed", "") ?>
             <div class="card">
                 <div class="card-header">
                     <div class="buttons float-md-end">
                         <a href="{{url("/admin/department/add-member/".$department->department_id)}}" class="btn btn-primary">Add member</a>
-                        <a href="{{url("/admin/department/".$department->department_id."/remove-all")}}" class="btn btn-danger">Remove all</a>
+                        @if($department->staff_count == 0 && Session::exists("staffs_removed"))
+                            <a href="{{url("/admin/manage-departments/".$department->department_id."/restore-members")}}" class="btn btn-warning">Restore members</a>
+                        @else
+                            <a href="{{url("/admin/department/".$department->department_id."/remove-all")}}" class="btn btn-danger">Remove all</a>
+                        @endif
+
                     </div>
                     <h4 class="card-title">Members</h4>
 

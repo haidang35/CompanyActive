@@ -22,4 +22,29 @@ class Department extends Model
     public function Staff() {
         return $this->hasMany(Staff::class, "department_id", "department_id");
     }
+
+    public function scopeSearch($query, $search) {
+        if($search == "" || $search == null) {
+            return $query;
+        }
+        return $query->where("department_name", "LIKE", "%".$search."%");
+
+    }
+
+    public function scopeCode($query, $department_code) {
+        if($department_code == 0 || $department_code == null ) {
+            return $query;
+        }
+        return $query->where("department_code", $department_code);
+
+
+    }
+
+    public function scopePic($query, $department_pic) {
+        if($department_pic == 0 || $department_pic == null) {
+            return $query;
+        }
+        return $query->where("department_pic", $department_pic);
+
+    }
 }

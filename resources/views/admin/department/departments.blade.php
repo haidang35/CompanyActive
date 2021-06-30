@@ -22,7 +22,45 @@
                 <a href="{{url("admin/manage-departments/add-new")}}" class="btn btn-primary">Add new department</a>
             </div>
             <h4 class="card-title">Mange departments</h4>
+            <div class="col-sm-12" style="margin-top: 30px">
+                <form action="{{url("admin/manage-departments")}}" method="get">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group position-relative has-icon-left row">
+                                <input type="text" class="form-control" name="department_search"
+                                       placeholder="Search ..."
+                                />
+                                <div class="form-control-icon">
+                                    <i class="bi bi-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="form-control form-select" name="select_code">
+                                <option value="0">Select code</option>
+                                @foreach($data_scope as $item)
+                                    <option value="{{$item->department_code}}">{{$item->department_code}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="form-control form-select" name="select_pic">
+                                <option value="0">Select Pic</option>
+                                @foreach($data_scope as $item)
+                                    <option value="{{$item->department_pic}}">{{$item->department_pic}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="buttons">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
+
         <div class="card-content">
             <div class="card-body">
                 <div class="table-responsive">
