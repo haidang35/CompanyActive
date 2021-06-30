@@ -50,7 +50,7 @@ class DepartmentController extends Controller
 
     }
 
-    public function departmentRemoveMmember($staff_id) {
+    public function departmentRemoveMember($staff_id) {
         try {
             $staff = Staff::findOrFail($staff_id);
             $department_id = $staff->department_id;

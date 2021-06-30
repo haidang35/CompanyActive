@@ -36,6 +36,9 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/manage-staffs/delete/{staff_id}', [StaffController::class, "deleteStaff"]);
     Route::get('/manage-staffs/add-new-staff', [StaffController::class, "addNewStaff"]);
     Route::post('/manage-staffs/new-staff', [StaffController::class, "updateNewStaff"]);
+
+    //Customer
+
 });
 
 

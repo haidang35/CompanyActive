@@ -15,7 +15,7 @@
                 <div class="card-header">
                     <div class="buttons float-sm-end">
                         @if($edit == true)
-                            <button form="form-edit" class="btn btn-primary">Save</button>
+                            <button form="form-edit" type="submit" class="btn btn-primary">Save</button>
                             <a href="{{url("/admin/department-details/".$department->department_id)}}" class="btn btn-warning">Cancel</a>
                         @else
                             <a href="{{url("/admin/department-details/edit/".$department->department_id)}}" class="btn btn-primary">Edit</a>
@@ -27,10 +27,9 @@
 
                 <div class="card-body">
                     <div class="row">
-
                         <form id="form-edit" class="col-sm-12" action="{{url("/admin/department-details/update/".$department->department_id)}}" method="post">
-                            @csrf
-                            <div class="row">
+                                @csrf
+                                <div class="row">
                                 <div class="col-sm-6">
                                     <h6>Department name</h6>
                                     <div class="form-group position-relative has-icon-left">
