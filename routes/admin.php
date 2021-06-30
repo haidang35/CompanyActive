@@ -42,7 +42,7 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::post('/manage-staffs/new-staff', [StaffController::class, "updateNewStaff"]);
 
     //Customer
-
+    Route::get('/as',[StaffController::class,""]);
 });
 
 
