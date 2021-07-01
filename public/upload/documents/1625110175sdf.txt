@@ -1,0 +1,7 @@
+composer require laravel/jetstream
+php artisan jetstream:install livewire
+npm install
+npm run dev
+php migrate:fresh
+php artisan make:migration update_table_user --table=users
+php artisan make:middleware [name]
