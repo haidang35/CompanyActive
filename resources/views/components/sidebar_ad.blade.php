@@ -34,7 +34,12 @@
                         <span>Staffs</span>
                     </a>
                 </li>
-
+                <li class="sidebar-item ">
+                    <a href="{{url("/admin/customers")}}" class='sidebar-link'>
+                        <i class="bi bi-grid-1x2-fill"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
 
 
             </ul>

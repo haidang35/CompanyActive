@@ -7,7 +7,7 @@
                     <h4 class="card-title">Manage customer</h4>
                 </div>
                 <div class="col-sm-6">
-                    <a style="float: right" href="{{url("/create-customer")}}" class="btn btn-primary">New customer</a>
+                    <a style="float: right" href="{{url("/admin/create-customer")}}" class="btn btn-primary">New customer</a>
                 </div>
             </div>
         </div>
