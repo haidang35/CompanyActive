@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\AppointmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,6 +47,15 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::post('/manage-staffs/new-staff', [StaffController::class, "updateNewStaff"]);
 
     //Customer
+    Route::get('/customers',[CustomerController::class,"customers"]);
+    Route::get('/create-customer',[CustomerController::class,"create_customer"]);
+    Route::post('/save-customer',[CustomerController::class,"save_customer"]);
+    Route::get('/customer-details/{customer_id}',[CustomerController::class,"customer_details"]);
+    // Appointment
+    Route::get('/appointments/{customer_id}',[AppointmentController::class,"appointments"]);
+    Route::get('/create-appointment',[AppointmentController::class,"create_appointment"]);
+    Route::post('/save-appointment',[AppointmentController::class,"save_appointment"]);
+    Route::get('/appointment-details/{appointment_id}',[AppointmentController::class,"appointment_details"]);
 
 });
 
