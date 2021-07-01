@@ -57,7 +57,7 @@ Route::middleware(["auth", "admin"])->group(function () {
 
     // -------------------LINH-----------------------///
 
-
+    Route::get("/documents", [DocumentController::class, "manageDocuments"]);
 
 });
 
