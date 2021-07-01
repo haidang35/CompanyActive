@@ -26,10 +26,9 @@
                 <form action="{{url("admin/manage-departments")}}" method="get">
                     <div class="row">
                         <div class="col-sm-3">
-                            <div class="form-group position-relative has-icon-left row">
+                            <div class="form-group position-relative has-icon-left">
                                 <input type="text" class="form-control" name="department_search"
-                                       placeholder="Search ..."
-                                />
+                                       placeholder="Search ...">
                                 <div class="form-control-icon">
                                     <i class="bi bi-search"></i>
                                 </div>
@@ -39,7 +38,7 @@
                             <select class="form-control form-select" name="select_code">
                                 <option value="0">Select code</option>
                                 @foreach($data_scope as $item)
-                                    <option value="{{$item->department_code}}">{{$item->department_code}}</option>
+                                    <option @if(app("request")->input("select_code") == $item->department_code ) selected @endif value="{{$item->department_code}}">{{$item->department_code}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -47,7 +46,7 @@
                             <select class="form-control form-select" name="select_pic">
                                 <option value="0">Select Pic</option>
                                 @foreach($data_scope as $item)
-                                    <option value="{{$item->department_pic}}">{{$item->department_pic}}</option>
+                                    <option @if(app("request")->input("select_pic") == $item->department_pic) selected @endif value="{{$item->department_pic}}">{{$item->department_pic}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -165,7 +164,7 @@
                         </tbody>
                     </table>
                 </div>
-                {{ $departments->links("vendor.pagination.default")  }}
+                {{ $departments->appends(request()->input())->links("vendor.pagination.default")  }}
             </div>
         </div>
     </div>

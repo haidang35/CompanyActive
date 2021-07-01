@@ -47,7 +47,7 @@
         '&lsquo;', '&rsquo;', '&sbquo;', '&ldquo;', '&rdquo;',
         '&bdquo;', '&dagger;', '&Dagger;', '&bull;', '&hellip;',
         '&permil;', '&prime;', '&Prime;', '&lsaquo;', '&rsaquo;',
-        '&oline;', '&frasl;', '&euro;', '&image;', '&weierp;',
+        '&oline;', '&frasl;', '&euro;', '&images;', '&weierp;',
         '&real;', '&trade;', '&alefsym;', '&larr;', '&uarr;',
         '&rarr;', '&darr;', '&harr;', '&crarr;', '&lArr;',
         '&uArr;', '&rArr;', '&dArr;', '&hArr;', '&forall;',
@@ -143,7 +143,7 @@
       };
 
       /**
-       * show image dialog
+       * show images dialog
        *
        * @param {jQuery} $dialog
        * @return {Promise}

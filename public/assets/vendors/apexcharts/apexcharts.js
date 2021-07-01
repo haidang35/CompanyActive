@@ -1293,7 +1293,7 @@
        *  pathTo = new Path to which d attr will be animated from pathFrom to pathTo
        *  stroke = line Color
        *  strokeWidth = width of path Line
-       *  fill = it can be gradient, single color, pattern or image
+       *  fill = it can be gradient, single color, pattern or images
        *  animationDelay = how much to delay when starting animation (in milliseconds)
        *  dataChangeSpeed = for dynamic animations, when data changes
        *  className = class attribute to add
@@ -9915,7 +9915,7 @@
         this.cleanup();
         var svgData = this.getSvgString();
         var svgBlob = new Blob([svgData], {
-          type: 'image/svg+xml;charset=utf-8'
+          type: 'images/svg+xml;charset=utf-8'
         });
         return URL.createObjectURL(svgBlob);
       }
@@ -9956,7 +9956,7 @@
               blob: blob
             });
           } else {
-            var svgUrl = 'data:image/svg+xml,' + encodeURIComponent(svgData);
+            var svgUrl = 'data:images/svg+xml,' + encodeURIComponent(svgData);
             var img = new Image();
             img.crossOrigin = 'anonymous';
 
@@ -24114,7 +24114,7 @@
       isNumber: /^[+-]?(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i,
       // Test for percent value
       isPercent: /^-?[\d\.]+%$/,
-      // Test for image url
+      // Test for images url
       isImage: /\.(jpg|jpeg|png|gif|svg)(\?[^=]+.*)?/i,
       // split at whitespace and comma
       delimiter: /[\s,]+/,
@@ -25634,7 +25634,7 @@
             this.attr('stroke', parseFloat(v) > 0 ? this._stroke : null);
           } else if (a == 'stroke') {
             this._stroke = v;
-          } // convert image fill and stroke to patterns
+          } // convert images fill and stroke to patterns
 
 
           if (a == 'fill' || a == 'stroke') {
@@ -26632,25 +26632,25 @@
       inherit: SVG.Shape,
       // Add class methods
       extend: {
-        // (re)load image	
+        // (re)load images
         load: function load(url) {
           if (!url) return this;
           var self = this,
-              img = new window.Image(); // preload image	
+              img = new window.Image(); // preload images
 
           SVG.on(img, 'load', function () {
             SVG.off(img);
             var p = self.parent(SVG.Pattern);
-            if (p === null) return; // ensure image size	
+            if (p === null) return; // ensure images size
 
             if (self.width() == 0 && self.height() == 0) {
               self.size(img.width, img.height);
-            } // ensure pattern size if not set	
+            } // ensure pattern size if not set
 
 
             if (p && p.width() == 0 && p.height() == 0) {
               p.size(self.width(), self.height());
-            } // callback	
+            } // callback
 
 
             if (typeof self._loaded === 'function') {
@@ -26671,7 +26671,7 @@
           });
           return this.attr('href', img.src = this.src = url, SVG.xlink);
         },
-        // Add loaded callback	
+        // Add loaded callback
         loaded: function loaded(_loaded) {
           this._loaded = _loaded;
           return this;
@@ -26683,7 +26683,7 @@
       },
       // Add parent method
       construct: {
-        // create image element, load image and set its size	
+        // create images element, load images and set its size
         image: function image(source, width, height) {
           return this.put(new SVG.Image()).load(source).size(width || 0, height || width || 0);
         }
@@ -27381,10 +27381,10 @@
     } // Create matrix array for looping
 
 
-    var abcdef = 'abcdef'.split(''); // Add CustomEvent to IE9 and IE10	
+    var abcdef = 'abcdef'.split(''); // Add CustomEvent to IE9 and IE10
 
     if (typeof window.CustomEvent !== 'function') {
-      // Code from: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent	
+      // Code from: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent
       var CustomEventPoly = function CustomEventPoly(event, options) {
         options = options || {
           bubbles: false,

@@ -178,7 +178,7 @@ function create(input, value) {
         throw new ParchmentError("Unable to create " + input + " blot");
     }
     var BlotClass = match;
-    var node = 
+    var node =
     // @ts-ignore
     input instanceof Node || input['nodeType'] === Node.TEXT_NODE ? input : BlotClass.create(value);
     return new BlotClass(node, value);
@@ -6778,12 +6778,12 @@ BaseTheme.DEFAULTS = (0, _extend2.default)(true, {}, _theme2.default.DEFAULTS, {
         image: function image() {
           var _this3 = this;
 
-          var fileInput = this.container.querySelector('input.ql-image[type=file]');
+          var fileInput = this.container.querySelector('input.ql-images[type=file]');
           if (fileInput == null) {
             fileInput = document.createElement('input');
             fileInput.setAttribute('type', 'file');
-            fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
-            fileInput.classList.add('ql-image');
+            fileInput.setAttribute('accept', 'images/png, images/gif, images/jpeg, images/bmp, images/x-icon');
+            fileInput.classList.add('ql-images');
             fileInput.addEventListener('change', function () {
               if (fileInput.files != null && fileInput.files[0] != null) {
                 var reader = new FileReader();

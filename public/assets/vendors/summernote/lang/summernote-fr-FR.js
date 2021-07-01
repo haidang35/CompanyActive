@@ -1,14 +1,14 @@
 /*!
- * 
+ *
  * Super simple wysiwyg editor v0.8.18
  * https://summernote.org
- * 
- * 
+ *
+ *
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
- * 
+ *
  * Date: 2020-05-20T18:09Z
- * 
+ *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -128,7 +128,7 @@ return /******/ (function(modules) { // webpackBootstrap
       },
       image: {
         image: 'Image',
-        insert: 'Insérer une image',
+        insert: 'Insérer une images',
         resizeFull: 'Taille originale',
         resizeHalf: 'Redimensionner à 50 %',
         resizeQuarter: 'Redimensionner à 25 %',
@@ -139,13 +139,13 @@ return /******/ (function(modules) { // webpackBootstrap
         shapeCircle: 'Forme: Cercle',
         shapeThumbnail: 'Forme: Vignette',
         shapeNone: 'Forme: Aucune',
-        dragImageHere: 'Faites glisser une image ou un texte dans ce cadre',
-        dropImage: 'Lachez l\'image ou le texte',
+        dragImageHere: 'Faites glisser une images ou un texte dans ce cadre',
+        dropImage: 'Lachez l\'images ou le texte',
         selectFromFiles: 'Choisir un fichier',
         maximumFileSize: 'Taille de fichier maximale',
         maximumFileSizeError: 'Taille maximale du fichier dépassée',
         url: 'URL de l\'image',
-        remove: 'Supprimer l\'image',
+        remove: 'Supprimer l\'images',
         original: 'Original'
       },
       video: {
