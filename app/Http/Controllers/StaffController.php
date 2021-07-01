@@ -12,8 +12,9 @@ class StaffController extends Controller
 {
     public function manageStaffs() {
         $staffs = Staff::with("Department")->paginate(20);
+//        $staffs = Staff::with("Customers")->get();
         return view("admin.staff.staffs_list", [
-            "staffs" => $staffs
+            "staffs" => $staffs,
         ]);
     }
 

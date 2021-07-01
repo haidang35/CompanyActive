@@ -120,9 +120,7 @@
                                         </div>
                                     </div>
                                 @endif
-
                             </tr>
-
                         @endforeach
                         </tbody>
                     </table>

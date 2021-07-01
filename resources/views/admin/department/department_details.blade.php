@@ -23,6 +23,7 @@
 
                     </div>
                     <h4 class="card-title">Department details </h4>
+                    <button class="btn btn-primary"><a style="color: white" href="{{url("/admin/customers")}}">Manage customer</a> </button>
                 </div>
 
                 <div class="card-body">

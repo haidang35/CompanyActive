@@ -22,4 +22,7 @@ class Staff extends Model
     public function Department() {
         return $this->belongsTo(Department::class, "department_id", "department_id");
     }
+    public function Customers(){
+        return $this->hasMany(Customer::class,"customer_id","customer_id");
+    }
 }
