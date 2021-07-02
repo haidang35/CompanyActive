@@ -57,7 +57,9 @@ class CustomerController extends Controller
     }
     public function customer_details($customer_id){
         $customer = Customer::findOrFail($customer_id);
-        return view("admin.customer.customer_information.customer_details/".$customer_id);
+        return view("admin.customer.customer_information.customer_details",[
+            "customer"=>$customer
+        ]);
     }
     public function edit_customer($customer_id){
         $customer = Customer::findOrFail($customer_id);
