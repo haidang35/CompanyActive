@@ -40,6 +40,20 @@
                         <span>Documents</span>
                     </a>
                 </li>
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-hexagon-fill"></i>
+                        <span>Posts</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li class="submenu-item ">
+                            <a href="{{url("/admin/manage-posts")}}">Posts</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="{{url("/admin/posts/editor")}}">Create post</a>
+                        </li>
+                    </ul>
+                </li>
 
 
 
