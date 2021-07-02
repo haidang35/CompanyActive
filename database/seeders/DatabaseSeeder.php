@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Appointment;
+use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Staff;
 use Database\Factories\StaffFactory;
@@ -19,6 +21,26 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         Department::factory(50)->create();
         Staff::factory(300)->create();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //LINH
+
+        Customer::factory(20)->create();
+        Appointment::factory(10)->create();
 
     }
 }

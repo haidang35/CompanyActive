@@ -60,8 +60,19 @@ Route::middleware(["auth", "admin"])->group(function () {
 
     // -------------------LINH-----------------------///
 
-    Route::get("/documents", [DocumentController::class, "manageDocuments"]);
+    //Customer
+    Route::get('/customers',[App\Http\Controllers\CustomerController::class,"customers"]);
+    Route::get('/customers/create-customer',[App\Http\Controllers\CustomerController::class,"create_customer"]);
+    Route::post('/customers/save-customer',[App\Http\Controllers\CustomerController::class,"save_customer"]);
+    Route::get('/customers/customer-details/{customer_id}',[App\Http\Controllers\CustomerController::class,"customer_details"]);
+    Route::get('/customers/delete-customer/{customer_id}',[App\Http\Controllers\CustomerController::class,"delete_customer"]);
 
+    // Appointment
+    Route::get('/appointments/{customer_id}',[App\Http\Controllers\AppointmentController::class,"appointments"]);
+    Route::get('/appointments/create-appointment',[App\Http\Controllers\AppointmentController::class,"create_appointment"]);
+    Route::post('/appointments/save-appointment',[App\Http\Controllers\AppointmentController::class,"save_appointment"]);
+    Route::get('/appointments/appointment-details/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"appointment_details"]);
+    Route::get('/appointments/delete-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"delete_appointment"]);
 });
 
 
