@@ -3,7 +3,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <h3 class="m-0">Appointment schedule</h3>
+                <h4 class="m-0">Add new appointment</h4>
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -12,7 +12,7 @@
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-6">
-                    <form action="{{url("/admin/save-appointment")}}" method="post">
+                    <form action="{{url("/admin/appointments/save-appointment")}}" method="post">
                         @csrf
                         <div class="form-group">
                             <label>Staff</label>
@@ -46,8 +46,8 @@
                             <label>Customer</label>
                             <select name="customer_id" class="form-control">
                                 <option value="0">Select customer</option>
-                                @foreach($customers as $item){
-                                <option @if(old("customer_id") == $item->customer_id) selected @endif value="{{$item->customer_id}}">{{$item->customer_name}}</option>
+                                @foreach($customers as $item)
+                                    <option @if(old("customer_id") == $item->customer_id) selected @endif value="{{$item->customer_id}}">{{$item->customer_id}}</option>
                                 @endforeach
                             </select>
                             @error("customer_id")

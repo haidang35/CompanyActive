@@ -15,30 +15,30 @@ class Appointment extends Model
       "appointment_purpose",
       "appointment_project",
       "appointment_status",
-        "customer_id",
+//        "customer_id",
     ];
     public function Customer(){
         return $this->belongsTo(Customer::class,"customer_id","customer_id");
     }
-    public function scopePurpose($query,$appointment_purpose){
-        if($appointment_purpose == null || $appointment_purpose == 0){
+    public function scopePurpose($query,$search ){
+        if($search  == null || $search  == ""){
             return $query;
         }else{
-            return $query->where("appointment_purpose",$appointment_purpose);
+            return $query->where("appointment_purpose","LIKE","%$search%");
         }
     }
-    public function scopeProject($query,$appointment_project){
-        if($appointment_project == null || $appointment_project == 0){
+    public function scopeProject($query,$appointmentProject){
+        if($appointmentProject == null || $appointmentProject == 0){
             return $query;
         }else{
-            return $query->where("appointment_project",$appointment_project);
+            return $query->where("appointment_project",$appointmentProject);
         }
     }
-    public function scopeStatus($query,$appointment_status){
-        if($appointment_status == null || $appointment_status == 0){
+    public function scopeStatus($query,$appointmentStatus){
+        if($appointmentStatus == null || $appointmentStatus == 0){
             return $query;
         }else{
-            return $query->where("appointment_status",$appointment_status);
+            return $query->where("appointment_status",$appointmentStatus);
         }
     }
 
