@@ -44,9 +44,9 @@
 
 {{--                 --------------LINH--------------}}
                 <li class="sidebar-item ">
-                    <a href="{{url("/admin/documents")}}" class='sidebar-link'>
+                    <a href="{{url("/admin/customers")}}" class='sidebar-link'>
                         <i class="bi bi-grid-1x2-fill"></i>
-                        <span>Documents</span>
+                        <span>Customers</span>
                     </a>
                 </li>
 
