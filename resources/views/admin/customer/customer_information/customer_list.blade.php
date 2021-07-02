@@ -71,7 +71,7 @@
                                     <button class="btn btn-primary"><a style="color: white" href="{{url("/admin/customers/customer-details/".$item->customer_id)}}">View</a> </button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-warning"><a onclick="return confirm('Chac chan xoa loai {{$item->customer_name}}?')" href="{{url("/admin/customers/delete-customer/".$item->customer_id)}}">Delete</a></button>
+                                    <button class="btn btn-warning"><a onclick="return confirm('Are you sure delete {{$item->customer_name}}?')" href="{{url("/admin/customers/delete-customer/".$item->customer_id)}}">Delete</a></button>
                                 </td>
                             </tr>
                         @endforeach
