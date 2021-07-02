@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,12 +49,19 @@ Route::middleware(["auth", "admin"])->group(function () {
 
     //Document
     Route::get("/documents", [DocumentController::class, "manageDocuments"]);
-    Route::get("/documents/editor", [DocumentController::class, "editorDocument"]);
-    Route::post("/documents/save-editor", [DocumentController::class, "saveEditor"])->name('ckeditor.image-upload');
     Route::post("/documents/upload", [DocumentController::class, "uploadDocument"]);
     Route::get("/documents/view/{document_id}", [DocumentController::class, "viewDocument"]);
 
-
+    //Post
+    Route::get("/manage-posts", [PostController::class, "managePosts"]);
+    Route::get("/posts/editor", [PostController::class, "postEditor"]);
+    Route::get("/manage-posts/{post_id}/details", [PostController::class, "postDetails"]);
+    Route::get("/manage-posts/{post_id}/publish", [PostController::class, "publishPost"]);
+    Route::get("/manage-posts/{post_id}/edit", [PostController::class, "editPost"]);
+    Route::post("/manage-posts/{post_id}/update", [PostController::class, "updatePost"]);
+    Route::get("/manage-posts/{post_id}/delete", [PostController::class, "deletePost"]);
+    Route::get("/manage-posts/{post_id}/restore", [PostController::class, "restorePost"]);
+    Route::post("/posts/save-post", [PostController::class, "savePost"])->name('ckeditor.image-upload');
 
 
 
