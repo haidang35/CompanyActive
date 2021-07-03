@@ -3,7 +3,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <h3 class="m-0">Manage customer</h3>
+                <h4 class="m-0">Add new customer</h4>
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -40,16 +40,17 @@
                             @enderror
                         </div>
                         <div>
-                            <label>Staff</label>
-                            <select name="staff_id" class="form-control">
-                                <option value="0">Select staff</option>
-                                @foreach($staffs as $item){
-                                <option @if(old("staff_id") == $item->staff_id) selected @endif value="{{$item->staff_id}}">{{$item->staff_name}}</option>
-                                @endforeach
-                            </select>
-                            @error("staff_id")
-                            <p class="text-danger">{{$message}}</p>
-                            @enderror
+                                <label>Staff</label>
+                                <select name="staff_id" class="form-control">
+                                    <option value="0">Select staff</option>
+                                    @foreach($staffs as $item)
+                                        <option @if(old("staff_id") == $item->staff_id) selected @endif value="{{$item->staff_id}}">{{$item->staff_id}}</option>
+                                    @endforeach
+                                </select>
+                                @error("staff_id")
+                                <p class="text-danger">{{$message}}</p>
+                                @enderror
+
                         </div>
                         <p></p>
                         <div class="form-group">

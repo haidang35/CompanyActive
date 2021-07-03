@@ -23,10 +23,10 @@ class AppointmentFactory extends Factory
     {
         return [
             "appointment_staff"=>$this->faker->name(),
-            "appointment_purpose"=>$this->faker->name(),
-            "appointment_project"=>$this->faker->name(),
-            "appointment_status"=>$this->faker->name(),
-            "customer_id"=>random_int(1,10),
+            "appointment_purpose"=>$this->faker->text(100),
+            "appointment_project"=>$this->faker->text(100),
+            "appointment_status"=>$this->faker->text(100),
+            "customer_id"=>random_int(1,20),
         ];
     }
 }
