@@ -3,7 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Staff;
-use Illuminate\Database\Eloquent\Factories\Factory;
+//use Illuminate\Database\Eloquent\Factories\Factory;
+use Faker\Factory;
 
 class StaffFactory extends Factory
 {

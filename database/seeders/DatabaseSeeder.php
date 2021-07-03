@@ -38,9 +38,9 @@ class DatabaseSeeder extends Seeder
 
 
         //LINH
-
-        Customer::factory(20)->create();
-        Appointment::factory(20)->create();
+//
+//        Customer::factory(20)->create();
+//        Appointment::factory(20)->create();
 
     }
 }
