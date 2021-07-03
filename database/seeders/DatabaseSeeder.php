@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Staff;
 use Illuminate\Database\Seeder;
+require_once 'vendor/autoload.php';
 
 
 class DatabaseSeeder extends Seeder
