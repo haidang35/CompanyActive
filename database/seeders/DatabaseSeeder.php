@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Staff;
 use Database\Factories\StaffFactory;
 use Illuminate\Database\Seeder;
+use Faker\Factory;
 
 class DatabaseSeeder extends Seeder
 {
