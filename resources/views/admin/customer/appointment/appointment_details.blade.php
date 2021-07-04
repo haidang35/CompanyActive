@@ -1,6 +1,5 @@
 @extends("admin_layout")
 @section("admin_main")
-
     <div class="card-content">
         <?php $message = Session::get("message_edit")?>
         @if($message)
