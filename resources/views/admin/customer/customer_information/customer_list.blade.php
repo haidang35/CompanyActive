@@ -1,5 +1,18 @@
 @extends("admin_layout")
 @section("admin_main")
+{{--    <div class="col-12">--}}
+        <div class="card-content">
+            <?php $message = Session::get("message_success") ?>
+            <?php $message = Session::get("message_delete") ?>
+            <?php $message = Session::get("message_edit")?>
+            @if($message)
+                <div class="alert alert-success col-sm-6">{{$message}}</div>
+            @endif
+            <?php Session::put("message_success", "") ?>
+            <?php Session::put("message_delete", "") ?>
+            <?php Session::put("message_edit","")?>
+        </div>
+{{--    </div>--}}
     <div class="card">
         <div class="card-header">
             <div class="buttons float-md-end">
@@ -78,6 +91,7 @@
                         </tbody>
                     </table>
                 </div>
+                {{ $customers->appends(request()->input())->links("vendor.pagination.default")  }}
             </div>
         </div>
     </div>

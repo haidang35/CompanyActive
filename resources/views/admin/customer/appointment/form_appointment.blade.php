@@ -37,17 +37,22 @@
                         </div>
                         <div>
                             <label>Status</label>
-                            <input type="text" name="appointment_status" class="form-control" value="{{old("appointment_status")}}"/>
-                            @error("appointment_status")
-                            <p class="text-danger">{{$message}}</p>
-                            @enderror
+                            <select name="appointment_status" class="form-control">
+                                <option value="0">Select status</option>
+                                @foreach($appointments as $item)
+                                    <option @if(old("appointment_id") == $item->appointment_id) selected @endif value="{{$item->appointment_id}}">{{$item->appointment_status}}</option>
+                                @endforeach
+                            </select>
+{{--                            @error("appointment_status")--}}
+{{--                            <p class="text-danger">{{$message}}</p>--}}
+{{--                            @enderror--}}
                         </div>
                         <div>
                             <label>Customer</label>
                             <select name="customer_id" class="form-control">
                                 <option value="0">Select customer</option>
                                 @foreach($customers as $item)
-                                    <option @if(old("customer_id") == $item->customer_id) selected @endif value="{{$item->customer_id}}">{{$item->customer_id}}</option>
+                                    <option @if(old("customer_id") == $item->customer_id) selected @endif value="{{$item->customer_id}}">{{$item->customer_name}}</option>
                                 @endforeach
                             </select>
                             @error("customer_id")

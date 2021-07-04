@@ -1,6 +1,16 @@
 @extends("admin_layout")
 @section("admin_main")
-
+<div class="card-content">
+    <?php $message = Session::get("message_success") ?>
+    <?php $message = Session::get("message_delete") ?>
+    <?php $message = Session::get("message_edit")?>
+    @if($message)
+        <div class="alert alert-success col-sm-6">{{$message}}</div>
+    @endif
+    <?php Session::put("message_success", "") ?>
+    <?php Session::put("message_delete", "") ?>
+    <?php Session::put("message_edit","")?>
+</div>
 <div class="card">
     <div class="card-header">
         <div class="buttons float-sm-end">
@@ -70,44 +80,6 @@
             <a href="{{url("/admin/appointments/form-appointment/".$customer->customer_id)}}" class="btn btn-primary">Add new appointment</a>
         </div>
         <h4 class="card-title">Appointment schedule</h4>
-        <div class="card-header">
-            <div class="col-sm-12" style="margin-top: 30px">
-                <form action="{{url("/admin/customer-details/".$customer->customer_id)}}" method="get">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-group position-relative has-icon-left">
-                                <input type="text" class="form-control" name="appointment_purpose"
-                                       placeholder="Search purpose">
-                                <div class="form-control-icon">
-                                    <i class="bi bi-search"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <select class="form-control form-select" name="appointment_project">
-                                <option value="0">Choose project</option>
-                                @foreach($appointments as $appointment)
-                                    <option @if(app("request")->input("appointment_id")==$appointment->appointment_id) selected @endif value="{{$appointment->appointment_id}}">{{$appointment->appointment_project}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-sm-3">
-                            <select class="form-control form-select" name="appointment_status">
-                                <option value="0">Choose status</option>
-                                @foreach($appointments as $appointment)
-                                    <option @if(app("request")->input("appointment_id")==$appointment->appointment_id) selected @endif value="{{$appointment->appointment_id}}">{{$appointment->appointment_status}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="button">
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
     <div class="card-content">
         <div class="card-body">
@@ -142,7 +114,9 @@
                     @endforeach
                     </tbody>
                 </table>
-{{--                <div>{{ $appointments->links("vendor.pagination.default")}}</div>--}}
+            </div>
+{{--        {{ $appointments->appends(request()->input())->links("vendor.pagination.default")  }}--}}
+{{--                                      {{ $appointments->links("vendor.pagination.default")  }}--}}
         </div>
     </div>
 </div>
