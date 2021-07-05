@@ -42,6 +42,7 @@
                 <x-jet-button class="ml-4">
                     {{ __('Log in') }}
                 </x-jet-button>
+
             </div>
             <div class="flex items-center justify-end mt-4">
                 <a class="btn" href="{{ url('auth/facebook') }}"
@@ -49,6 +50,12 @@
                     Login with Facebook
                 </a>
             </div>
+            <div class="flex items-center justify-end mt-4">
+                <a href="{{ url('auth/google') }}" style="background: #da3927; color: #ffffff; padding: 10px; width: 100%; text-align: center; display: block; border-radius:3px;" class="btn">
+                    <strong>Login With Google</strong>
+                </a>
+            </div>
+
         </form>
     </x-jet-authentication-card>
 </x-guest-layout>

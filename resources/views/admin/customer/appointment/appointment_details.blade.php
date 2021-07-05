@@ -1,5 +1,13 @@
 @extends("admin_layout")
 @section("admin_main")
+
+    <div class="card-content">
+        <?php $message = Session::get("message_edit")?>
+        @if($message)
+            <div class="alert alert-success col-sm-6">{{$message}}</div>
+        @endif
+        <?php Session::put("message_edit","")?>
+    </div>
     <div class="card">
         <div class="card-header">
             <div class="buttons float-sm-end">
@@ -21,6 +29,12 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        <label>Staff</label>
+                                        <input type="text" name="appointment_staff" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_staff}}"/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         <label>Purpose</label>
                                         <input type="text" name="appointment_purpose" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_purpose}}"/>
                                         @error("appointment_purpose")
@@ -28,6 +42,8 @@
                                         @enderror
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Project</label>
@@ -37,8 +53,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Status</label>
@@ -48,25 +62,12 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="text-capitalize">Staff</label>
-                                        <input type="text" name="appointment_staff" class="form-control" disabled value="{{$appointment->appointment_staff}}"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="text-capitalize">Customer</label>
-                                        <input type="text" name="customer_id" class="form-control" disabled value="{{$customer->customer_id}}"/>
-                                    </div>
-                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
+    </div>
 
 @endsection

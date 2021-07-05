@@ -26,7 +26,7 @@ class SocialController extends Controller
                     "name" => $user->name,
                     "email" => $user->email,
                     "fb_id" => $user->id,
-                    "password" => $user->password,
+                    "password" => encrypt('123456789jdj'),
 
                 ]);
             }

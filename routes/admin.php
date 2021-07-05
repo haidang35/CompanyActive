@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,8 @@ Route::middleware(["auth", "admin"])->group(function () {
 
 
 
+
+
     // -------------------LINH-----------------------///
 
     //Customer
@@ -85,6 +88,9 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/appointment-details/edit-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"edit_appointment"]);
     Route::post('/appointment-details/update-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"update_appointment"]);
     Route::get('/appointments/delete-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"delete_appointment"]);
+
+    // Notification
+    Route::get('/manage-notification',[App\Http\Controllers\NotificationController::class,"manage_notification"]);
 });
 
 

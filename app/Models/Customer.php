@@ -45,5 +45,4 @@ class Customer extends Model
             return $query->where("staff_id",$staffId);
         }
     }
-
 }
