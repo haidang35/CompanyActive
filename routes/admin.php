@@ -76,6 +76,7 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/appointments/delete-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"delete_appointment"]);
 
     // Notification
+
     Route::get('/manage-notification',[App\Http\Controllers\NotificationController::class,"manage_notification"]);
 });
 

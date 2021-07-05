@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Customer;
+use App\Models\Notification;
+use App\Notifications\Message;
+use App\Notifications\ReplyToActive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+//use \App\Http\Controllers\Thread;
 
 class AppointmentController extends Controller
 {
@@ -24,7 +28,7 @@ class AppointmentController extends Controller
         Session::put("message_success","Add appointment successfully");
         return view("admin.customer.appointment.form_appointment",[
             "appointments"=>$appointments,
-            "customers" => $customers
+            "customers" => $customers,
         ]);
     }
     public function save_appointment(Request $request){
@@ -49,6 +53,7 @@ class AppointmentController extends Controller
         $data["customer_id"] = $request->get("customer_id");
         try{
             Appointment::create($data);
+            auth()->user()->notify(new Message());
             return redirect()->to("/admin/customer-details/". $data["customer_id"]);
         }catch (\Exception $e){
             abort(404);

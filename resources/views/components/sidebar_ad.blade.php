@@ -53,10 +53,9 @@
                     <a href="{{url("/admin/manage-notification")}}" class='sidebar-link'>
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Notification</span>
+                        <span class="badge" style="width:30px;height:30px;border-radius: 20px;background-color:grey">{{count(auth()->user()->unreadNotifications)}}</span>
                     </a>
                 </li>
-
-
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
