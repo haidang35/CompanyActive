@@ -33,7 +33,7 @@ return [
     'facebook' => [
         'client_id' => '548219996548336',
         'client_secret' => '470b986ea9bee52826bc9005648bcd8f',
-        'redirect' => 'http://localhost:8000/auth/facebook/callback',
+        'redirect' => 'http://company-active-t2009m.herokuapp.com/auth/facebook/callback',
     ],
 
     'google' => [
