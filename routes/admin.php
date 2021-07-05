@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,8 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get("/manage-posts/{post_id}/delete", [PostController::class, "deletePost"]);
     Route::get("/manage-posts/{post_id}/restore", [PostController::class, "restorePost"]);
     Route::post("/posts/save-post", [PostController::class, "savePost"])->name('ckeditor.image-upload');
+
+
 
 
 
