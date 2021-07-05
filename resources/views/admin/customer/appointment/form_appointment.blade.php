@@ -3,7 +3,7 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <h3 class="m-0">Appointment schedule</h3>
+                <h4 class="m-0">Add new appointment</h4>
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -12,7 +12,7 @@
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-6">
-                    <form action="{{url("/admin/save-appointment")}}" method="post">
+                    <form action="{{url("/admin/appointments/save-appointment")}}" method="post">
                         @csrf
                         <div class="form-group">
                             <label>Staff</label>
@@ -37,17 +37,22 @@
                         </div>
                         <div>
                             <label>Status</label>
-                            <input type="text" name="appointment_status" class="form-control" value="{{old("appointment_status")}}"/>
-                            @error("appointment_status")
-                            <p class="text-danger">{{$message}}</p>
-                            @enderror
+                            <select name="appointment_status" class="form-control">
+                                <option value="0">Select status</option>
+                                @foreach($appointments as $item)
+                                    <option @if(old("appointment_id") == $item->appointment_id) selected @endif value="{{$item->appointment_id}}">{{$item->appointment_status}}</option>
+                                @endforeach
+                            </select>
+{{--                            @error("appointment_status")--}}
+{{--                            <p class="text-danger">{{$message}}</p>--}}
+{{--                            @enderror--}}
                         </div>
                         <div>
                             <label>Customer</label>
                             <select name="customer_id" class="form-control">
                                 <option value="0">Select customer</option>
-                                @foreach($customers as $item){
-                                <option @if(old("customer_id") == $item->customer_id) selected @endif value="{{$item->customer_id}}">{{$item->customer_name}}</option>
+                                @foreach($customers as $item)
+                                    <option @if(old("customer_id") == $item->customer_id) selected @endif value="{{$item->customer_id}}">{{$item->customer_name}}</option>
                                 @endforeach
                             </select>
                             @error("customer_id")

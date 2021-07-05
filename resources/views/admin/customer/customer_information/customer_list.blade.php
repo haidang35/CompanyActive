@@ -1,17 +1,30 @@
 @extends("admin_layout")
 @section("admin_main")
+{{--    <div class="col-12">--}}
+        <div class="card-content">
+            <?php $message = Session::get("message_success") ?>
+            <?php $message = Session::get("message_delete") ?>
+            <?php $message = Session::get("message_edit")?>
+            @if($message)
+                <div class="alert alert-success col-sm-6">{{$message}}</div>
+            @endif
+            <?php Session::put("message_success", "") ?>
+            <?php Session::put("message_delete", "") ?>
+            <?php Session::put("message_edit","")?>
+        </div>
+{{--    </div>--}}
     <div class="card">
         <div class="card-header">
             <div class="buttons float-md-end">
-                <a href="{{url("admin/customers/create-customer")}}" class="btn btn-primary">Add new customer</a>
+                <a href="{{url("/admin/customers/create-customer")}}" class="btn btn-primary">Add new customer</a>
             </div>
             <h4 class="card-title">Manage customers</h4>
             <div class="col-sm-12" style="margin-top: 30px">
-                <form action="{{url("admin/customers")}}" method="get">
+                <form action="{{url("/admin/customers")}}" method="get">
                     <div class="row">
                         <div class="col-sm-3">
                             <div class="form-group position-relative has-icon-left">
-                                <input type="text" class="form-control" name="customer_search"
+                                <input type="text" class="form-control" name="customer_name"
                                        placeholder="Search customer">
                                 <div class="form-control-icon">
                                     <i class="bi bi-search"></i>
@@ -20,7 +33,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group position-relative has-icon-left">
-                                <input type="text" class="form-control" name="phone_search"
+                                <input type="text" class="form-control" name="customer_phone"
                                        placeholder="Search phone">
                                 <div class="form-control-icon">
                                     <i class="bi bi-search"></i>
@@ -68,16 +81,17 @@
                                 <td>{{$item->customer_address}}</td>
                                 <td>{{$item->customer_relationship}}</td>
                                 <td>
-                                    <button class="btn btn-primary"><a style="color: white" href="{{url("/admin/customers/customer-details/".$item->customer_id)}}">View</a> </button>
+                                    <button class="btn btn-primary"><a style="color: white" href="{{url("/admin/customer-details/".$item->customer_id)}}">View</a> </button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-warning"><a onclick="return confirm('Are you sure delete {{$item->customer_name}}?')" href="{{url("/admin/customers/delete-customer/".$item->customer_id)}}">Delete</a></button>
+                                    <button class="btn btn-danger"><a style="color: white" onclick="return confirm('Are you sure delete {{$item->customer_name}}?')" href="{{url("/admin/customers/delete-customer/".$item->customer_id)}}">Delete</a></button>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                 </div>
+                {{ $customers->appends(request()->input())->links("vendor.pagination.default")  }}
             </div>
         </div>
     </div>

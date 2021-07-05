@@ -20,11 +20,9 @@
                         @else
                             <a href="{{url("/admin/department-details/edit/".$department->department_id)}}" class="btn btn-primary">Edit</a>
                         @endif
-
                     </div>
                     <h4 class="card-title">Department details </h4>
                 </div>
-
                 <div class="card-body">
                     <div class="row">
                         <form id="form-edit" class="col-sm-12" action="{{url("/admin/department-details/update/".$department->department_id)}}" method="post">

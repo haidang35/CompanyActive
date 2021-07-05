@@ -72,15 +72,22 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/customers',[App\Http\Controllers\CustomerController::class,"customers"]);
     Route::get('/customers/create-customer',[App\Http\Controllers\CustomerController::class,"create_customer"]);
     Route::post('/customers/save-customer',[App\Http\Controllers\CustomerController::class,"save_customer"]);
-    Route::get('/customers/customer-details/{customer_id}',[App\Http\Controllers\CustomerController::class,"customer_details"]);
+    Route::get('/customer-details/{customer_id}',[App\Http\Controllers\CustomerController::class,"customer_details"]);
+    Route::get('/customer-details/edit-customer/{customer_id}',[App\Http\Controllers\CustomerController::class,"edit_customer"]);
+    Route::post('/customers-details/update-customer/{customer_id}',[App\Http\Controllers\CustomerController::class,"update_customer"]);
     Route::get('/customers/delete-customer/{customer_id}',[App\Http\Controllers\CustomerController::class,"delete_customer"]);
 
     // Appointment
     Route::get('/appointments/{customer_id}',[App\Http\Controllers\AppointmentController::class,"appointments"]);
-    Route::get('/appointments/create-appointment',[App\Http\Controllers\AppointmentController::class,"create_appointment"]);
+    Route::get('/appointments/form-appointment/{customer_id}',[App\Http\Controllers\AppointmentController::class,"form_appointment"]);
     Route::post('/appointments/save-appointment',[App\Http\Controllers\AppointmentController::class,"save_appointment"]);
-    Route::get('/appointments/appointment-details/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"appointment_details"]);
+    Route::get('/appointment-details/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"appointment_details"]);
+    Route::get('/appointment-details/edit-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"edit_appointment"]);
+    Route::post('/appointment-details/update-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"update_appointment"]);
     Route::get('/appointments/delete-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"delete_appointment"]);
+
+    // Notification
+    Route::get('/manage-notification',[App\Http\Controllers\NotificationController::class,"manage_notification"]);
 });
 
 

@@ -18,33 +18,31 @@ class Customer extends Model
         "staff_id",
     ];
 
-
     public function Staff(){
         return $this->belongsTo(Staff::class,"staff_id","staff_id");
     }
-    public function Appointments(){
-        return $this->hasMany(Appointment::class,"appointment_id","appointment_id");
+    public function Appointment(){
+        return $this->hasMany(Appointment::class,"customer_id","customer_id");
     }
     public function scopeName($query,$search){
         if($search=="" || $search==null){
             return $query;
         }else{
-            return $query->where("customer_name","LIKE","%$search%");
+            return $query->where("customer_name","LIKE","%".$search."%");
         }
     }
-    public function scopePhone($query,$customer_phone){
-        if($customer_phone==null || $customer_phone==""){
+    public function scopePhone($query,$customerPhone){
+        if($customerPhone==null || $customerPhone==""){
             return $query;
         }else{
-            return $query->where("customer_phone","LIKE","%$customer_phone%");
+            return $query->where("customer_phone","LIKE","%$customerPhone%");
         }
     }
-    public function scopeStaff($query,$staff_id){
-        if($staff_id==null || $staff_id==0){
+    public function scopeStaff($query,$staffId){
+        if($staffId==null || $staffId==0){
             return $query;
         }else{
-            return $query->where("staff_id",$staff_id);
+            return $query->where("staff_id",$staffId);
         }
     }
-
 }
