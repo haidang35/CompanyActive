@@ -17,7 +17,35 @@
                             <a href="{{url("admin/manage-staffs/add-new-staff")}}" class="btn btn-primary">Add new staff</a>
                         </div>
                         <h4 class="card-title">Members</h4>
-
+                        <div class="col-sm-12" style="margin-top: 30px">
+                            <form action="{{url("admin/manage-staffs")}}" method="get">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group position-relative has-icon-left">
+                                            <input type="text" class="form-control" name="search_value"
+                                                   value=""
+                                                   placeholder="Search name, phone...">
+                                            <div class="form-control-icon">
+                                                <i class="bi bi-search"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <select class="form-control form-select" name="department_id">
+                                            <option value="0">Select department</option>
+                                            @foreach($data_scope as $item)
+                                                <option @if(app("request")->input("department_id") == $item->department_id ) selected @endif value="{{$item->department_id}}">{{$item->department_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="buttons">
+                                            <button type="submit" class="btn btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="card-content">
                         <div class="card-body">

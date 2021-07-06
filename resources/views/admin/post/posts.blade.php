@@ -53,8 +53,8 @@
                                                     <a  class="btn btn-success">Published</a>
                                                 @endif
                                             </td>
-                                            <td>{{$item->created_at}}</td>
-                                            <td>{{$item->updated_at}}</td>
+                                            <td>{{$item->created_at->format("d-m-Y H:i:s")}}</td>
+                                            <td>{{$item->updated_at->format("d-m-Y H:i:s")}}</td>
                                             <td>
                                                 <div class="buttons">
                                                     @if($item->post_status == 0)
