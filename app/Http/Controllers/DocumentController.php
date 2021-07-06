@@ -38,9 +38,7 @@ class DocumentController extends Controller
 
     public function viewDocument($document_id) {
         $document = Document::findOrFail($document_id);
-        return response()->file("upload/documents/".$document->document_name, [
-            "Content-Type" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        ]);
+        return response()->file("upload/documents/".$document->document_name);
     }
 
 
