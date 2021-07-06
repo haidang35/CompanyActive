@@ -39,7 +39,7 @@ class DocumentController extends Controller
 
     public function viewDocument($document_id) {
         $document = Document::findOrFail($document_id);
-        return view("admin.documents.view_document", [
+        return view("admin.document.view_document", [
             "document" => $document
         ]);
 //        return response()->file("upload/documents/".$document->document_name);
