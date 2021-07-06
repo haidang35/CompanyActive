@@ -16,3 +16,12 @@
 <script src="{{asset("https://unpkg.com/filepond-plugin-images-preview/dist/filepond-plugin-images-preview.js")}}"></script>
 <script src="{{asset("https://unpkg.com/filepond-plugin-images-resize/dist/filepond-plugin-images-resize.js")}}"></script>
 
+
+
+
+
+
+
+
+
+{{--<script src="{{asset("/js/main.js")}}"></script>--}}

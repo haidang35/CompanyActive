@@ -19,55 +19,55 @@
                 @endif
             </div>
             <h4 class="card-title">Appointment details </h4>
-        </div>
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card-body">
-                    <div class="row">
-                        <form id="edit-appointment" action="{{url("/admin/appointment-details/update-appointment/".$appointment->appointment_id)}}" method="post">
-                            @csrf
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Staff</label>
-                                        <input type="text" name="appointment_staff" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_staff}}"/>
+            </div>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="card-body">
+                        <div class="row">
+                            <form id="edit-appointment" action="{{url("/admin/appointment-details/update-appointment/".$appointment->appointment_id)}}" method="post">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Staff</label>
+                                            <input type="text" name="appointment_staff" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_staff}}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Purpose</label>
+                                            <input type="text" name="appointment_purpose" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_purpose}}"/>
+                                            @error("appointment_purpose")
+                                            <p class="text-danger">{{$message}}</p>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Purpose</label>
-                                        <input type="text" name="appointment_purpose" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_purpose}}"/>
-                                        @error("appointment_purpose")
-                                        <p class="text-danger">{{$message}}</p>
-                                        @enderror
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Project</label>
+                                            <input type="text" name="appointment_project" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_project}}"/>
+                                            @error("appointment_project")
+                                            <p class="text-danger">{{$message}}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Status</label>
+                                            <input type="text" name="appointment_status" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_status}}"/>
+                                            @error("appointment_status")
+                                            <p class="text-danger">{{$message}}</p>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Project</label>
-                                        <input type="text" name="appointment_project" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_project}}"/>
-                                        @error("appointment_project")
-                                        <p class="text-danger">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Status</label>
-                                        <input type="text" name="appointment_status" class="form-control" @if(!$edit) disabled @endif value="{{$appointment->appointment_status}}"/>
-                                        @error("appointment_status")
-                                        <p class="text-danger">{{$message}}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
+            </section>
+        </div>
 
-@endsection
+    @endsection

@@ -90,7 +90,20 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/appointments/delete-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"delete_appointment"]);
 
     // Notification
-    Route::get('/manage-notification',[App\Http\Controllers\NotificationController::class,"manage_notification"]);
+
+    Route::get('/manage-noti',[App\Http\Controllers\NotificationController::class,"manage_noti"]);
+    Route::get('/manage-noti/remove-noti',[App\Http\Controllers\NotificationController::class,"remove_noti"]);
+    Route::get('/test',function () {
+        $notifications = auth()->user()->unreadNotifications;
+        foreach ($notifications as $notification){
+            dd($notification->data['user']['name']);
+        }
+    });
+    Route::get('/maskAsRead',function (){
+        auth()->user()->unreadNotifications->maskAsRead();
+    });
+
+
 });
 
 

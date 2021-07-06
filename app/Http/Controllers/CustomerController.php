@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\Customer;
 use App\Models\Staff;
+use App\Notifications\ReplyToActive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
