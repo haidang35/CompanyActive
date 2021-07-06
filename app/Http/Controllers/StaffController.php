@@ -10,10 +10,15 @@ use Illuminate\Support\Facades\Session;
 
 class StaffController extends Controller
 {
-    public function manageStaffs() {
-        $staffs = Staff::with("Department")->paginate(20);
+    public function manageStaffs(Request $request) {
+        $search_value = $request->get("search_value");
+        $department_id = $request->get("department_id");
+        $staffs = Staff::with("Department")->search($search_value)->department($department_id)->paginate(20);
+        $departments = Department::all();
+
         return view("admin.staff.staffs_list", [
-            "staffs" => $staffs
+            "staffs" => $staffs,
+            "data_scope" => $departments
         ]);
     }
 
