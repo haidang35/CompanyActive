@@ -1,5 +1,6 @@
 @extends("admin_layout")
 @section("admin_main")
+@extends("admin.notification.message")
     <div class="card">
         <div class="card-header">
             <div class="col-12">
@@ -21,7 +22,7 @@
                                 </form>
                             </div>
                             <div class="col-sm-6">
-                                <a href="#" class="btn btn-primary">Remove all</a>
+                                <button class="btn btn-danger"><a style="color: white" onclick="return confirm('Are you sure remove all?')" href="{{url("/admin/manage-noti/remove-noti")}}">Remove all</a></button>
                             </div>
                         </div>
                     </div>
@@ -30,15 +31,21 @@
         </div>
         <div class="card-body">
             <div class="list-group">
-                @foreach(auth()->user()->unreadNotifications as $notification)
+                @forelse(auth()->user()->unreadNotifications as $notification)
                     <button type="button" class="list-group-item list-group-item-action">
-                        <div class="avatar avatar-lg me-3" style="margin: auto">
-                            <img src="{{asset("assets/images/faces/2.jpg")}}" alt="" srcset="">
-                            <?php echo $notification->type ?>
-{{--                            @include('layouts.notification.'.\Illuminate\Support\Str::snake(class_basename($notification->type)))--}}
-                        </div>
+                    <div class="avatar avatar-lg me-3" style="margin: auto">
+                        <img src="{{asset("assets/images/faces/2.jpg")}}" alt="" srcset="">
+                        <a style="padding: 13px" href="#">
+{{--                            {{dd($notification->data['user']['name'])}}--}}
+                            {{$notification->data['user']['name']}} has just actived.
+                        </a>
+                        @empty
+                            <a href="#">No unread notification</a>
+
+
+                    </div>
                     </button>
-                @endforeach
+                @endforelse
             </div>
         </div>
     </div>

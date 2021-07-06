@@ -49,12 +49,14 @@
                         <span>Customers</span>
                     </a>
                 </li>
-                <li class="sidebar-item ">
-                    <a href="{{url("/admin/manage-notification")}}" class='sidebar-link'>
+                <li class="sidebar-item" id="maskasread" onclick="maskAsNotificationRead()">
+                    <a href="{{url("/admin/manage-noti")}}" class='sidebar-link'>
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Notification</span>
                         <span class="badge" style="width:30px;height:30px;border-radius: 20px;background-color:grey">{{count(auth()->user()->unreadNotifications)}}</span>
                     </a>
+                    <script src="{{asset("/js/main.js")}}"></script>
+
                 </li>
             </ul>
         </div>
