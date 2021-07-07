@@ -8,24 +8,6 @@
                     <div class="col-sm-6">
                         <h4 class="card-title">Manage notification</h4>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <form action="{{url("/admin/customers")}}" method="get">
-                                    <div class="form-group position-relative has-icon-left">
-                                        <input type="text" class="form-control" name="customer_name"
-                                               placeholder="Search name">
-                                        <div class="form-control-icon">
-                                            <i class="bi bi-search"></i>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-danger"><a style="color: white" onclick="return confirm('Are you sure remove all?')" href="{{url("/admin/manage-noti/remove-noti")}}">Remove all</a></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -33,19 +15,14 @@
             <div class="list-group">
                 @forelse(auth()->user()->unreadNotifications as $notification)
                     <button type="button" class="list-group-item list-group-item-action">
-                    <div class="avatar avatar-lg me-3" style="margin: auto">
-                        <img src="{{asset("assets/images/faces/2.jpg")}}" alt="" srcset="">
-                        <a style="padding: 13px" href="#">
-{{--                            {{dd($notification->data['user']['name'])}}--}}
-                            {{$notification->data['user']['name']}} has just actived.
-                        </a>
-                        @empty
-                            <a href="#">No unread notification</a>
-
-
-                    </div>
+                        <div class="avatar avatar-lg me-3" style="margin: auto">
+                            <img src="{{asset("assets/images/faces/2.jpg")}}" alt="" srcset="">
+                           @include('admin.notification.'.\Illuminate\Support\Str::snake(class_basename($notification->type)))
+                            @empty
+                                <a href="#">No unread notification</a>
+                        </div>
                     </button>
-                @endforelse
+                    @endif
             </div>
         </div>
     </div>

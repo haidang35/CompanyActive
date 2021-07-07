@@ -1,4 +1,5 @@
 function maskAsNotificationRead(){
-    $get('/admin/maskAsRead');
-
+    // if (count())
+$.get('/maskAsRead');
 }
+

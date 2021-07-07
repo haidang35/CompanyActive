@@ -52,7 +52,9 @@ class AppointmentController extends Controller
         $data["appointment_status"] = $request->get("appointment_status");
         $data["customer_id"] = $request->get("customer_id");
         try{
+            Appointment::create($data);
             $appointment = Appointment::create($data);
+//            $appointment->user()->notify(new Message($appointment));
             auth()->user()->notify(new Message($appointment));
             return redirect()->to("/admin/customer-details/". $data["customer_id"]);
         }catch (\Exception $e){

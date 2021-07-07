@@ -82,7 +82,7 @@ Route::middleware(["auth", "admin"])->group(function () {
 
     // Appointment
     Route::get('/appointments/{customer_id}',[App\Http\Controllers\AppointmentController::class,"appointments"]);
-    Route::get('/appointments/form-appointment/{customer_id}',[App\Http\Controllers\AppointmentController::class,"form_appointment"]);
+    Route::get('/appointments/form-appointment/{customer_id}',[App\Http\Controllers\AppointmentController::class,"form_appointment"])->name("appointment.show");
     Route::post('/appointments/save-appointment',[App\Http\Controllers\AppointmentController::class,"save_appointment"]);
     Route::get('/appointment-details/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"appointment_details"]);
     Route::get('/appointment-details/edit-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"edit_appointment"]);
@@ -92,7 +92,7 @@ Route::middleware(["auth", "admin"])->group(function () {
     // Notification
 
     Route::get('/manage-noti',[App\Http\Controllers\NotificationController::class,"manage_noti"]);
-    Route::get('/manage-noti/remove-noti',[App\Http\Controllers\NotificationController::class,"remove_noti"]);
+    Route::get('/manage-noti/remove-noti',[\App\Http\Controllers\NotificationController::class,"remove_noti"]);
     Route::get('/test',function () {
         $notifications = auth()->user()->unreadNotifications;
         foreach ($notifications as $notification){

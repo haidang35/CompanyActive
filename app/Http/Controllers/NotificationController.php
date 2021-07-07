@@ -14,13 +14,5 @@ class NotificationController extends Controller
         return view("admin.notification.notification_list");
 
     }
-    public function remove_noti(){
-        try{
-            $notification = Notification::all();
-            $notification->delete();
-            return redirect()->to("/admin/manage-noti");
-        }catch (\Exception $e){
-            abort(404);
-        }
-    }
+
 }
