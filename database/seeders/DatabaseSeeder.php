@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        Department::factory(50)->create();
+//         \App\Models\User::factory(10)->create();
+//        Department::factory(50)->create();
         Staff::factory(300)->create();
 
 
@@ -39,8 +39,8 @@ class DatabaseSeeder extends Seeder
 
         //LINH
 
-        Customer::factory(20)->create();
-        Appointment::factory(20)->create();
+//        Customer::factory(20)->create();
+//        Appointment::factory(20)->create();
 
     }
 }

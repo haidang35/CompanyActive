@@ -1,5 +1,5 @@
-function maskAsNotificationRead(){
-    // if (count())
-$.get('/maskAsRead');
-}
 
+
+function markAsNotificationRead(){
+    $.get('/admin/markAsRead');
+}

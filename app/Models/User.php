@@ -62,4 +62,20 @@ class User extends Authenticatable
     ];
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function Appointment(){
+        return $this->belongsTo(Appointment::class);
+    }
 }

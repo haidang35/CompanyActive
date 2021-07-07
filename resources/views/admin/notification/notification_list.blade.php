@@ -13,16 +13,18 @@
         </div>
         <div class="card-body">
             <div class="list-group">
-                @forelse(auth()->user()->unreadNotifications as $notification)
-                    <button type="button" class="list-group-item list-group-item-action">
-                        <div class="avatar avatar-lg me-3" style="margin: auto">
-                            <img src="{{asset("assets/images/faces/2.jpg")}}" alt="" srcset="">
-                           @include('admin.notification.'.\Illuminate\Support\Str::snake(class_basename($notification->type)))
-                            @empty
-                                <a href="#">No unread notification</a>
-                        </div>
-                    </button>
-                    @endif
+{{--                @if((auth()->user()->notifications !==0))--}}
+                    @foreach(auth()->user()->notifications as $notification)
+                        <button type="button" class="list-group-item list-group-item-action">
+                            <div class="avatar avatar-lg me-3" style="margin: auto">
+                                <img src="{{asset("assets/images/faces/2.jpg")}}" alt="" srcset="">
+
+                               @include('admin.notification.'.\Illuminate\Support\Str::snake(class_basename($notification->type)))
+
+                            </div>
+                        </button>
+                    @endforeach
+{{--                @endif--}}
             </div>
         </div>
     </div>

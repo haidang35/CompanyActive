@@ -99,8 +99,8 @@ Route::middleware(["auth", "admin"])->group(function () {
             dd($notification->data['user']['name']);
         }
     });
-    Route::get('/maskAsRead',function (){
-        auth()->user()->unreadNotifications->maskAsRead();
+    Route::get('/markAsRead',function (){
+        auth()->user()->unreadNotifications->markAsRead();
     });
 
 
