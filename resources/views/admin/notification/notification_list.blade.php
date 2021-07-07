@@ -12,6 +12,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <form action="{{url("/admin/customers")}}" method="get">
+                                    @csrf
                                     <div class="form-group position-relative has-icon-left">
                                         <input type="text" class="form-control" name="customer_name"
                                                placeholder="Search name">
@@ -31,17 +32,16 @@
         </div>
         <div class="card-body">
             <div class="list-group">
-                @forelse(auth()->user()->unreadNotifications as $notification)
+                @forelse($user->notifications as $item)
                     <button type="button" class="list-group-item list-group-item-action">
                     <div class="avatar avatar-lg me-3" style="margin: auto">
                         <img src="{{asset("assets/images/faces/2.jpg")}}" alt="" srcset="">
-                        <a style="padding: 13px" href="#">
-{{--                            {{dd($notification->data['user']['name'])}}--}}
-                            {{$notification->data['user']['name']}} has just actived.
+                        <a style="padding: 13px">
+                           {{(string)$item->data["appoint"]["body"]}}
                         </a>
+                        <span style="padding: 13px 35px " class="text-indigo-500">{{$item->created_at->format("H:i:s d-m-Y")}}</span>
                         @empty
                             <a href="#">No unread notification</a>
-
 
                     </div>
                     </button>

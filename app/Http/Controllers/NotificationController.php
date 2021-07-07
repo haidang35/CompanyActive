@@ -11,7 +11,9 @@ use App\Models\Notification;
 class NotificationController extends Controller
 {
     public function manage_noti(){
-        return view("admin.notification.notification_list");
+        $user = User::find(1);
+        $user->unreadNotifications->markAsRead();
+        return view("admin.notification.notification_list", compact("user"));
 
     }
     public function remove_noti(){
