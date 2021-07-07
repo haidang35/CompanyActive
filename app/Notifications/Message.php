@@ -31,7 +31,7 @@ class Message extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -40,13 +40,24 @@ class Message extends Notification
      * @param  mixed  $notifiable
 
      */
+    public function toMail($notifiable) {
+        \Illuminate\Support\Facades\Notification::route('mail', $this->appointment['to']);
+        return (new MailMessage)
+            ->subject("Company Active ")
+            ->greeting($this->appointment["name"])
+            ->line($this->appointment["body"])
+            ->action("Go to website",$this->appointment['url'])
+            ->line($this->appointment['thanks']);
+
+    }
+
     public function toDatabase($notifiable)
     {
-//        dd($notifiable);
         return[
           'appoint'=>$this->appointment,
             'user'=>auth()->user(),
         ];
+
     }
 
     /**

@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use App\Notifications\Message;
 
 class StaffController extends Controller
 {
@@ -66,9 +70,23 @@ class StaffController extends Controller
 
     public function deleteStaff($staff_id) {
         try {
-            Staff::findOrFail($staff_id)->delete();
+            $user = Auth::user();
+            $staff = Staff::findOrFail($staff_id);
+            $staff->delete();
             Session::put("message_success", "Delete staff success !!");
+            $offerData = [
+                'name' => 'Notification from Company Active',
+                'body' => $user->name. " has just deleted staff ".  $staff->staff_name,
+                'url' => url('/'),
+                'thanks' => "Thanks for using our service ",
+                'to' => $user->email
+            ];
+            $user->notify((new Message($offerData))->delay([
+                'mail' => now()->addMinutes(2)
+            ]));
+
             return Redirect::to("/admin/manage-staffs");
+//            return (new Message($offerData))->toMail($offerData);
         }catch (\Exception $exception) {
             dd($exception->getMessage());
         }

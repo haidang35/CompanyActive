@@ -1,6 +1,4 @@
+{{--<a href="#">--}}
+{{--    {{$notification->data['user']['name']}} has just actived.--}}
 
-    <a style="padding: 13px" href="#">
-        {{$notification->data['user']['name']}} just got an action in.
-    </a>
-
-
+{{--</a>--}}
