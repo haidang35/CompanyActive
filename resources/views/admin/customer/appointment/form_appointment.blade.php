@@ -39,12 +39,10 @@
                             <label>Status</label>
                             <select name="appointment_status" class="form-control">
                                 <option value="0">Select status</option>
+                                <option value="1">priority</option>
+                                <option value="1">implement</option>
                                 <option value="1">completed</option>
-                                <option value="1">abc</option>
-                                <option value="1">xyz</option>
-{{--                                @foreach($appointments as $item)--}}
-{{--                                    <option @if(old("appointment_id") == $item->appointment_id) selected @endif value="{{$item->appointment_id}}">{{$item->appointment_status}}</option>--}}
-{{--                                @endforeach--}}
+
                             </select>
 {{--                            @error("appointment_status")--}}
 {{--                            <p class="text-danger">{{$message}}</p>--}}
