@@ -54,7 +54,7 @@ class Message extends Notification
     public function toDatabase($notifiable)
     {
         return[
-          'appoint'=>$this->appointment,
+            'appoint'=>$this->appointment,
             'user'=>auth()->user(),
         ];
 

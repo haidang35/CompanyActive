@@ -52,19 +52,16 @@ class AppointmentController extends Controller
         $data["appointment_project"] = $request->get("appointment_project");
         $data["appointment_status"] = $request->get("appointment_status");
         $data["customer_id"] = $request->get("customer_id");
-        $data["user_id"] = auth()->user()->id;
+
         try{
 
             $appointment = Appointment::create($data);
 //            dd($appointment);
 
-            $users = User::all()->where("role","LIKE","%ADMIN%");
+            $users = User::all()->where("role","LIKE","%ADMIN%")->get();
             foreach ($users as $user){
-                echo
                 $user->notify(new Message($appointment));
             }
-
-
             return redirect()->to("/admin/customer-details/". $data["customer_id"]);
         }catch (\Exception $e){
             abort(404);
