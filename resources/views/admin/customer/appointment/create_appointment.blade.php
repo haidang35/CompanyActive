@@ -7,6 +7,7 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
+
     <section class="content">
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
