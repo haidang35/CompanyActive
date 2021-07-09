@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use App\Notifications\Message;
+use App\Models\User;
 
 class StaffController extends Controller
 {
@@ -69,8 +70,31 @@ class StaffController extends Controller
     }
 
     public function deleteStaff($staff_id) {
+//        try {
+//            $user = Auth::user();
+//            $staff = Staff::findOrFail($staff_id);
+//            $staff->delete();
+//            Session::put("message_success", "Delete staff success !!");
+//            $offerData = [
+//                'name' => 'Notification from Company Active',
+//                'body' => $user->name. " has just deleted staff ".  $staff->staff_name,
+//                'url' => url('/'),
+//                'thanks' => "Thanks for using our service ",
+//                'to' => $user->email
+//            ];
+//            $user->notify((new Message($offerData))->delay([
+//                'mail' => now()->addMinutes(2)
+//            ]));
+//
+//            return Redirect::to("/admin/manage-staffs");
+////            return (new Message($offerData))->toMail($offerData);
+//        }catch (\Exception $exception) {
+//            dd($exception->getMessage());
+//        }
         try {
             $user = Auth::user();
+            $users = User::all()->whereNotIn('id',Auth::user()->id);
+//            dd($users);
             $staff = Staff::findOrFail($staff_id);
             $staff->delete();
             Session::put("message_success", "Delete staff success !!");
@@ -81,9 +105,10 @@ class StaffController extends Controller
                 'thanks' => "Thanks for using our service ",
                 'to' => $user->email
             ];
-            $user->notify((new Message($offerData))->delay([
-                'mail' => now()->addMinutes(2)
-            ]));
+//            $user->notify((new Message($offerData))->delay([
+//                'mail' => now()->addMinutes(2)
+//            ]));
+            Notification::send($users, new Message($offerData));
 
             return Redirect::to("/admin/manage-staffs");
 //            return (new Message($offerData))->toMail($offerData);

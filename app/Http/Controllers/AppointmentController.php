@@ -124,6 +124,9 @@ class AppointmentController extends Controller
         }catch (\Exception $e){
             abort(404);
         }
+
+
+
     }
 
 }

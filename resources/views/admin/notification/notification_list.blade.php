@@ -3,32 +3,10 @@
 @extends("admin.notification.message")
     <div class="card">
         <div class="card-header">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h4 class="card-title">Manage notification</h4>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <form action="{{url("/admin/customers")}}" method="get">
-                                    @csrf
-                                    <div class="form-group position-relative has-icon-left">
-                                        <input type="text" class="form-control" name="customer_name"
-                                               placeholder="Search name">
-                                        <div class="form-control-icon">
-                                            <i class="bi bi-search"></i>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-danger"><a style="color: white" onclick="return confirm('Are you sure remove all?')" href="{{url("/admin/manage-noti/remove-noti")}}">Remove all</a></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="buttons float-md-end">
+                <a href="{{url("/admin/manage-noti/remove-noti")}}" class="btn btn-primary">Remove all</a>
             </div>
+            <h4 class="card-title">Manage notification</h4>
         </div>
         <div class="card-body">
             <div class="list-group">
