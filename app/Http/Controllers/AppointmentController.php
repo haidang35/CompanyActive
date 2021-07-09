@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\Customer;
 use App\Models\Notification;
+use App\Models\User;
 use App\Notifications\Message;
 use App\Notifications\ReplyToActive;
 use Illuminate\Http\Request;
@@ -51,9 +52,16 @@ class AppointmentController extends Controller
         $data["appointment_project"] = $request->get("appointment_project");
         $data["appointment_status"] = $request->get("appointment_status");
         $data["customer_id"] = $request->get("customer_id");
+
         try{
+
             $appointment = Appointment::create($data);
-            auth()->user()->notify(new Message($appointment));
+//            dd($appointment);
+
+            $users = User::all()->where("role","LIKE","%ADMIN%")->get();
+            foreach ($users as $user){
+                $user->notify(new Message($appointment));
+            }
             return redirect()->to("/admin/customer-details/". $data["customer_id"]);
         }catch (\Exception $e){
             abort(404);
