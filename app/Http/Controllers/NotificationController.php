@@ -21,8 +21,8 @@ class NotificationController extends Controller
     }
     public function remove_noti(){
         try{
-            $notification = Notification::all();
-            $notification->delete();
+            $user = Auth::user();
+            $user->unreadNotifications->delete();
             return redirect()->to("/admin/manage-noti");
         }catch (\Exception $e){
             abort(404);
