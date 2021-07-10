@@ -2,14 +2,17 @@
 
 namespace App\Notifications;
 
+use App\Events\Notify;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 
-class Message extends Notification
+class Message extends Notification implements ShouldBroadcast
 {
     use Queueable;
     protected $appointment;
@@ -31,7 +34,7 @@ class Message extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'mail'];
+        return ['database', 'mail', 'broadcast'];
     }
 
     /**
@@ -41,7 +44,7 @@ class Message extends Notification
 
      */
     public function toMail($notifiable) {
-        \Illuminate\Support\Facades\Notification::route('mail', $this->appointment['to']);
+//        \Illuminate\Support\Facades\Notification::route('mail', $this->appointment['to']);
         return (new MailMessage)
             ->subject("Company Active ")
             ->greeting($this->appointment["name"])
@@ -72,4 +75,14 @@ class Message extends Notification
 
         ];
     }
+
+    public function toBroadcast($notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'message' => $this->appointment
+        ]);
+
+    }
+
+
 }

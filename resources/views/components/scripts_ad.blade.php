@@ -3,6 +3,7 @@
 <script src="{{asset("assets/vendors/apexcharts/apexcharts.js")}}"></script>
 <script src="{{asset("assets/js/pages/dashboard.js")}}"></script>
 <script src="{{asset("assets/js/main.js")}}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 
 <script src="{{asset("https://unpkg.com/filepond/dist/filepond.js")}}"></script>
 <!-- filepond validation -->

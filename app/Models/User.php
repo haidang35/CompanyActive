@@ -31,6 +31,8 @@ class User extends Authenticatable
         'google_id'
     ];
 
+
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -60,6 +62,11 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'users.'.$this->id;
+    }
 
 
 }
