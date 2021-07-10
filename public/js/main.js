@@ -1,4 +1,5 @@
-function maskAsNotificationRead(){
-    $get('/admin/maskAsRead');
 
+
+function markAsNotificationRead(){
+    $.get('/admin/markAsRead');
 }

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\Customer;
 use App\Models\Staff;
+use App\Models\User;
+use App\Notifications\Message;
 use App\Notifications\ReplyToActive;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
@@ -107,8 +110,19 @@ class CustomerController extends Controller
     public function delete_customer($customer_id){
         $customer = Customer::findOrFail($customer_id);
         try{
+            $user = Auth::user()->id;
             $customer->delete();
             Session::put("message_delete","Delete customer successfully");
+            $offerData = [
+                'name' => 'Notification from Company Active',
+                'body' => $user->name. " đã xóa khách hàng: ".  $customer->customer_name,
+                'url' => url('/'),
+                'thanks' => "Thanks for using our service ",
+                'to' => $user->email
+            ];
+            $user->notify((new Message($offerData))->delay([
+                'mail' => now()->addMinutes(2)
+            ]));
             return redirect()->to("/admin/customers");
         }catch (\Exception $e){
             abort(404);
