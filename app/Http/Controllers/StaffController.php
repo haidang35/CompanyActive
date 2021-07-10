@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Notify;
 use App\Models\Department;
 use App\Models\Staff;
 use Illuminate\Http\Request;
@@ -84,9 +85,8 @@ class StaffController extends Controller
                 'thanks' => "Thanks for using our service ",
                 'to' => $user->email
             ];
-            \event(new Message($offerData));
+            \event(new Notify($offerData));
             Notification::send($users, new Message($offerData));
-
             return Redirect::to("/admin/manage-staffs");
 //            return (new Message($offerData))->toMail($offerData);
         }catch (\Exception $exception) {
