@@ -44,7 +44,7 @@
                                 const notificationsWrapper   = $('.dropdown-notifications');
                                 const notificationsToggle    = notificationsWrapper.find('a[data-bs-toggle]');
                                 const notificationsCountElem = notificationsToggle.find('i[data-count]');
-                                let notificationsCount     = parseInt(notificationsCountElem.data('count'));
+                                let notificationsCount       = parseInt(notificationsCountElem.data('count'));
                                 const notifications          = notificationsWrapper.find('li.dropdown-item-content');
                                 Pusher.logToConsole = true;
                                 const pusher = new Pusher('22c1e3e8a080c533ca41', {
@@ -54,7 +54,6 @@
                                 const channel = pusher.subscribe('my-channel');
                                 channel.bind('my-event', function(data) {
                                     const existingNotifications = notifications.html();
-                                    const avatar = Math.floor(Math.random() * (71 - 20 + 1)) + 20;
                                     const newNotificationHtml = `
                                          <li>
                                             <a class="dropdown-item">
