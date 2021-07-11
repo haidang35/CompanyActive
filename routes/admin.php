@@ -22,6 +22,8 @@ Route::middleware(["auth", "admin"])->group(function () {
     //Admin Route
     Route::get('/', [AdminController::class, "adminDashboard"]);
     Route::get('/logout', [AdminController::class, "adminLogout"]);
+    Route::get('/pusher', [AdminController::class, "testPusher"]);
+
 
     // Department
     Route::get('/manage-departments', [DepartmentController::class, "manageDepartments"]);
