@@ -44,9 +44,9 @@
                                 <option value="1">completed</option>
 
                             </select>
-{{--                            @error("appointment_status")--}}
-{{--                            <p class="text-danger">{{$message}}</p>--}}
-{{--                            @enderror--}}
+                            @error("appointment_status")
+                            <p class="text-danger">{{$message}}</p>
+                            @enderror
                         </div>
                         <div>
                             <label>Customer</label>
