@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\Message;
 use App\Notifications\ReplyToActive;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 //use \App\Http\Controllers\Thread;
 
@@ -54,14 +55,8 @@ class AppointmentController extends Controller
         $data["customer_id"] = $request->get("customer_id");
 
         try{
+            Appointment::create($data);
 
-            $appointment = Appointment::create($data);
-//            dd($appointment);
-
-            $users = User::all()->where("role","LIKE","%ADMIN%")->get();
-            foreach ($users as $user){
-                $user->notify(new Message($appointment));
-            }
             return redirect()->to("/admin/customer-details/". $data["customer_id"]);
         }catch (\Exception $e){
             abort(404);
@@ -124,10 +119,8 @@ class AppointmentController extends Controller
         }catch (\Exception $e){
             abort(404);
         }
-
-
-
     }
+
 
 }
 
