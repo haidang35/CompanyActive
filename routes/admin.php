@@ -94,7 +94,7 @@ Route::middleware(["auth", "admin"])->group(function () {
     // Notification
 
     Route::get('/manage-noti',[App\Http\Controllers\NotificationController::class,"manage_noti"]);
-    Route::get('/manage-noti/remove-noti',[\App\Http\Controllers\NotificationController::class,"remove_noti"]);
+    Route::get('/manage-noti/remove-noti',[App\Http\Controllers\NotificationController::class,"remove_noti"]);
     Route::get('/test',function () {
         $notifications = auth()->user()->unreadNotifications;
         foreach ($notifications as $notification){

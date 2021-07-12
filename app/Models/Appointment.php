@@ -16,7 +16,6 @@ class Appointment extends Model
       "appointment_project",
       "appointment_status",
         "customer_id",
-        "user_id",
 
     ];
     public function Customer()
