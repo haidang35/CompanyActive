@@ -39,7 +39,7 @@ return [
     'google' => [
         'client_id' => '275583958779-ps4qrtefo9l5m44kgin4ci73inlr5c8p.apps.googleusercontent.com',
         'client_secret' => 'ZYOKB94Rs4Qslh66VN7o2ihy',
-        'redirect' => 'http://127.0.0.1:8000/auth/google/callback',
+        'redirect' => 'https://company-active-t2009m.herokuapp.com/auth/google/callback',
     ],
 
 ];
