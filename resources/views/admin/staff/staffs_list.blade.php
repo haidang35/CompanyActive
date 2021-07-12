@@ -7,6 +7,17 @@
             <div class="alert alert-success col-sm-6">{{$message}}</div>
         @endif
         <?php Session::put("message_success", "") ?>
+            <div>
+                <?php $staff_deleted = Session::get("staff_deleted") ?>
+                @if($staff_deleted)
+                    <div class="alert alert-warning col-sm-5">
+                        <span>You can restore staff {{$staff_deleted->staff_name}}</span>
+                        <a href="{{url("admin/manage-staffs/restore/".$staff_deleted->staff_id)}}" class="btn btn-primary" style="margin-left: 20px">Restore</a>
+                    </div>
+
+                @endif
+                <?php Session::put("staff_deleted", "") ?>
+            </div>
         <div class="row match-height">
             <div class="col-12">
                 <div class="card-content">

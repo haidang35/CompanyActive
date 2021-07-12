@@ -25,10 +25,10 @@
                                 <li><a class="dropdown-item" href="#">No new mail</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown dropdown-notifications me-3">
-                            <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        <li class="nav-item dropdown dropdown-notifications me-3" >
+                            <a id="notify"  class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <i data-count="0" class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
+                                <i  data-count="0" class='bi bi-bell bi-sub fs-4 text-gray-600'><span class="notif-count"></span></i>
                             </a>
                             <ul  id="message-form" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                 <li>
@@ -51,8 +51,9 @@
                                     cluster: 'ap1',
                                     forceTLS: true
                                 });
-                                const channel = pusher.subscribe('my-channel');
-                                channel.bind('my-event', function(data) {
+
+                                const channel = pusher.subscribe('notify');
+                                channel.bind('receive-notify', function(data) {
                                     const existingNotifications = notifications.html();
                                     const newNotificationHtml = `
                                          <li>
@@ -69,7 +70,10 @@
                                     notificationsCountElem.attr('data-count', notificationsCount);
                                     notificationsWrapper.find('.notif-count').text(notificationsCount);
                                     notificationsWrapper.show();
+
                                 });
+
+
 
                                 // Echo.private('users.1')
                                 //     .notification((notification) => {

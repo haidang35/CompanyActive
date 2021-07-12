@@ -4,6 +4,9 @@
 <script src="{{asset("assets/js/pages/dashboard.js")}}"></script>
 <script src="{{asset("assets/js/main.js")}}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{asset("https://js.pusher.com/5.0/pusher.min.js")}}"></script>
+<script src="{{asset("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")}}"></script>
+
 
 <script src="{{asset("https://unpkg.com/filepond/dist/filepond.js")}}"></script>
 <!-- filepond validation -->
@@ -19,10 +22,3 @@
 
 
 
-
-
-
-
-
-
-{{--<script src="{{asset("/js/main.js")}}"></script>--}}

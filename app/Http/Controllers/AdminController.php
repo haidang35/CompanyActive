@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Notify;
 use App\Models\Department;
 use App\Models\Mr_Cong;
 use App\Models\Staff;

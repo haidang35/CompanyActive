@@ -32,11 +32,11 @@ class Notify implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  ["my-channel"];
+        return  ["notify"];
     }
 
     public function broadcastAs()
     {
-        return 'my-event';
+        return 'receive-notify';
     }
 }
