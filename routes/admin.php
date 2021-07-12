@@ -22,6 +22,8 @@ Route::middleware(["auth", "admin"])->group(function () {
     //Admin Route
     Route::get('/', [AdminController::class, "adminDashboard"]);
     Route::get('/logout', [AdminController::class, "adminLogout"]);
+    Route::get('/pusher', [AdminController::class, "testPusher"]);
+
 
     // Department
     Route::get('/manage-departments', [DepartmentController::class, "manageDepartments"]);
@@ -45,6 +47,7 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/manage-staffs/{staff_id}/edit', [StaffController::class, "staffEditInfo"]);
     Route::post('/manage-staffs/{staff_id}/update', [StaffController::class, "staffUpdateInfo"]);
     Route::get('/manage-staffs/delete/{staff_id}', [StaffController::class, "deleteStaff"]);
+    Route::get('/manage-staffs/restore/{staff_id}', [StaffController::class, "restoreStaff"]);
     Route::get('/manage-staffs/add-new-staff', [StaffController::class, "addNewStaff"]);
     Route::post('/manage-staffs/new-staff', [StaffController::class, "updateNewStaff"]);
 
@@ -82,7 +85,7 @@ Route::middleware(["auth", "admin"])->group(function () {
 
     // Appointment
     Route::get('/appointments/{customer_id}',[App\Http\Controllers\AppointmentController::class,"appointments"]);
-    Route::get('/appointments/form-appointment/{customer_id}',[App\Http\Controllers\AppointmentController::class,"form_appointment"]);
+    Route::get('/appointments/form-appointment/{customer_id}',[App\Http\Controllers\AppointmentController::class,"form_appointment"])->name("appointment.show");
     Route::post('/appointments/save-appointment',[App\Http\Controllers\AppointmentController::class,"save_appointment"]);
     Route::get('/appointment-details/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"appointment_details"]);
     Route::get('/appointment-details/edit-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"edit_appointment"]);
@@ -90,7 +93,20 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/appointments/delete-appointment/{appointment_id}',[App\Http\Controllers\AppointmentController::class,"delete_appointment"]);
 
     // Notification
-    Route::get('/manage-notification',[App\Http\Controllers\NotificationController::class,"manage_notification"]);
+
+    Route::get('/manage-noti',[App\Http\Controllers\NotificationController::class,"manage_noti"]);
+    Route::get('/manage-noti/remove-noti',[App\Http\Controllers\NotificationController::class,"remove_noti"]);
+    Route::get('/test',function () {
+        $notifications = auth()->user()->unreadNotifications;
+        foreach ($notifications as $notification){
+            dd($notification->data['user']['name']);
+        }
+    });
+    Route::get('/markAsRead',function (){
+        auth()->user()->unreadNotifications->markAsRead();
+    });
+
+
 });
 
 

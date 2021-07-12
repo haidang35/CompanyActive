@@ -25,17 +25,64 @@
                                 <li><a class="dropdown-item" href="#">No new mail</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown me-3">
-                            <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        <li class="nav-item dropdown dropdown-notifications me-3" >
+                            <a id="notify"  class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
+                                <i  data-count="0" class='bi bi-bell bi-sub fs-4 text-gray-600'><span class="notif-count"></span></i>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                            <ul  id="message-form" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                 <li>
                                     <h6 class="dropdown-header">Notifications</h6>
                                 </li>
                                 <li><a class="dropdown-item">No notification available</a></li>
+                                <li class="dropdown-item-content"></li>
+
                             </ul>
+                            <script src="{{asset("https://js.pusher.com/5.0/pusher.min.js")}}"></script>
+                            <script src="{{asset("//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")}}"></script>
+                            <script type="text/javascript">
+                                const notificationsWrapper   = $('.dropdown-notifications');
+                                const notificationsToggle    = notificationsWrapper.find('a[data-bs-toggle]');
+                                const notificationsCountElem = notificationsToggle.find('i[data-count]');
+                                let notificationsCount       = parseInt(notificationsCountElem.data('count'));
+                                const notifications          = notificationsWrapper.find('li.dropdown-item-content');
+                                Pusher.logToConsole = true;
+                                const pusher = new Pusher('22c1e3e8a080c533ca41', {
+                                    cluster: 'ap1',
+                                    forceTLS: true
+                                });
+
+                                const channel = pusher.subscribe('notify');
+                                channel.bind('receive-notify', function(data) {
+                                    const existingNotifications = notifications.html();
+                                    const newNotificationHtml = `
+                                         <li>
+                                            <a class="dropdown-item">
+                                                <div class="avatar me-3">
+                                                    <img src="{{asset("assets/images/faces/1.jpg")}}" alt="" srcset="">
+                                                    <span class="text-black-500" style="padding-left: 10px">`+data.message.body+`</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    `;
+                                    notifications.html(newNotificationHtml + existingNotifications);
+                                    notificationsCount += 1;
+                                    notificationsCountElem.attr('data-count', notificationsCount);
+                                    notificationsWrapper.find('.notif-count').text(notificationsCount);
+                                    notificationsWrapper.show();
+
+                                });
+
+
+
+                                // Echo.private('users.1')
+                                //     .notification((notification) => {
+                                //         console.log("notice", notification);
+                                //         alert(JSON.stringify(notification));
+                                //     });
+
+                            </script>
+                            <script src="{{ asset('js/app.js') }}"></script>
                         </li>
                     </ul>
                     <div class="dropdown">
@@ -73,5 +120,4 @@
             </div>
         </nav>
     </header>
-
 </div>

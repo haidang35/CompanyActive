@@ -19,6 +19,7 @@ class CreateAppointment extends Migration
             $table->string("appointment_purpose");
             $table->string("appointment_project");
             $table->string("appointment_status");
+            $table->integer("user_id");
             $table->integer("customer_id")->nullable();
             $table->timestamps();
         });

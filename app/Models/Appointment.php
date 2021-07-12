@@ -16,8 +16,10 @@ class Appointment extends Model
       "appointment_project",
       "appointment_status",
         "customer_id",
+
     ];
-    public function Customer(){
-        return $this->belongsTo(Customer::class,"customer_id","customer_id");
+    public function Customer()
+    {
+        return $this->belongsTo(Customer::class, "customer_id", "customer_id");
     }
 }

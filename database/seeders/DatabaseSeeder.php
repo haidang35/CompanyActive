@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Appointment;
 use App\Models\Customer;
 use App\Models\Department;
+use App\Models\Mr_Cong;
 use App\Models\Staff;
 use Illuminate\Database\Seeder;
 require_once 'vendor/autoload.php';
@@ -19,7 +20,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+//         \App\Models\User::factory(10)->create();
         Department::factory(50)->create();
         Staff::factory(300)->create();
 
@@ -40,8 +41,8 @@ class DatabaseSeeder extends Seeder
 
         //LINH
 
-        Customer::factory(20)->create();
-        Appointment::factory(20)->create();
+        Customer::factory(200)->create();
+        Appointment::factory(200)->create();
 
     }
 }

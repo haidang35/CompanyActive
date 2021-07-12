@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Notify;
 use App\Models\Department;
+use App\Models\Mr_Cong;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +23,8 @@ class AdminController extends Controller
         Auth::login($user, false);
         return Redirect::to("/login");
     }
+
+
 
 
 

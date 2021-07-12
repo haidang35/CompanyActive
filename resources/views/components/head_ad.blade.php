@@ -16,5 +16,5 @@
     <link rel="shortcut icon" href="{{asset("assets/images/favicon.svg")}}" type="image/x-icon">
     <link href="{{asset("https://unpkg.com/filepond-plugin-images-preview/dist/filepond-plugin-images-preview.css")}}" rel="stylesheet">
 {{--    <script src="{{asset("ckeditor/ckeditor.js")}}"></script>--}}
-    <script src="{{asset("https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js")}}"></script>
+    <script src="{{asset("https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js")}}"></script>4
 </head>

@@ -3,12 +3,17 @@
 {{--    <div class="col-12">--}}
         <div class="card-content">
             <?php $message = Session::get("message_success") ?>
-            <?php $message = Session::get("message_delete") ?>
+
             <?php $message = Session::get("message_edit")?>
             @if($message)
                 <div class="alert alert-success col-sm-6">{{$message}}</div>
             @endif
             <?php Session::put("message_success", "") ?>
+
+            <?php $message2 = Session::get("message_delete") ?>
+                @if($message2)
+                    <div class="alert alert-success col-sm-6">{{$message2}}</div>
+                @endif
             <?php Session::put("message_delete", "") ?>
             <?php Session::put("message_edit","")?>
         </div>

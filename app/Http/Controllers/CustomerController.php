@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Customer;
+use App\Models\Notification;
 use App\Models\Staff;
+use App\Models\User;
+use App\Notifications\Message;
+use App\Notifications\ReplyToActive;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
@@ -108,6 +113,7 @@ class CustomerController extends Controller
         try{
             $customer->delete();
             Session::put("message_delete","Delete customer successfully");
+
             return redirect()->to("/admin/customers");
         }catch (\Exception $e){
             abort(404);
