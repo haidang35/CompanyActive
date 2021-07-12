@@ -44,7 +44,7 @@ class Message extends Notification implements ShouldBroadcast
 
      */
     public function toMail($notifiable) {
-//        \Illuminate\Support\Facades\Notification::route('mail', $this->appointment['to']);
+        \Illuminate\Support\Facades\Notification::route('mail', $this->appointment['to']);
         return (new MailMessage)
             ->subject("Company Active ")
             ->greeting($this->appointment["name"])
