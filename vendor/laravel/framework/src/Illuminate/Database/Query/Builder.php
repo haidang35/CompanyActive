@@ -2407,7 +2407,7 @@ class Builder
      * @param  array  $columns
      * @param  string  $cursorName
      * @param  string|null  $cursor
-     * @return \Illuminate\Contracts\Pagination\CursorPaginator
+     * @return \Illuminate\Contracts\Pagination\Paginator
      * @throws \Illuminate\Pagination\CursorPaginationException
      */
     public function cursorPaginate($perPage = 15, $columns = ['*'], $cursorName = 'cursor', $cursor = null)
@@ -2577,7 +2577,7 @@ class Builder
     }
 
     /**
-     * Get a collection instance containing the values of a given column.
+     * Get an array with the values of a given column.
      *
      * @param  string  $column
      * @param  string|null  $key

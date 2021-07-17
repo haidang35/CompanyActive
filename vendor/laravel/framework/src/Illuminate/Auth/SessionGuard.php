@@ -628,7 +628,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
      *
      * @param  string  $password
      * @param  string  $attribute
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @return bool|null
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
@@ -655,7 +655,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
      *
      * @param  string  $password
      * @param  string  $attribute
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @return bool|null
      *
      * @throws \InvalidArgumentException
      */
