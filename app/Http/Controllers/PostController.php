@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -23,7 +24,7 @@ class PostController extends Controller
             return view("admin.post.post_details", [
                 "post" => $post
             ]);
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -54,7 +55,7 @@ class PostController extends Controller
             $data["post_author"] = $user->name;
             Post::create($data);
             return Redirect::to("admin/manage-posts");
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
 
@@ -75,7 +76,7 @@ class PostController extends Controller
                 Session::put("message_success", "Unpublished post ".'"'.$post->post_title.'"'." success!!");
             }
             return Redirect::to("admin/manage-posts");
-        }catch (\Exception $exception){
+        }catch (Exception $exception){
             dd($exception->getMessage());
         }
     }
@@ -86,7 +87,7 @@ class PostController extends Controller
             return view("admin.post.edit_post", [
                 "post" => $post
             ]);
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -100,7 +101,7 @@ class PostController extends Controller
             $post->update($data);
             Session::put("message_success", "Update post ".'"'.$post->post_title.'"' ." success !!");
             return Redirect::to("admin/manage-posts");
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -112,7 +113,7 @@ class PostController extends Controller
             Session::put("post_deleted", $post);
             Session::put("message_success", "Delete post".'"'.$post->post_title.'"'." success !!");
             return Redirect::to("admin/manage-posts");
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
 
         }
     }
@@ -123,7 +124,7 @@ class PostController extends Controller
             $post_delete->restore();
             Session::put("message_success", "Restore post ".'"'.$post_delete->post_title.'"' ." success !!");
             return Redirect::to("admin/manage-posts");
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }

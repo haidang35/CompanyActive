@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
@@ -32,7 +33,7 @@ class DocumentController extends Controller
                 Session::put("message_success", "Add new document success !!");
                 return Redirect::to("admin/documents");
             }
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }

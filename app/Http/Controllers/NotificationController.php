@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,7 @@ class NotificationController extends Controller
             $user = Auth::user();
             $user->unreadNotifications->delete();
             return redirect()->to("/admin/manage-noti");
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }

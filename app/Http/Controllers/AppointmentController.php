@@ -8,6 +8,7 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Notifications\Message;
 use App\Notifications\ReplyToActive;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
@@ -58,7 +59,7 @@ class AppointmentController extends Controller
             Appointment::create($data);
 
             return redirect()->to("/admin/customer-details/". $data["customer_id"]);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }
@@ -69,7 +70,7 @@ class AppointmentController extends Controller
                 "appointment" => $appointment,
                 "edit"=>false
             ]);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }
@@ -81,7 +82,7 @@ class AppointmentController extends Controller
                 "appointment" => $appointment,
                 "edit"=>true,
             ]);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }
@@ -105,7 +106,7 @@ class AppointmentController extends Controller
             $appointment->update($data);
              Session::put("message_edit","Edit appointment successfully");
             return redirect()->to("/admin/appointment-details/".$appointment_id);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }
@@ -116,7 +117,7 @@ class AppointmentController extends Controller
             $appointment->delete();
             Session::put("message_delete","Delete appointment successfully");
             return redirect()->to("/admin/customer-details/".$customer_id);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }

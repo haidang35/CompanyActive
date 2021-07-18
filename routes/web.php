@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +22,9 @@ Route::get('auth/facebook/callback', [SocialController::class, 'loginWithFaceboo
 //Login Google
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+//User
+Route::get('/{path}', [UserController::class, "home"])->where('path', '.*');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

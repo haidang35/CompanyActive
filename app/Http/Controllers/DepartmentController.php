@@ -7,12 +7,14 @@ use App\Models\Department;
 use App\Models\Staff;
 use App\Models\User;
 use App\Notifications\Message;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use MongoDB\Driver\Exception\ExecutionTimeoutException;
+use function event;
 
 class DepartmentController extends Controller
 {
@@ -78,7 +80,7 @@ class DepartmentController extends Controller
             Session::put("staff_removed", $staff);
             return Redirect::to("/admin/department-details/".$department_id);
 
-        }catch (\Exception $e) {
+        }catch (Exception $e) {
             abort(404);
         }
     }
@@ -90,7 +92,7 @@ class DepartmentController extends Controller
                 "staffs" => $staffs,
                 "department_id" => $department_id
             ]);
-        }catch (\Exception $exception){
+        }catch (Exception $exception){
             dd($exception->getMessage());
         }
 
@@ -112,11 +114,11 @@ class DepartmentController extends Controller
                 'thanks' => "Thanks for using our service ",
                 'to' => $user->email,
             ];
-            \event(new Notify($offerData));
+            event(new Notify($offerData));
             Notification::send($users, new Message($offerData));
             Session::put("message_success", "Add new member to department success !!");
             return Redirect::to("/admin/department-details/".$department_id);
-        }catch (\Exception $e) {
+        }catch (Exception $e) {
             dd($e->getMessage());
         }
 
@@ -154,11 +156,11 @@ class DepartmentController extends Controller
                 'thanks' => "Thanks for using our service ",
                 'to' => $user->email,
             ];
-            \event(new Notify($offerData));
+            event(new Notify($offerData));
             Notification::send($users, new Message($offerData));
             Session::put("message_success", "Add new department success !!");
             return Redirect::to("admin/manage-departments");
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
 
@@ -173,7 +175,7 @@ class DepartmentController extends Controller
                 Session::put("department_delete", $department);
                 return Redirect::to("admin/manage-departments");
             }
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -185,7 +187,7 @@ class DepartmentController extends Controller
             Session::put("message_success", "Restore department ".$department->department_name." success !!");
             return Redirect::to("admin/manage-departments");
 
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -201,7 +203,7 @@ class DepartmentController extends Controller
             }
             Session::put("message_success", "Remove all member success !!");
             return Redirect::to("admin/department-details/".$department_id);
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -217,7 +219,7 @@ class DepartmentController extends Controller
             }
             Session::put("message_success", "Restore all members success !!");
             return Redirect::to("admin/department-details/".$department_id);
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -230,7 +232,7 @@ class DepartmentController extends Controller
             ]);
             Session::put("message_success", "Restore staff ".$staff->staff_name." success !!");
             return Redirect::to("admin/department-details/".$department_id);
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }

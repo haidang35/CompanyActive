@@ -6,6 +6,7 @@ use App\Events\CountNotify;
 use App\Events\Notify;
 use App\Models\Department;
 use App\Models\Staff;
+use Exception;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class StaffController extends Controller
                 "staff" => $staff,
                 "edit" => false
             ]);
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
 
@@ -53,7 +54,7 @@ class StaffController extends Controller
                 "staff" => $staff,
                 "edit" => true
             ]);
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -88,7 +89,7 @@ class StaffController extends Controller
             Notification::send($users, new Message($offerData));
             Session::put("message_success", "Update information staff success !!");
             return Redirect::to("admin/manage-staffs/".$staff_id."/details");
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -113,7 +114,7 @@ class StaffController extends Controller
             Notification::send($users, new Message($offerData));
             return Redirect::to("/admin/manage-staffs");
 //            return (new Message($offerData))->toMail($offerData);
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
     }
@@ -124,7 +125,7 @@ class StaffController extends Controller
             $staff_deleted->restore();
             Session::put("message_success", "Restore staff ".$staff_deleted->staff_name." success !!");
             return Redirect::to("admin/manage-staffs");
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             abort(404);
         }
     }
@@ -166,7 +167,7 @@ class StaffController extends Controller
             Notification::send($users, new Message($offerData));
             Session::put("message_success", "Add new staff success !!");
             return Redirect::to("admin/manage-staffs");
-        }catch (\Exception $exception) {
+        }catch (Exception $exception) {
             dd($exception->getMessage());
         }
 
