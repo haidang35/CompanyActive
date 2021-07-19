@@ -14,7 +14,6 @@ class NotificationController extends Controller
     public function manage_noti(){
         $user = Auth::user();
         $user->unreadNotifications->markAsRead();
-
         return view("admin.notification.notification_list", compact("user"));
 
     }

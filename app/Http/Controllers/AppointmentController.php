@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 
 class AppointmentController extends Controller
 {
+
     public function appointments()
     {
         $appointments = Appointment::with("Customer")->get();

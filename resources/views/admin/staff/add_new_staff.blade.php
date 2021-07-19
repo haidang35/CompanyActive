@@ -18,6 +18,9 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                             </div>
+                            @error("staff_name")
+                                <div class="text-danger">{{$message}}</div>
+                            @enderror
                         </div>
                         <div class="col-sm-6">
                             <h6>Birthday</h6>
@@ -28,6 +31,9 @@
                                     <i class="fas fa-birthday-cake"></i>
                                 </div>
                             </div>
+                            @error("staff_birthday")
+                            <div class="text-danger">{{$message}}</div>
+                            @enderror
                         </div>
                         <div class="col-sm-6">
                             <h6>Email</h6>
@@ -38,6 +44,9 @@
                                     <i class="bi bi-envelope"></i>
                                 </div>
                             </div>
+                            @error("staff_email")
+                            <div class="text-danger">{{$message}}</div>
+                            @enderror
                         </div>
                         <div class="col-sm-6">
                             <h6>Phone</h6>
@@ -48,6 +57,9 @@
                                     <i class="bi bi-telephone-fill"></i>
                                 </div>
                             </div>
+                            @error("staff_phone")
+                            <div class="text-danger">{{$message}}</div>
+                            @enderror
                         </div>
                         <div class="col-sm-6">
                             <h6>Department</h6>
@@ -73,6 +85,9 @@
                                     <i class="fas fa-house-user"></i>
                                 </div>
                             </div>
+                            @error("staff_address")
+                            <div class="text-danger">{{$message}}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="buttons float-md-end">

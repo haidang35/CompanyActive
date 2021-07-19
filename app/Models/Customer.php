@@ -15,12 +15,8 @@ class Customer extends Model
         "customer_phone",
         "customer_address",
         "customer_relationship",
-        "staff_id",
     ];
 
-    public function Staff(){
-        return $this->belongsTo(Staff::class,"staff_id","staff_id");
-    }
     public function Appointment(){
         return $this->hasMany(Appointment::class,"customer_id","customer_id");
     }

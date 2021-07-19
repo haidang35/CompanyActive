@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Notify;
 use App\Models\Department;
 use App\Models\Staff;
+use App\Models\User;
+use App\Notifications\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use MongoDB\Driver\Exception\ExecutionTimeoutException;
@@ -44,6 +49,11 @@ class DepartmentController extends Controller
     }
 
     public function departmentUpdate(Request $request, $department_id) {
+        $request->validate([
+            "department_name" => "required" ,
+            "department_code" => "required",
+            "department_pic" => "required",
+        ]);
         $data = array();
         $data["department_name"] = $request->get("department_name");
         $data["department_code"] = $request->get("department_code");
@@ -74,23 +84,40 @@ class DepartmentController extends Controller
     }
 
     public function departmentAddMember($department_id) {
-        $staffs = Staff::all()->where("department_id", "=", "");
-        return view("admin.department.staffs_list", [
-            "staffs" => $staffs,
-            "department_id" => $department_id
-        ]);
+        try {
+            $staffs = Staff::all()->where("department_id", "=", "");
+            return view("admin.department.staffs_list", [
+                "staffs" => $staffs,
+                "department_id" => $department_id
+            ]);
+        }catch (\Exception $exception){
+            dd($exception->getMessage());
+        }
+
     }
 
     public function departmentUpdateMember($department_id, $staff_id) {
         try {
             $staff = Staff::findOrFail($staff_id);
+            $department = Department::find($department_id);
             $staff->update([
                 "department_id" => $department_id
             ]);
+            $user = Auth::user();
+            $users = User::all()->whereNotIn('id',$user->id);
+            $offerData = [
+                'name' => 'Notification from Company Active',
+                'body' => $user->name. " has just add new staff ".  $staff->staff_name. " to ". " $department->department_name ",
+                'url' => url('/'),
+                'thanks' => "Thanks for using our service ",
+                'to' => $user->email,
+            ];
+            \event(new Notify($offerData));
+            Notification::send($users, new Message($offerData));
             Session::put("message_success", "Add new member to department success !!");
             return Redirect::to("/admin/department-details/".$department_id);
         }catch (\Exception $e) {
-            abort(404);
+            dd($e->getMessage());
         }
 
     }
@@ -118,6 +145,17 @@ class DepartmentController extends Controller
         $data["department_desc"] = $request->get("department_desc");
         try {
             Department::create($data);
+            $user = Auth::user();
+            $users = User::all()->whereNotIn('id',$user->id);
+            $offerData = [
+                'name' => 'Notification from Company Active',
+                'body' => $user->name. " has just add new a department ".  $data->department_name,
+                'url' => url('/'),
+                'thanks' => "Thanks for using our service ",
+                'to' => $user->email,
+            ];
+            \event(new Notify($offerData));
+            Notification::send($users, new Message($offerData));
             Session::put("message_success", "Add new department success !!");
             return Redirect::to("admin/manage-departments");
         }catch (\Exception $exception) {
