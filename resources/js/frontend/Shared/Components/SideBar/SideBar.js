@@ -1,6 +1,7 @@
 
 import React, {Component} from 'react';
 import {BrowserRouter, HashRouter, Link} from "react-router-dom";
+import './SideBar.scss';
 
 class SideBar extends Component {
 

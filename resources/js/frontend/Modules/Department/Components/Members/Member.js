@@ -1,24 +1,26 @@
 import React, {Component} from 'react';
-import axios from "axios";
 import DepartmentService from "../../Shared/DepartmentService";
 
 class Member extends Component {
     constructor(props) {
         super(props);
         this.state={
-            departments: []
+            staffs: []
         }
     }
 
     componentDidMount =  () => {
-        this.getData();
     }
 
-    getData = async () => {
-        await DepartmentService.getAllDepartment()
+    componentWillReceiveProps = (nextProps) => {
+        this.getData(nextProps.departmentId)
+    }
+
+    getData = async (departmentId) => {
+        await DepartmentService.getOneDepartment(departmentId)
             .then((res) => {
                 this.setState({
-                    departments: res.data.data
+                    staffs: res.data.staff
                 });
             })
             .catch((err) => {
@@ -28,18 +30,17 @@ class Member extends Component {
 
 
     render() {
-        const { departments } = this.state;
+        const { staffs } = this.state;
         let loop = 0;
-        const listDepartment = departments.map((item) => {
+        const listStaff = staffs.map((item) => {
             return(
-                <tr key={item.department_id}>
+                <tr key={item.staff_id}>
                     <td scope="row">{++loop}</td>
-                    <td>{item.department_name}</td>
-                    <td>{item.department_code}</td>
-                    <td>{item.department_pic}</td>
-                    <td>{item.department_desc}</td>
-                    <td>{item.created_at}</td>
-                    <td>{item.updated_at}</td>
+                    <td>{item.staff_name}</td>
+                    <td>{item.staff_birthday}</td>
+                    <td>{item.staff_email}</td>
+                    <td>{item.staff_phone}</td>
+                    <td>{item.staff_address}</td>
                     <td>
                         <button className="mb-1 btn btn-primary">View</button>
                     </td>
@@ -50,24 +51,23 @@ class Member extends Component {
             <div>
                 <div className="card card-default">
                     <div className="card-header card-header-border-bottom">
-                        <h2>Departments</h2>
+                        <h2>Staffs of department</h2>
                     </div>
                     <div className="card-body">
                         <table className="table table-striped">
                             <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Department Name</th>
-                                <th scope="col">Code</th>
-                                <th scope="col">Manager</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Created at</th>
-                                <th scope="col">Updated at</th>
-                                <th scope="col"></th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Staff Name</th>
+                                    <th scope="col">Birthday</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone number</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col"></th>
+                                </tr>
                             </thead>
                             <tbody>
-                                {listDepartment}
+                                {listStaff}
                             </tbody>
                         </table>
                     </div>

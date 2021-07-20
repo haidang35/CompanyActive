@@ -1,0 +1,11 @@
+body {
+    overflow-y: hidden;
+}
+.content-wrapper {
+    margin-top: 78px;
+    margin-left: 245px;
+    height: 800px;
+    overflow-y: scroll;
+    scroll-behavior: auto;
+}
+

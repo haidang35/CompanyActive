@@ -1,8 +1,26 @@
 
 import React, {Component} from 'react';
+import './Header.scss';
 class Header extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    showDropdownUserMenu = () => {
+        console.log("hello")
+        document.getElementById("dropdown-user-menu").classList.toggle("active-dropdown");
+    }
 
     render() {
+        document.onclick = function(event) {
+            const dropdown = document.getElementById("dropdown-user-menu");
+            if(event.target.id !== "dropdown-user-menu" && event.target.id !== "user-menu") {
+                console.log("hello");
+                if(dropdown.classList.contains("active-dropdown")) {
+                    dropdown.classList.remove("active-dropdown");
+                }
+            }
+        }
         return(
             <div>
                 <header className="main-header " id="header">
@@ -99,11 +117,11 @@ class Header extends Component {
                                     </ul>
                                 </li>
                                 {/* User Account */}
-                                <li className="dropdown user-menu">
+                                <li className="dropdown user-menu"  >
                                     <button
-                                        href="#"
+                                        id="user-menu"
+                                        onClick={this.showDropdownUserMenu}
                                         className="dropdown-toggle nav-link"
-                                        data-toggle="dropdown"
                                     >
                                         <img
                                             src="assets_user/img/user/user.png"
@@ -112,8 +130,7 @@ class Header extends Component {
                                         />
                                         <span className="d-none d-lg-inline-block">Abdus Salam</span>
                                     </button>
-                                    <ul className="dropdown-menu dropdown-menu-right">
-                                        {/* User image */}
+                                    <ul id="dropdown-user-menu" className="dropdown-menu dropdown-menu-right">
                                         <li className="dropdown-header">
                                             <img
                                                 src="assets_user/img/user/user.png"
