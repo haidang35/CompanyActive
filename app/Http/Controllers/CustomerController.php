@@ -9,6 +9,7 @@ use App\Models\Staff;
 use App\Models\User;
 use App\Notifications\Message;
 use App\Notifications\ReplyToActive;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -59,7 +60,7 @@ class CustomerController extends Controller
         try{
             Customer::create($data);
            return redirect()->to("/admin/customers");
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }
@@ -104,7 +105,7 @@ class CustomerController extends Controller
             $customer->update($data);
             Session::put("message_edit","Edit customer successfully");
             return redirect()->to("/admin/customer-details/".$customer->customer_id);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }
@@ -115,7 +116,7 @@ class CustomerController extends Controller
             Session::put("message_delete","Delete customer successfully");
 
             return redirect()->to("/admin/customers");
-        }catch (\Exception $e){
+        }catch (Exception $e){
             abort(404);
         }
     }

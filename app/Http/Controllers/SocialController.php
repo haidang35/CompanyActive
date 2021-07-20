@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -32,7 +33,7 @@ class SocialController extends Controller
             }
             Auth::login($createUser);
             return Redirect::to("/dashboard");
-        }catch (\Exception $e) {
+        }catch (Exception $e) {
             dd($e->getMessage());
         }
     }

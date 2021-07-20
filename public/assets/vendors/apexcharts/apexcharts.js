@@ -27802,7 +27802,7 @@
         /* create rgb set */
         this.rgb = new SVG.Set
 
-        /* create components */
+        /* create frontend */
         ;(['r', 'g', 'b', 'a']).forEach(function(c) {
           /* create component */
           this[c] = new SVG['Func' + c.toUpperCase()]('identity');
@@ -27814,7 +27814,7 @@
           this.node.appendChild(this[c].node);
         }.bind(this)); //lost context in foreach
 
-        /* set components */
+        /* set frontend */
         if (compontents) {
           if (compontents.rgb) {
   (['r', 'g', 'b']).forEach(function(c) {
@@ -27824,7 +27824,7 @@
             delete compontents.rgb;
           }
 
-          /* set individual components */
+          /* set individual frontend */
           for (var c in compontents)
             this[c].attr(compontents[c]);
         }
@@ -30603,7 +30603,7 @@
        *
        * This is helpful in cases when you don't have reference of the chart instance
        * easily and need to call the method from anywhere.
-       * For eg, in React/Vue applications when you have many parent/child components,
+       * For eg, in React/Vue applications when you have many parent/child frontend,
        * and need easy reference to other charts for performing dynamic operations
        *
        * @param {string} chartID - The unique identifier which will be used to call methods

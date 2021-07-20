@@ -37,6 +37,9 @@
                                             <i class="bi bi-person"></i>
                                         </div>
                                     </div>
+                                    @error("department_name")
+                                        <div class="text-danger">{{$message}}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-sm-6">
                                     <h6> Code</h6>
@@ -47,6 +50,9 @@
                                             <i class="bi bi-person"></i>
                                         </div>
                                     </div>
+                                    @error("department_code")
+                                    <div class="text-danger">{{$message}}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-sm-6">
                                     <h6>Pic</h6>
@@ -57,6 +63,9 @@
                                             <i class="bi bi-person"></i>
                                         </div>
                                     </div>
+                                    @error("department_pic")
+                                    <div class="text-danger">{{$message}}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-sm-6">
                                     <h6>Description</h6>

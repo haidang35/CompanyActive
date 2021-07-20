@@ -4,6 +4,7 @@ import axios from "axios";
 const API_ENDPOINT = {
     GET_ALL_DEPARTMENT: "departments",
     GET_ONE_DEPARTMENT: "departments/",
+    UPDATE_DEPARTMENT: "departments/"
 }
 
 class DepartmentService {
@@ -16,6 +17,10 @@ class DepartmentService {
 
     getOneDepartment(departmentId) {
         return axios.get(BASE_URL + API_ENDPOINT.GET_ONE_DEPARTMENT + departmentId);
+    }
+
+    updateDepartment(departmentId, data) {
+        return axios.put(BASE_URL + API_ENDPOINT.UPDATE_DEPARTMENT + departmentId, data);
     }
 }
 

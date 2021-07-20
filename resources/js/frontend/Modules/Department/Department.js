@@ -7,16 +7,22 @@ class Department extends Component {
     constructor(props) {
         super(props);
         this.state={
-
+            departmentId: ''
         }
     }
 
-    render() {
+    getDepartmentId = (id) => {
+        this.setState({
+            departmentId: id
+        });
+    }
 
+    render() {
+        const { departmentId } = this.state;
         return(
             <div>
-                <DepartmentInfo/>
-                <Member/>
+                <DepartmentInfo getDepartmentId={this.getDepartmentId} />
+                <Member departmentId={departmentId} />
             </div>
         );
     }

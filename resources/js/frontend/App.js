@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Header from "./Shared/Components/Header";
-import SideBar from "./Shared/Components/SideBar";
+import Header from "./Shared/Components/Header/Header";
+import SideBar from "./Shared/Components/SideBar/SideBar";
 import {BrowserRouter} from "react-router-dom";
 import {Route, Router, Switch, useLocation, useRouteMatch} from "react-router";
 import HomePage from "./Shared/Components/Home";
 import Department from "./Modules/Department/Department";
 import Staff from "./Modules/Staff/Staff";
+import './App.scss';
 
 class App extends Component {
     constructor(props) {
@@ -18,25 +19,25 @@ class App extends Component {
             <BrowserRouter>
                 <div className="wrapper">
                     <SideBar/>
+                    <Header/>
                     <div className="page-wrapper">
-                        <Header/>
                         <div className="content-wrapper">
-                            {/*<Switch>*/}
-                            {/*    <Route exact path="/" component={HomePage} />*/}
-                            {/*    <Route exact path="/departments" component={Department} />*/}
-                            {/*</Switch>*/}
-                            <Staff/>
+                            <Switch>
+                                <Route exact path="/" component={HomePage} />
+                                <Route exact path="/departments" component={Department} />
+                            </Switch>
+                            <footer className="footer mt-auto">
+                                <div className="copyright bg-white">
+                                    <p>
+                                        © <span id="copy-year">2019</span> Copyright Sleek Dashboard Bootstrap
+                                        Template by
+                                        Company Active
+                                        .
+                                    </p>
+                                </div>
+                            </footer>
                         </div>
-                        <footer className="footer mt-auto">
-                            <div className="copyright bg-white">
-                                <p>
-                                    © <span id="copy-year">2019</span> Copyright Sleek Dashboard Bootstrap
-                                    Template by
-                                    Company Active
-                                    .
-                                </p>
-                            </div>
-                        </footer>
+
                     </div>
                 </div>
             </BrowserRouter>
