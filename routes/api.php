@@ -29,7 +29,7 @@ Route::get('/departments', function () {
 });
 
 Route::get('/departments/{department_id}', function($department_id) {
-    $department = Department::findOrFail($department_id);
+    $department = Department::with("Staff")->findOrFail($department_id);
     return $department;
 });
 
