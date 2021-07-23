@@ -20,3 +20,4 @@ class DepartmentCollection extends ResourceCollection
         ];
     }
 }
+

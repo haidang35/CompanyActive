@@ -19,7 +19,6 @@ class AppoinmentResource extends JsonResource
             "appointment_purpose"=>$this->appointment_purpose,
             "appointment_project"=>$this->appointment_project,
             "appointment_status"=>$this->appointment_status,
-            "customer_id"=>$this->customer_id,
         ];
     }
 }

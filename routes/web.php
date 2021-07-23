@@ -24,7 +24,7 @@ Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 //User
-Route::get('/{path}', [UserController::class, "home"])->where('path', '.*');
+//Route::get('/{path}', [UserController::class, "home"])->where('path', '.*');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
