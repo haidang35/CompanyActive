@@ -20,7 +20,7 @@ class Department extends Model
     ];
 
     public function Staff() {
-        return $this->hasMany(Staff::class, "department_id", "department_id");
+        return $this->hasMany(User::class, "department_id", "department_id");
     }
 
     public function scopeSearch($query, $search) {

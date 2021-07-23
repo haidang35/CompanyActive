@@ -1,59 +1,91 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import AlertSuccess from "../../../../Shared/Alert/AlertSuccess";
+import { goTo } from "../../../../Shared/Redirect/Redirect";
 import DepartmentService from "../../Shared/DepartmentService";
+
 
 class Member extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            staffs: []
-        }
-    }
-
-    componentDidMount =  () => {
+        this.state = {
+            staffs: [],
+            departmentInfo: '',
+            message: ""
+        };
     }
 
     componentWillReceiveProps = (nextProps) => {
-        this.getData(nextProps.departmentId)
+        this.setState({
+            departmentInfo: nextProps.departmentInfo,
+            staffs: nextProps.departmentInfo.staff,
+        });
+    };
+
+    viewStaffDetails(staffId) {
+        goTo(`app/staffs/${staffId}`);
     }
 
-    getData = async (departmentId) => {
-        await DepartmentService.getOneDepartment(departmentId)
+    removeMember(departmentId, staffId) {
+        DepartmentService.removeMember(departmentId, staffId)
             .then((res) => {
                 this.setState({
-                    staffs: res.data.staff
+                    message: `Remove member ${res.data.name} successfully !!`
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch((err) => {});
     }
 
-
     render() {
-        const { staffs } = this.state;
+        const { staffs, departmentInfo } = this.state;
         let loop = 0;
         const listStaff = staffs.map((item) => {
-            return(
-                <tr key={item.staff_id}>
+            return (
+                <tr key={item.id}>
                     <td scope="row">{++loop}</td>
-                    <td>{item.staff_name}</td>
-                    <td>{item.staff_birthday}</td>
-                    <td>{item.staff_email}</td>
-                    <td>{item.staff_phone}</td>
-                    <td>{item.staff_address}</td>
+                    <td>{item.name}</td>
+                    <td>{item.birthday}</td>
+                    <td>{item.email}</td>
+                    <td>{item.phone}</td>
+                    <td>{item.address}</td>
                     <td>
-                        <button className="mb-1 btn btn-primary">View</button>
+                        <div className="btn-control">
+                            <button
+                                onClick={() => this.viewStaffDetails(item.id)}
+                                className="mb-1 btn btn-primary"
+                            >
+                                View
+                            </button>
+                            <button
+                                onClick={() =>
+                                    this.removeMember(
+                                        item.department_id,
+                                        item.id
+                                    )
+                                }
+                                className="mb-1 btn btn-danger"
+                            >
+                                Remove
+                            </button>
+                        </div>
                     </td>
                 </tr>
             );
         });
-        return(
+        return (
             <div>
                 <div className="card card-default">
                     <div className="card-header card-header-border-bottom">
                         <h2>Staffs of department</h2>
                     </div>
                     <div className="card-body">
+                        <AlertSuccess message={this.state.message}/>
+                        <div className="btn-group-list">
+                            <Link to={location => `${location.pathname}/add-member`}>
+                              <button className="btn btn-primary">Add member</button>
+                            </Link>
+                              
+                            </div>
                         <table className="table table-striped">
                             <thead>
                                 <tr>
@@ -66,9 +98,7 @@ class Member extends Component {
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {listStaff}
-                            </tbody>
+                            <tbody>{listStaff}</tbody>
                         </table>
                     </div>
                 </div>

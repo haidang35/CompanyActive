@@ -7,9 +7,9 @@ class FormError extends Component{
     }
 
     render() {
-        const { isHidden, errorMessage } = this.props;
-        const elmMessage = !isHidden ? (
-            <div style={{color: "red", fontSize: "16px", marginTop: "10px"}}>
+        const { errorMessage } = this.props;
+        const elmMessage = errorMessage.length > 0 ? (
+            <div style={{color: "red", fontSize: "16px", marginTop: "10px", fontStyle: "italic"}}>
                 {errorMessage}
             </div>
         ) : "";
