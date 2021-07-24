@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, HashRouter, Link } from "react-router-dom";
 import "./SideBar.scss";
-import AuthService from "../../AuthService/AuthService";
+import  AuthService from "../../AuthService/AuthService";
 
 
 class SideBar extends Component {
@@ -12,6 +12,8 @@ class SideBar extends Component {
     }
     render() {
         const roleId = 'ADMIN';
+        console.log("ROLE ID", AuthService._roleId);
+        
         return (
             <div>
                 <aside className="left-sidebar bg-sidebar">
@@ -75,6 +77,22 @@ class SideBar extends Component {
                                         <i className="mdi mdi-chart-pie" />
                                         <span className="nav-text">
                                             Staffs
+                                        </span>{" "}
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to={"/app/customers"}>
+                                        <i className="mdi mdi-chart-pie" />
+                                        <span className="nav-text">
+                                            Customers
+                                        </span>{" "}
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to={"/app/appointments"}>
+                                        <i className="mdi mdi-chart-pie" />
+                                        <span className="nav-text">
+                                            Appointments
                                         </span>{" "}
                                     </Link>
                                 </li>

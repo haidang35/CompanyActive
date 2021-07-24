@@ -15,10 +15,20 @@ class AuthService {
         }
         AuthService._instance = this;
     }
+
     userId = JSON.parse(localStorage.getItem("userId") || "null");
-    userInfo = this.getUserInfo(this.userId);
+    _roleId = 0;
 
 
+    // set roleId() {
+    //     this._roleId = 'USER';
+    // }
+
+    // get roleId() {
+    //     return this._roleId;
+    // }
+    
+    
     async login(username, password) {
         return await axios.post(BASE_URL + API_ENDPOINT.LOGIN, {
             username,
@@ -35,6 +45,14 @@ class AuthService {
     }
 
     async getUserInfo(userId) {
+        // let userInfo = (await axios.get(BASE_URL + API_ENDPOINT.GET_USER_INFO + userId)).data;
+        // this.roleId = userInfo.role;
+        let userInfo = null;
+        axios.get(BASE_URL + API_ENDPOINT.GET_USER_INFO + userId).then((res) => {
+            userInfo = res.data;
+            this.roleId = userInfo.role;
+        })
+        
         return await axios.get(BASE_URL + API_ENDPOINT.GET_USER_INFO + userId);
     }
 }

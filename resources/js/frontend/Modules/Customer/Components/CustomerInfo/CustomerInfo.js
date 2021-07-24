@@ -1,99 +1,107 @@
-import React, { Component } from "react";
-import "./StaffDetails.scss";
-import StaffService from "../../Shared/StaffService";
+import React, { Component } from 'react';
 import Form from "../../../../Shared/Form/Form";
-import FormError from "../../../../Shared/Form/FormError";
+import CustomerService from "../../Shared/CustomerService";
 import { REGEX_TEL } from "../../../../Constances/const";
+import FormError from "../../../../Shared/Form/FormError";
+import AlertSuccess from "../../../../Shared/Alert/AlertSuccess";
+import AlertDanger from "../../../../Shared/Alert/AlertDanger";
 
-class StaffDetails extends Form {
+class CustomerInfo extends Form {
     constructor(props) {
         super(props);
         this.state = {
-            onEdit: false,
-            userId: "",
             form: this._getInitFormData({
                 name: "",
-                birthday: "",
                 email: "",
-                address: "",
                 phone: "",
-                departmentName: "",
+                address: "",
+                appointments: "",
             }),
+            message: '',
+            errorMessage: '',
+            onEdit: false,
         };
     }
 
-    componentDidMount() {
-        this.getStaffInfo();
+    componentDidMount = () => {
+        this.getCustomerDetails();
+
     }
 
-    getStaffInfo = () => {
-        const { id } = this.props.match.params;
-        StaffService.getOneStaff(id)
+    getCustomerDetails = () => {
+        const { customerId } = this.props;
+        CustomerService.getOneCustomer(customerId)
             .then((res) => {
-                this.setState({
-                    userId: res.data.id,
-                });
                 this._fillForm({
-                    name: res.data.name,
-                    birthday: res.data.birthday,
-                    email: res.data.email,
-                    phone: res.data.phone,
-                    address: res.data.address,
-                    departmentName: res.data.department.department_name,
+                    name: res.data.customer_name,
+                    email: res.data.customer_email,
+                    phone: res.data.customer_phone,
+                    address: res.data.customer_address,
+                    appoinments: res.data.appointment
                 });
+                this.props.getAppointment(res.data.appointment);
+                      
             })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+            .catch((err) => {});
+    }
 
     onEditInfo = () => {
         this.setState({
-            onEdit: !this.state.onEdit,
+            onEdit: true,
         });
     };
 
     onCancelEditInfo = () => {
         this.setState({
-            onEdit: !this.state.onEdit,
+            onEdit: false,
         });
-        this.getStaffInfo();
     };
 
     onSaveChangeInfo = () => {
+        const { customerId } = this.props;
+        const { form } = this.state;
         this._validateForm();
         this.state.form["dirty"] = true;
-        const { userId, form } = this.state;
-        const userInfo = {
-            name: form.name.value,
-            birthday: form.birthday.value,
-            email: form.email.value,
-            phone: form.phone.value,
-            address: form.address.value
-        }
         if (this._isFormValid()) {
-            StaffService.updateStaffInfo(userId, userInfo)
+            const customerInfo = {
+                customer_name: form.name.value,
+                customer_email: form.email.value,
+                customer_phone: form.phone.value,
+                customer_address: form.address.value
+            };
+            CustomerService.updateCustomerInfo(customerId, customerInfo)
                 .then((res) => {
-                    this.getStaffInfo();
+                    this.setState({
+                        onEdit: false,
+                        message: `Update customer ${res.data.customer_name} successfully !! `
+                    });
                 })
-                .catch((err) => {});
+                .catch((err) => {
+                    this.setState({
+                        errorMessage: "Updated customer failed !!"
+                    });
+                });
         }
-        this.setState({
-            onEdit: !this.state.onEdit
-        });
     };
 
     render() {
-        const { onEdit, form } = this.state;
-        console.log(this.state.form);
-        return (
-            <div className="staff-details">
+        const { name, email, phone, address, dirty } = this.state.form;
+        const { onEdit } = this.state;
+        return(
+            <div>
                 <div className="card card-default">
                     <div className="card-header card-header-border-bottom">
-                        <h2>Staff Details</h2>
+                        <h2>Customer Details</h2>
                     </div>
                     <div className="card-body detail-info">
-                        <div className="col-sm-12">
+                        <div>
+                            <AlertSuccess message={this.state.message} />
+                            <AlertDanger message={this.state.errorMessage}/>
+                        </div>
+                        <div
+                            className="col-sm-12"
+                            style={{ marginBottom: "35px" }}
+                        >
                             <div className="btn-control-right">
                                 {!onEdit ? (
                                     <button
@@ -120,7 +128,6 @@ class StaffDetails extends Form {
                                 )}
                             </div>
                         </div>
-                        <div className="row"></div>
 
                         <div className="detail-content">
                             <div className="row">
@@ -129,7 +136,7 @@ class StaffDetails extends Form {
                                         className="text-dark mt-4 font-weight-medium"
                                         htmlFor
                                     >
-                                        Staff name
+                                        Customer Name
                                     </label>
                                     <div className="input-group mb-2">
                                         <div className="input-group-prepend">
@@ -143,55 +150,17 @@ class StaffDetails extends Form {
                                             name="name"
                                             className="form-control"
                                             disabled={!onEdit}
-                                            value={form.name.value}
+                                            value={name.value}
                                             onChange={(ev) =>
                                                 this._setValue(ev, "name")
                                             }
                                         />
+                                        {name.err === "*" && dirty ? (
+                                            <FormError errorMessage="Customer name cannot be empty" />
+                                        ) : (
+                                            ""
+                                        )}
                                     </div>
-                                    <FormError
-                                        errorMessage={
-                                            form.name.err === "*" && form.dirty
-                                                ? "Staff name cannot be empty"
-                                                : ""
-                                        }
-                                    />
-                                </div>
-                                <div className="col-sm-6">
-                                    <label
-                                        className="text-dark mt-4 font-weight-medium"
-                                        htmlFor
-                                    >
-                                        Birthday
-                                    </label>
-                                    <div className="input-group mb-2">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text">
-                                                <i className="mdi mdi-currency-usd" />
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="date"
-                                            name="birthday"
-                                            required
-                                            className="form-control"
-                                            disabled={!onEdit}
-                                            value={form.birthday.value}
-                                            onChange={(ev) =>
-                                                this._setValue(ev, "email")
-                                            }
-                                        />
-                                    </div>
-                                    <FormError
-                                        errorMessage={
-                                            form.birthday.err === "*" &&
-                                            form.dirty
-                                                ? "Birthday cannot be empty"
-                                                : form.dirty
-                                                ? form.birthday.err
-                                                : ""
-                                        }
-                                    />
                                 </div>
                                 <div className="col-sm-6">
                                     <label
@@ -203,66 +172,65 @@ class StaffDetails extends Form {
                                     <div className="input-group mb-2">
                                         <div className="input-group-prepend">
                                             <span className="input-group-text">
-                                                <i className="mdi mdi-security-account-outline" />
+                                                <i className="mdi mdi-currency-usd" />
                                             </span>
                                         </div>
                                         <input
                                             type="email"
                                             name="email"
                                             required
-                                            className="form-control"
                                             disabled={!onEdit}
-                                            value={form.email.value}
+                                            className="form-control"
+                                            value={email.value}
                                             onChange={(ev) =>
                                                 this._setValue(ev, "email")
                                             }
                                         />
+                                        {email.err === "*" && dirty ? (
+                                            <FormError errorMessage="Email cannot be empty" />
+                                        ) : dirty ? (
+                                            <FormError
+                                                errorMessage={email.err}
+                                            />
+                                        ) : (
+                                            ""
+                                        )}
                                     </div>
-                                    <FormError
-                                        errorMessage={
-                                            form.email.err === "*" && form.dirty
-                                                ? "Email cannot be empty"
-                                                : form.dirty
-                                                ? form.email.err
-                                                : ""
-                                        }
-                                    />
                                 </div>
                                 <div className="col-sm-6">
                                     <label
                                         className="text-dark mt-4 font-weight-medium"
                                         htmlFor
                                     >
-                                        Phone
+                                        Phone number
                                     </label>
                                     <div className="input-group mb-2">
                                         <div className="input-group-prepend">
                                             <span className="input-group-text">
-                                                <i className="mdi mdi-eye" />
+                                                <i className="mdi mdi-security-account-outline" />
                                             </span>
                                         </div>
                                         <input
                                             type="tel"
                                             name="phone"
-                                            required
                                             pattern={REGEX_TEL}
-                                            className="form-control"
+                                            required
                                             disabled={!onEdit}
-                                            value={form.phone.value}
+                                            className="form-control"
+                                            value={phone.value}
                                             onChange={(ev) =>
                                                 this._setValue(ev, "phone")
                                             }
                                         />
-                                        <FormError
-                                            errorMessage={
-                                                form.phone.err === "*" &&
-                                                form.dirty
-                                                    ? "Phone cannot be empty"
-                                                    : form.dirty
-                                                    ? form.phone.err
-                                                    : ""
-                                            }
-                                        />
+                                        {phone.err === "*" && dirty ? (
+                                            <FormError errorMessage="Phone cannot be empty" />
+                                        ) : dirty ? (
+                                            <FormError
+                                                errorMessage={phone.err}
+                                            />
+                                        ) : (
+                                            ""
+                                        )}
                                     </div>
                                 </div>
                                 <div className="col-sm-6">
@@ -275,38 +243,32 @@ class StaffDetails extends Form {
                                     <div className="input-group mb-2">
                                         <div className="input-group-prepend">
                                             <span className="input-group-text">
-                                                <i className="mdi mdi-credit-card" />
+                                                <i className="mdi mdi-eye" />
                                             </span>
                                         </div>
-                                        <input
-                                            type="text"
+                                        <textarea
                                             name="address"
                                             required
-                                            className="form-control"
                                             disabled={!onEdit}
-                                            value={form.address.value}
+                                            value={address.value}
+                                            className="form-control"
                                             onChange={(ev) =>
                                                 this._setValue(ev, "address")
                                             }
-                                        />
+                                        ></textarea>
                                     </div>
-                                    <FormError
-                                        errorMessage={
-                                            form.address.err === "*" &&
-                                            form.dirty
-                                                ? "Address cannot be empty"
-                                                : form.dirty
-                                                ? form.address.err
-                                                : ""
-                                        }
-                                    />
+                                    {address.err === "*" && dirty ? (
+                                        <FormError errorMessage="Address cannot be empty" />
+                                    ) : (
+                                        ""
+                                    )}
                                 </div>
                                 <div className="col-sm-6">
                                     <label
                                         className="text-dark mt-4 font-weight-medium"
                                         htmlFor
                                     >
-                                        Department
+                                        Number of appointment
                                     </label>
                                     <div className="input-group mb-2">
                                         <div className="input-group-prepend">
@@ -316,8 +278,9 @@ class StaffDetails extends Form {
                                         </div>
                                         <input
                                             type="text"
+                                            name="appointment"
+                                            required
                                             disabled
-                                            value={form.departmentName.value}
                                             className="form-control"
                                         />
                                     </div>
@@ -330,4 +293,5 @@ class StaffDetails extends Form {
         );
     }
 }
-export default StaffDetails;
+
+export default CustomerInfo;

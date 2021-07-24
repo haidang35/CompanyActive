@@ -9,17 +9,19 @@ class Appointment extends Model
 {
     use HasFactory;
     protected $table = "appointments";
-    protected $primaryKey = "appointment_id";
-    protected $fillable=[
-      "appointment_staff",
-      "appointment_purpose",
-      "appointment_project",
-      "appointment_status",
+    protected $primaryKey = "id";
+    protected $fillable = [
+        "appoinment_title",
+        "appoinment_time",
+        "appoinment_desc",
+        "appointment_status",
         "customer_id",
+        "staff_id"
 
     ];
+
     public function Customer()
     {
-        return $this->belongsTo(Customer::class, "customer_id", "customer_id");
+        return $this->belongsTo(Customer::class, "id", "customer_id");
     }
 }

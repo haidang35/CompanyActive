@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomer extends Migration
+class CreateTableCustomer extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,12 @@ class CreateCustomer extends Migration
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->increments("customer_id");
+            $table->increments("id");
             $table->string("customer_name");
+            $table->string("customer_email");
             $table->string("customer_phone");
-            $table->text("customer_address");
-            $table->string("customer_relationship");
-            $table->integer("staff_id")->nullable();
+            $table->string("customer_address");
+            $table->bigInteger("appointment_id")->nullable();
             $table->timestamps();
         });
     }

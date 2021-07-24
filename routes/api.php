@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Resources\DepartmentCollection;
 use App\Models\Department;
 use App\Models\Staff;
+use App\Models\Customer;
+use App\Models\Appointment;
 use App\Http\Resources\StaffResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //User
 Route::get('/users', function () {
     try {
-        $users = User::all();
+        $users = User::with("Department")->get();
         return $users;
     } catch (\Exception $exception) {
         return $exception;
@@ -36,7 +38,7 @@ Route::get('/users', function () {
 
 Route::get('users/{userId}', function ($userId) {
     try {
-        $user = User::findOrFail($userId);
+        $user = User::with("Department")->findOrFail($userId);
         return $user;
     } catch (\Exception $exception) {
         return $exception;
@@ -69,12 +71,31 @@ Route::delete('users/{userId}', function ($userId) {
     }
 });
 
+Route::post('users', function (Request $request) {
+    try {
+        $user = User::create([
+            "name" => $request->name,
+            "birthday" => $request->birthday,
+            "email" => $request->email,
+            "phone" => $request->phone,
+            "address" => $request->address,
+            "password" => $request->password,
+            "department_id" => $request->department_id
+        ]);
+    return $user;
+    }catch(\Exception $exception) {
+        return "Create user failed";
+    }
+
+});
+
 //Department
 
 Route::get('/departments', function () {
-    //    $departments = Department::all();
+    $departments = Department::all();
     //    return DepartmentCollection::collection($departments);
     return new DepartmentCollection(Department::with("Staff")->get());
+    // return $departments;
 });
 
 Route::get('/departments/{department_id}', function ($department_id) {
@@ -138,8 +159,6 @@ Route::put('departments/{departmentId}/add-member', function ($departmentId, Req
     return $staff;
     
 });
-
-
 
 
 // API Staff
@@ -211,4 +230,33 @@ Route::post('register', function (Request $request) {
     } catch (Exception $exception) {
         return "Register failed";
     }
+});
+
+
+// Customer
+ Route::get('customers', function () {
+     $customers = Customer::with("Appointment")->get();
+     return $customers;
+ });
+
+ Route::get('customers/{customerId}', function($customerId) {
+    $customer = Customer::with("Appointment")->findOrFail($customerId);
+    return $customer;
+ });
+
+ Route::patch('customers/{customerId}', function($customerId, Request $request) {
+     $customer = Customer::findOrFail($customerId);
+     $customer->update([
+         "customer_name" => $request->customer_name,
+         "customer_email" => $request->customer_email,
+         "customer_phone" => $request->customer_phone,
+         "customer_address" => $request->customer_address
+     ]);
+     return $customer;
+ });
+
+ //Appointment
+ Route::get('appointments', function () {
+    $appointments = Appointment::all();
+    return $appointments;
 });
