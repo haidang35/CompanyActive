@@ -1,0 +1,25 @@
+
+  .btn-control {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn-control-right {
+  float: right;
+  margin-top: 25px;
+  .btn {
+    margin-right: 10px;
+  }
+}
+
+.btn-group-list {
+  float: right;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.btn-group-left {
+  display: flex;
+  margin-bottom: 15px;
+  margin-top: -20px;
+}
