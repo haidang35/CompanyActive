@@ -8,6 +8,8 @@ import ModalNotice from "../../Shared/Modal/ModalNotice";
 import AlertSuccess from "../../Shared/Alert/AlertSuccess";
 import Pagination from "../../Shared/Pagination/Pagination";
 import { list } from "postcss";
+import CreateUser from "./Components/StaffForm/CreateUser";
+import AlertDanger from "../../Shared/Alert/AlertDanger";
 
 class Staff extends Component {
     constructor(props) {
@@ -15,6 +17,7 @@ class Staff extends Component {
         this.state = {
             listStaff: [],
             message: "",
+            errorMessage: "",
             page: 1,
             rowsPerPage: 20,
             loop: 1,
@@ -47,6 +50,7 @@ class Staff extends Component {
     onDeleteStaff = (staffId) => {
         StaffService.deleteStaff(staffId)
             .then((res) => {
+                this.getListStaff();
                 this.setState({
                     message: `Delete staff ${res.data.name} successfully !!`,
                 });
@@ -60,22 +64,34 @@ class Staff extends Component {
         });
     };
 
+    onCreateNewUser = (data) => {
+        StaffService.createNewStaff(data)
+            .then((res) => {
+                this.getListStaff();
+                this.setState({
+                    message: `Create a new staff : ${res.data.name} successfully !!`
+                });
+            })
+            .catch((err) => {
+                this.setState({
+                    errorMessage: 'Create new staff failed !!'
+                });
+            });
+    };
 
     render() {
-        const {
-            listStaff,
-            page,
-            rowsPerPage
-        } = this.state;
+        const { listStaff, page, rowsPerPage } = this.state;
         let loop = 1;
         const elmStaff = listStaff
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((item) => {
+                let departmentName = item.department.department_name;
                 return (
                     <tr key={item.id}>
                         <td scope="row">{loop++}</td>
                         <td>{item.name}</td>
                         <td>{item.birthday}</td>
+                        <td>{item.department.department_name}</td>
                         <td>{item.email}</td>
                         <td>{item.phone}</td>
                         <td>{item.address}</td>
@@ -116,12 +132,24 @@ class Staff extends Component {
 
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
+                        <AlertDanger message={this.state.errorMessage}/>
+                        <div className="btn-group-list">
+                            <button
+                                className="btn btn-primary"
+                                data-toggle="modal"
+                                data-target="#exampleModalForm"
+                            >
+                                Create new user
+                            </button>
+                        </div>
+                        <CreateUser onSubmitForm={this.onCreateNewUser} />
                         <table className="table">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">Staff Name</th>
                                     <th scope="col">Birthday</th>
+                                    <th scope="col">Department</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Phone number</th>
                                     <th scope="col">Address</th>

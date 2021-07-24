@@ -22,11 +22,11 @@ class CustomerFactory extends Factory
     public function definition()
     {
         return [
-            "customer_name"=>$this->faker->name(),
+            "customer_name" => $this->faker->name(),
+            "customer_email" => $this->faker->email,
             "customer_phone" => $this->faker->unique()->phoneNumber,
-            "customer_address"=>$this->faker->text(100),
-            "customer_relationship"=>$this->faker->text(100),
-            "staff_id"=>random_int(1,300),
+            "customer_address" => $this->faker->address,
+            "appointment_id" => rand(1, 200),
         ];
     }
 }

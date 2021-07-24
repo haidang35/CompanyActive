@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -32,8 +33,7 @@ class User extends Authenticatable
         'address',
         'password',
         'fb_id',
-        'google_id',
-        
+        'google_id',  
     ];
 
     /**
@@ -69,6 +69,10 @@ class User extends Authenticatable
     public function receivesBroadcastNotificationsOn()
     {
         return 'users.'.$this->id;
+    }
+
+    public function Department() {
+        return $this->belongsTo(Department::class, "department_id", "department_id");
     }
 
 

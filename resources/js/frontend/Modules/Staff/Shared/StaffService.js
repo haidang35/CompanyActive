@@ -6,7 +6,8 @@ const API_ENDPOINT = {
     GET_ALL_STAFF: "users",
     GET_ONE_STAFF: "users/",
     UPDATE_STAFF_INFO: "users/",
-    DELETE_STAFF: "users/"
+    DELETE_STAFF: "users/",
+    CREATE_NEW_STAFF: "users"
 }
 
 class StaffService {
@@ -31,6 +32,10 @@ class StaffService {
 
     async deleteStaff(staffId) {
         return await axios.delete(BASE_URL + API_ENDPOINT.DELETE_STAFF + staffId);
+    }
+
+    async createNewStaff(data) {
+        return await axios.post(BASE_URL + API_ENDPOINT.CREATE_NEW_STAFF, data);
     }
 
 }

@@ -18,6 +18,9 @@ import "./Shared/Style/btn-group.scss";
 import DepartmentList from "./Modules/Department/DepartmentList/DepartmentList";
 import StaffDetails from "./Modules/Staff/Components/StaffDetails/StaffDetails";
 import AddMember from "./Modules/Department/Components/Members/AddMember";
+import CustomerList from "./Modules/Customer/CustomerList";
+import AppointmentList from "./Modules/Appointment/AppointmentList";
+import CustomerDetails from "./Modules/Customer/Components/CustomerDetails/CustomerDetails";
 
 class App extends Component {
     constructor(props) {
@@ -44,6 +47,10 @@ class App extends Component {
                                 <Route exact path="/app/staffs" component={Staff} />
                                 <Route exact path="/app/staffs/:id" component={StaffDetails} />
                                 <Route  exact path="/app/departments/:departmentId/add-member" component={AddMember}/>
+                                <Route exact path="/app/customers" component={CustomerList}/>
+                                <Route exact path="/app/appointments" component={AppointmentList}/>
+                                <Route exact path="/app/customers/:id" component={CustomerDetails}/>
+            
                             </Switch>
                             <footer className="footer mt-auto">
                                 <div className="copyright bg-white">
