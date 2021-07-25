@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class CustomerAppointment extends Component {
     constructor(props) {
@@ -48,19 +49,23 @@ class CustomerAppointment extends Component {
                         <div className="todo-list" id="todo-list">
                             {appointments.map((item) => {
                                 return (
-                                    <div className="todo-single-item d-flex flex-row justify-content-between current">
-                                        <i className="mdi" />
-                                        <span>{item.appointment_title}</span>
-                                        {item.appointment_status ? (
-                                            <span className="badge badge-success">
-                                                Done
+                                    <Link to={`/app/appointments/${item.id}`}>
+                                        <div className="todo-single-item d-flex flex-row justify-content-between current alert alert-primary">
+                                            <i className="mdi" />
+                                            <span>
+                                                {item.appointment_title}
                                             </span>
-                                        ) : (
-                                            <span className="badge badge-warning">
-                                                Pending
-                                            </span>
-                                        )}
-                                    </div>
+                                            {item.appointment_status ? (
+                                                <span className="badge badge-success">
+                                                    Done
+                                                </span>
+                                            ) : (
+                                                <span className="badge badge-warning">
+                                                    Pending
+                                                </span>
+                                            )}
+                                        </div>
+                                    </Link>
                                 );
                             })}
                         </div>

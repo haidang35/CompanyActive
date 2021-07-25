@@ -4,6 +4,7 @@ import "./DepartmentInfo.scss";
 import FormError from "../../../../Shared/Form/FormError";
 import AlertSuccess from "../../../../Shared/Alert/AlertSuccess";
 import AlertDanger from "../../../../Shared/Alert/AlertDanger";
+import AuthService from '../../../../Shared/AuthService/AuthService';
 
 class DepartmentInfo extends Component {
     constructor(props) {
@@ -37,10 +38,9 @@ class DepartmentInfo extends Component {
         };
     }
 
-    intervalID
 
     componentDidMount() {
-        this.intervalID = setInterval(this.getDepartmentInfo, 1000) ;
+        this.getDepartmentInfo();
     }
 
 
@@ -165,7 +165,7 @@ class DepartmentInfo extends Component {
                         <div>
                             <AlertSuccess message={this.state.message}/>
                         </div>
-                        {'ADMIN' === "ADMIN" ? (
+                        {AuthService.roleId === "ADMIN" ? (
                             <div className="btn-control-info">
                                 {onEdit ? (
                                     <div>

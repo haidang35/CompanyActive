@@ -22,8 +22,8 @@ class AppointmentFactory extends Factory
     public function definition()
     {
         return [
-            "appointment_title" => $this->faker->title(),
-            "appointment_time" => $this->faker->time(),
+            "appointment_title" => $this->faker->text(30),
+            "appointment_time" => $this->faker->dateTime(),
             "appointment_desc" => $this->faker->text(50),
             "appointment_status" => rand(0, 1),
             "customer_id" => random_int(1, 200),

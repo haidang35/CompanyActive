@@ -3,7 +3,9 @@ import AlertSuccess from "../../Shared/Alert/AlertSuccess";
 import AlertDanger from "../../Shared/Alert/AlertDanger";
 import Pagination from "../../Shared/Pagination/Pagination";
 import AppointmentService from "./Shared/AppointmentService";
-
+import { Link } from "react-router-dom";
+import AddNewAppointment from "./Components/AppointmentForm/AddNewAppointment";
+import AuthService from "../../Shared/AuthService/AuthService";
 class AppointmentList extends Component {
     constructor(props) {
         super(props);
@@ -17,21 +19,54 @@ class AppointmentList extends Component {
     }
 
     componentDidMount() {
-        this.getAppointmentList();
+        if (AuthService.roleId === "ADMIN") {
+            this.getAppointmentList();
+        } else {
+            this.getAppointmentStaff();
+        }
     }
 
     getAppointmentList = () => {
-        AppointmentService.getAllAppointment()
-            .then((res) => {
+        AppointmentService.getAllAppointment().then((res) => {
+            this.setState({
+                appointmentList: res.data,
+            });
+        });
+    };
+
+    getAppointmentStaff = () => {
+        AppointmentService.getAppointmentStaff(AuthService.userId).then(
+            (res) => {
+                if((res.data).length < 20) {
+                    this.setState({
+                        page: 0,
+                        rowsPerPage: 20
+                    });
+                }
                 this.setState({
                     appointmentList: res.data,
                 });
-            })
-            .catch((err) => {});
+            }
+        );
     };
 
     onChangePage = (page) => {
         this.setState({ page });
+    };
+
+    addNewAppointment = (data) => {
+        AppointmentService.createAppointment(data)
+            .then((res) => {
+                this.getAppointmentList();
+                this.setState({
+                    message: `Create a new appointment ${res.data.appointment_title} successful !!`,
+                });
+            })
+            .catch((err) => {
+                this.setState({
+                    errorMessage: "Create new appointment failed !!",
+                });
+            });
     };
 
     render() {
@@ -47,15 +82,23 @@ class AppointmentList extends Component {
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
                         <AlertDanger message={this.state.errorMessage} />
-                        <div className="btn-group-list">
-                            <button
-                                className="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#exampleModalForm"
-                            >
-                                Add new appointment
-                            </button>
-                        </div>
+                        {AuthService.roleId === "ADMIN" ? (
+                            <div className="btn-group-list">
+                                <button
+                                    className="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#addNewAppointment"
+                                >
+                                    Add new appointment
+                                </button>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+
+                        <AddNewAppointment
+                            onSubmitForm={this.addNewAppointment}
+                        />
                         <table className="table table-bordered">
                             <thead>
                                 <tr>
@@ -64,7 +107,7 @@ class AppointmentList extends Component {
                                     <th scope="col">Date Time</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Customers</th>
+                                    <th scope="col">Customer</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -76,7 +119,7 @@ class AppointmentList extends Component {
                                     )
                                     .map((item) => {
                                         return (
-                                            <tr>
+                                            <tr key={item.id}>
                                                 <td>{loop++}</td>
                                                 <td>
                                                     {item.appointment_title}
@@ -90,19 +133,34 @@ class AppointmentList extends Component {
                                                             <button className="btn btn-sm btn-success">
                                                                 Done
                                                             </button>
-                                                        ) : (
+                                                        ) : item.appointment_status ===
+                                                          0 ? (
                                                             <button className="btn btn-sm btn-warning">
                                                                 Pending
+                                                            </button>
+                                                        ) : (
+                                                            <button className="btn btn-sm btn-danger">
+                                                                Rejected
                                                             </button>
                                                         )}
                                                     </div>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    {
+                                                        item.customer
+                                                            .customer_name
+                                                    }
+                                                </td>
                                                 <td>
                                                     <div className="btn-control">
-                                                        <button className="btn btn-primary">
-                                                            View
-                                                        </button>
+                                                        <Link
+                                                            to={`/app/appointments/${item.id}`}
+                                                        >
+                                                            <button className="btn btn-primary">
+                                                                View
+                                                            </button>
+                                                        </Link>
+
                                                         <button className="btn btn-danger">
                                                             Delete
                                                         </button>

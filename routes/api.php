@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\Notify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\DepartmentCollection;
@@ -9,7 +10,9 @@ use App\Models\Customer;
 use App\Models\Appointment;
 use App\Http\Resources\StaffResource;
 use App\Models\User;
+use App\Notifications\Message;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,11 +85,10 @@ Route::post('users', function (Request $request) {
             "password" => $request->password,
             "department_id" => $request->department_id
         ]);
-    return $user;
-    }catch(\Exception $exception) {
+        return $user;
+    } catch (\Exception $exception) {
         return "Create user failed";
     }
-
 });
 
 //Department
@@ -141,10 +143,10 @@ Route::patch('departments/{departmentId}/{staffId}', function ($departmentId, $s
 //list staff hasn't department
 
 Route::get('staffs/pending', function () {
-    try{
+    try {
         $staffs = User::where("department_id", null)->get();
         return $staffs;
-    }catch(\Exception $exception) {
+    } catch (\Exception $exception) {
         return $exception;
     }
 });
@@ -154,10 +156,9 @@ Route::put('departments/{departmentId}/add-member', function ($departmentId, Req
     $staffId = $request->id;
     $staff = User::findOrFail($staffId);
     $staff->update([
-         "department_id" => $departmentId
+        "department_id" => $departmentId
     ]);
     return $staff;
-    
 });
 
 
@@ -234,29 +235,83 @@ Route::post('register', function (Request $request) {
 
 
 // Customer
- Route::get('customers', function () {
-     $customers = Customer::with("Appointment")->get();
-     return $customers;
- });
+Route::get('customers', function () {
+    $customers = Customer::with("Appointment")->get();
+    return $customers;
+});
 
- Route::get('customers/{customerId}', function($customerId) {
+Route::post('customers', function (Request $request) {
+    $customer = Customer::create([
+        "customer_name" => $request->customer_name,
+        "customer_email" => $request->customer_email,
+        "customer_phone" => $request->customer_phone,
+        "customer_address" => $request->customer_address
+    ]);
+    return $customer;
+});
+
+Route::get('customers/{customerId}', function ($customerId) {
     $customer = Customer::with("Appointment")->findOrFail($customerId);
     return $customer;
- });
+});
 
- Route::patch('customers/{customerId}', function($customerId, Request $request) {
-     $customer = Customer::findOrFail($customerId);
-     $customer->update([
-         "customer_name" => $request->customer_name,
-         "customer_email" => $request->customer_email,
-         "customer_phone" => $request->customer_phone,
-         "customer_address" => $request->customer_address
-     ]);
-     return $customer;
- });
+Route::patch('customers/{customerId}', function ($customerId, Request $request) {
+    $customer = Customer::findOrFail($customerId);
+    $customer->update([
+        "customer_name" => $request->customer_name,
+        "customer_email" => $request->customer_email,
+        "customer_phone" => $request->customer_phone,
+        "customer_address" => $request->customer_address
+    ]);
+    return $customer;
+});
 
- //Appointment
- Route::get('appointments', function () {
-    $appointments = Appointment::all();
+//Appointment
+Route::get('appointments', function () {
+    $appointments = Appointment::with("Customer")->get();
+    return $appointments;
+});
+
+Route::get('appointments/{appointmentId}', function ($appointmentId) {
+    $appointment = Appointment::with("Customer")->with("Staff")->findOrFail($appointmentId);
+    return $appointment;
+});
+
+Route::post('appointments', function (Request $request) {
+    $appointment = Appointment::create([
+        "appointment_title" => $request->appointment_title,
+        "appointment_time" => $request->appointment_time,
+        "appointment_desc" => $request->appointment_desc,
+        "appointment_status" => $request->appointment_status,
+        "customer_id" => $request->customer_id,
+        "staff_id" => $request->staff_id
+    ]);
+    $customer = Customer::find($request->customer_id);
+    $staff = User::findOrFail($request->staff_id);
+    $body = 'You just got a new appointment with a customer '.$customer->customer_name;
+    $message = [
+        'title' => 'Notification from Company Active',
+        'body' => $body,
+        'url' => url('/app/appointments/'.$appointment->id),
+        'thanks' => "Thanks for reading ",
+        'to' => $staff->email
+    ];
+    Notification::send($staff, new Message($message));
+    return $appointment;
+});
+
+Route::patch('appointments/{appointmentId}', function($appointmentId, Request $request) {
+    $appointment = Appointment::findOrFail($appointmentId);
+    $appointment->update([
+        "appointment_title" => $request->appointment_title,
+        "appointment_time" => $request->appointment_time,
+        "appointment_desc" => $request->appointment_desc,
+        "appointment_status" => $request->appointment_status
+    ]);
+    return $appointment;
+}); 
+
+Route::get("appointments/staff/{staffId}", function($staffId) {
+    $appointments = Appointment::with("Customer")->where("staff_id", $staffId)->get();
     return $appointments;
 });

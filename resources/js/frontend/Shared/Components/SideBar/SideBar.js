@@ -1,19 +1,33 @@
 import React, { Component } from "react";
 import { BrowserRouter, HashRouter, Link } from "react-router-dom";
 import "./SideBar.scss";
-import  AuthService from "../../AuthService/AuthService";
-
+import AuthService, { roleId } from "../../AuthService/AuthService";
 
 class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+           
         };
     }
+
+    componentDidMount() {
+        this.getRoleId();
+    }
+
+    getRoleId = () => {
+        AuthService.getUserInfo().then((res) => {
+            this.setState({
+                role: res.data.role
+            });
+        })
+    }
+
     render() {
-        const roleId = 'ADMIN';
-        console.log("ROLE ID", AuthService._roleId);
-        
+        const { role } = this.state;
+        const { userInfo, roleId } = AuthService;
+        // const { department } = userInfo;
+        // console.log(Object.keys(department));
         return (
             <div>
                 <aside className="left-sidebar bg-sidebar">
@@ -51,9 +65,9 @@ class SideBar extends Component {
                         <div className="sidebar-scrollbar">
                             {/* sidebar menu */}
                             <ul className="nav sidebar-inner" id="sidebar-menu">
-                                {roleId=== "ADMIN" ? (
+                                {roleId === "ADMIN" ? (
                                     <li>
-                                        <Link to={"/app/departments"}>
+                                        <Link to="/app/departments">
                                             <i className="mdi mdi-chart-pie" />
                                             <span className="nav-text">
                                                 Departments
@@ -65,7 +79,7 @@ class SideBar extends Component {
                                 )}
 
                                 <li>
-                                    <Link to={`/app/departments`}>
+                                    <Link to={`/app/departments/${userInfo.department_id}`}>
                                         <i className="mdi mdi-chart-pie" />
                                         <span className="nav-text">
                                             Department

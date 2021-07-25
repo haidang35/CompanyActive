@@ -10,6 +10,7 @@ import Pagination from "../../Shared/Pagination/Pagination";
 import { list } from "postcss";
 import CreateUser from "./Components/StaffForm/CreateUser";
 import AlertDanger from "../../Shared/Alert/AlertDanger";
+import AuthService from "../../Shared/AuthService/AuthService";
 
 class Staff extends Component {
     constructor(props) {
@@ -69,12 +70,12 @@ class Staff extends Component {
             .then((res) => {
                 this.getListStaff();
                 this.setState({
-                    message: `Create a new staff : ${res.data.name} successfully !!`
+                    message: `Create a new staff : ${res.data.name} successfully !!`,
                 });
             })
             .catch((err) => {
                 this.setState({
-                    errorMessage: 'Create new staff failed !!'
+                    errorMessage: "Create new staff failed !!",
                 });
             });
     };
@@ -105,13 +106,17 @@ class Staff extends Component {
                                 >
                                     View
                                 </button>
-                                <button
-                                    className="btn btn-danger"
-                                    data-toggle="modal"
-                                    data-target={`#modalConfirm${item.id}`}
-                                >
-                                    Delete
-                                </button>
+                                {AuthService.roleId === "ADMIN" ? (
+                                    <button
+                                        className="btn btn-danger"
+                                        data-toggle="modal"
+                                        data-target={`#modalConfirm${item.id}`}
+                                    >
+                                        Delete
+                                    </button>
+                                ) : (
+                                    ""
+                                )}
                             </div>
                             <ModalConfirm
                                 answer={this.onDeleteStaff}
@@ -132,16 +137,21 @@ class Staff extends Component {
 
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
-                        <AlertDanger message={this.state.errorMessage}/>
-                        <div className="btn-group-list">
-                            <button
-                                className="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#exampleModalForm"
-                            >
-                                Create new user
-                            </button>
-                        </div>
+                        <AlertDanger message={this.state.errorMessage} />
+                        {AuthService.roleId === "ADMIN" ? (
+                            <div className="btn-group-list">
+                                <button
+                                    className="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#exampleModalForm"
+                                >
+                                    Create new user
+                                </button>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+
                         <CreateUser onSubmitForm={this.onCreateNewUser} />
                         <table className="table">
                             <thead>

@@ -8,6 +8,7 @@ import "./DepartmentList.scss";
 import ModalNotice from "../../../Shared/Modal/ModalNotice";
 import ModalConfirm from "../../../Shared/Modal/ModalConfirm";
 import AlertDanger from "../../../Shared/Alert/AlertDanger";
+import AuthServicce from "../../../Shared/AuthService/AuthService";
 
 class DepartmentList extends Component {
     constructor(props) {
@@ -61,14 +62,14 @@ class DepartmentList extends Component {
         DepartmentService.deleteDepartment(departmentId)
             .then((res) => {
                 this.setState({
-                    message: `Delete department ${res.data.department_name} successfully !!`
+                    message: `Delete department ${res.data.department_name} successfully !!`,
                 });
                 this.getDepartmentList();
             })
             .catch((err) => {
                 console.log(err);
                 this.setState({
-                    errorMessage: `Delete department failed !!`
+                    errorMessage: `Delete department failed !!`,
                 });
             });
     };
@@ -145,16 +146,21 @@ class DepartmentList extends Component {
 
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
-                        <AlertDanger message={this.state.errorMessage}/>
-                        <div className="btn-group-list">
-                            <button
-                                className="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#exampleModalForm"
-                            >
-                                Add new department
-                            </button>
-                        </div>
+                        <AlertDanger message={this.state.errorMessage} />
+                        {AuthServicce.roleId === "ADMIN" ? (
+                            <div className="btn-group-list">
+                                <button
+                                    className="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#exampleModalForm"
+                                >
+                                    Add new department
+                                </button>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+
                         <table className="table table-bordered">
                             <thead>
                                 <tr>

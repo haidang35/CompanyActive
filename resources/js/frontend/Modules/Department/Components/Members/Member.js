@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 import AlertSuccess from "../../../../Shared/Alert/AlertSuccess";
 import { goTo } from "../../../../Shared/Redirect/Redirect";
 import DepartmentService from "../../Shared/DepartmentService";
-
+import AuthService from "../../../../Shared/AuthService/AuthService";
 
 class Member extends Component {
     constructor(props) {
         super(props);
         this.state = {
             staffs: [],
-            departmentInfo: '',
-            message: ""
+            departmentInfo: "",
+            message: "",
         };
     }
 
@@ -30,7 +30,7 @@ class Member extends Component {
         DepartmentService.removeMember(departmentId, staffId)
             .then((res) => {
                 this.setState({
-                    message: `Remove member ${res.data.name} successfully !!`
+                    message: `Remove member ${res.data.name} successfully !!`,
                 });
             })
             .catch((err) => {});
@@ -56,17 +56,21 @@ class Member extends Component {
                             >
                                 View
                             </button>
-                            <button
-                                onClick={() =>
-                                    this.removeMember(
-                                        item.department_id,
-                                        item.id
-                                    )
-                                }
-                                className="mb-1 btn btn-danger"
-                            >
-                                Remove
-                            </button>
+                            {AuthService.roleId === "ADMIN" ? (
+                                <button
+                                    onClick={() =>
+                                        this.removeMember(
+                                            item.department_id,
+                                            item.id
+                                        )
+                                    }
+                                    className="mb-1 btn btn-danger"
+                                >
+                                    Remove
+                                </button>
+                            ) : (
+                                ""
+                            )}
                         </div>
                     </td>
                 </tr>
@@ -79,13 +83,23 @@ class Member extends Component {
                         <h2>Staffs of department</h2>
                     </div>
                     <div className="card-body">
-                        <AlertSuccess message={this.state.message}/>
-                        <div className="btn-group-list">
-                            <Link to={location => `${location.pathname}/add-member`}>
-                              <button className="btn btn-primary">Add member</button>
-                            </Link>
-                              
+                        <AlertSuccess message={this.state.message} />
+                        {AuthService.roleId === "ADMIN" ? (
+                            <div className="btn-group-list">
+                                <Link
+                                    to={(location) =>
+                                        `${location.pathname}/add-member`
+                                    }
+                                >
+                                    <button className="btn btn-primary">
+                                        Add member
+                                    </button>
+                                </Link>
                             </div>
+                        ) : (
+                            ""
+                        )}
+
                         <table className="table table-striped">
                             <thead>
                                 <tr>
