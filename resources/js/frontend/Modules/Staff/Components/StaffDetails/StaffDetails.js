@@ -4,6 +4,7 @@ import StaffService from "../../Shared/StaffService";
 import Form from "../../../../Shared/Form/Form";
 import FormError from "../../../../Shared/Form/FormError";
 import { REGEX_TEL } from "../../../../Constances/const";
+import AuthService from "../../../../Shared/AuthService/AuthService";
 
 class StaffDetails extends Form {
     constructor(props) {
@@ -69,8 +70,8 @@ class StaffDetails extends Form {
             birthday: form.birthday.value,
             email: form.email.value,
             phone: form.phone.value,
-            address: form.address.value
-        }
+            address: form.address.value,
+        };
         if (this._isFormValid()) {
             StaffService.updateStaffInfo(userId, userInfo)
                 .then((res) => {
@@ -79,7 +80,7 @@ class StaffDetails extends Form {
                 .catch((err) => {});
         }
         this.setState({
-            onEdit: !this.state.onEdit
+            onEdit: !this.state.onEdit,
         });
     };
 
@@ -94,31 +95,35 @@ class StaffDetails extends Form {
                     </div>
                     <div className="card-body detail-info">
                         <div className="col-sm-12">
-                            <div className="btn-control-right">
-                                {!onEdit ? (
-                                    <button
-                                        onClick={this.onEditInfo}
-                                        className=" btn btn-primary"
-                                    >
-                                        Edit
-                                    </button>
-                                ) : (
-                                    <div>
+                            {AuthService.roleId === "ADMIN" ? (
+                                <div className="btn-control-right">
+                                    {!onEdit ? (
                                         <button
-                                            className=" btn btn-success"
-                                            onClick={this.onSaveChangeInfo}
+                                            onClick={this.onEditInfo}
+                                            className=" btn btn-primary"
                                         >
-                                            Save
+                                            Edit
                                         </button>
-                                        <button
-                                            onClick={this.onCancelEditInfo}
-                                            className=" btn btn-warning"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
+                                    ) : (
+                                        <div>
+                                            <button
+                                                className=" btn btn-success"
+                                                onClick={this.onSaveChangeInfo}
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                onClick={this.onCancelEditInfo}
+                                                className=" btn btn-warning"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                ""
+                            )}
                         </div>
                         <div className="row"></div>
 

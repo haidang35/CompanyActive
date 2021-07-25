@@ -14,12 +14,11 @@ class Customer extends Model
         "customer_name",
         "customer_email",
         "customer_phone",
-        "customer_address",
-        "appointment_id"
+        "customer_address"
     ];
 
     public function Appointment(){
-        return $this->hasMany(Appointment::class,"id","appointment_id");
+        return $this->hasMany(Appointment::class,"customer_id","id");
     }
 
     public function scopeName($query,$search){

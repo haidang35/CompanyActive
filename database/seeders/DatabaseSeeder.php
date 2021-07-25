@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         //LINH
 
         Customer::factory(200)->create();
-        Appointment::factory(200)->create();
+        // Appointment::factory(2000)->create();
 
     }
 }

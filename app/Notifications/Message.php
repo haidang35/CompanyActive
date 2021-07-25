@@ -44,12 +44,12 @@ class Message extends Notification implements ShouldBroadcast
 
      */
     public function toMail($notifiable) {
-//        \Illuminate\Support\Facades\Notification::route('mail', $this->appointment['to']);
+       \Illuminate\Support\Facades\Notification::route('mail', $this->appointment['to']);
         return (new MailMessage)
             ->subject("Company Active ")
-            ->greeting($this->appointment["name"])
+            ->greeting($this->appointment["title"])
             ->line($this->appointment["body"])
-            ->action("Go to website",$this->appointment['url'])
+            ->action("View details",$this->appointment['url'])
             ->line($this->appointment['thanks']);
 
     }

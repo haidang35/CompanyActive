@@ -22,6 +22,7 @@ class Login extends Component {
         AuthService.login(username, password)
             .then((res) => {
                 const userId = res.data.id;
+                AuthService.getUserInfo(userId);
                 localStorage.setItem("userId", JSON.stringify(userId));
                 this.goTo("app");
             })

@@ -21,6 +21,7 @@ import AddMember from "./Modules/Department/Components/Members/AddMember";
 import CustomerList from "./Modules/Customer/CustomerList";
 import AppointmentList from "./Modules/Appointment/AppointmentList";
 import CustomerDetails from "./Modules/Customer/Components/CustomerDetails/CustomerDetails";
+import AppointmentDetails from "./Modules/Appointment/Components/AppointmentDetails/AppointmentDetails";
 
 class App extends Component {
     constructor(props) {
@@ -49,6 +50,7 @@ class App extends Component {
                                 <Route  exact path="/app/departments/:departmentId/add-member" component={AddMember}/>
                                 <Route exact path="/app/customers" component={CustomerList}/>
                                 <Route exact path="/app/appointments" component={AppointmentList}/>
+                                <Route exact path="/app/appointments/:id" component={AppointmentDetails}/>
                                 <Route exact path="/app/customers/:id" component={CustomerDetails}/>
             
                             </Switch>

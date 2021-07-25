@@ -11,9 +11,9 @@ class Appointment extends Model
     protected $table = "appointments";
     protected $primaryKey = "id";
     protected $fillable = [
-        "appoinment_title",
-        "appoinment_time",
-        "appoinment_desc",
+        "appointment_title",
+        "appointment_time",
+        "appointment_desc",
         "appointment_status",
         "customer_id",
         "staff_id"
@@ -22,6 +22,11 @@ class Appointment extends Model
 
     public function Customer()
     {
-        return $this->belongsTo(Customer::class, "id", "customer_id");
+        return $this->belongsTo(Customer::class, "customer_id", "id");
+    }
+
+    public function Staff()
+    {
+        return $this->hasMany(User::class, "id", "staff_id");
     }
 }

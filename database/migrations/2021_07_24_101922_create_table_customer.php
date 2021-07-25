@@ -19,7 +19,6 @@ class CreateTableCustomer extends Migration
             $table->string("customer_email");
             $table->string("customer_phone");
             $table->string("customer_address");
-            $table->bigInteger("appointment_id")->nullable();
             $table->timestamps();
         });
     }

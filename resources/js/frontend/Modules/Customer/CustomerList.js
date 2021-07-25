@@ -4,6 +4,8 @@ import AlertDanger from "../../Shared/Alert/AlertDanger";
 import Pagination from "../../Shared/Pagination/Pagination";
 import CustomerService from "./Shared/CustomerService";
 import { Link } from "react-router-dom";
+import AddNewCustomer from "./Components/CustomerForm/AddNewCustomer";
+import AuthService from "../../Shared/AuthService/AuthService";
 
 class CustomerList extends Component {
     constructor(props) {
@@ -35,6 +37,20 @@ class CustomerList extends Component {
         this.setState({ page });
     };
 
+    addNewCustomer = (data) => {
+        CustomerService.addNewCustomer(data)
+            .then((res) => {
+                this.setState({
+                    message: `Add new customer ${res.data.customer_name} successfully !!`,
+                });
+                this.getCustomerList();
+            })
+            .catch((err) => {
+                this.setState({
+                    errorMessage: "Add new customer failed !!",
+                });
+            });
+    };
     render() {
         const { customerList, page, rowsPerPage } = this.state;
         console.log("CUS", customerList);
@@ -49,15 +65,21 @@ class CustomerList extends Component {
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
                         <AlertDanger message={this.state.errorMessage} />
-                        <div className="btn-group-list">
-                            <button
-                                className="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#exampleModalForm"
-                            >
-                                Add new customer
-                            </button>
-                        </div>
+                        {AuthService.roleId === "ADMIN" ? (
+                            <div className="btn-group-list">
+                                <button
+                                    className="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#addNewCustomer"
+                                >
+                                    Add new customer
+                                </button>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+
+                        <AddNewCustomer onSubmitForm={this.addNewCustomer} />
                         <table className="table table-bordered">
                             <thead>
                                 <tr>
@@ -89,7 +111,9 @@ class CustomerList extends Component {
                                                 </td>
                                                 <td>
                                                     <div className="btn-control">
-                                                        <Link to={`/app/customers/${item.id}`}>
+                                                        <Link
+                                                            to={`/app/customers/${item.id}`}
+                                                        >
                                                             <button className="btn btn-primary">
                                                                 View
                                                             </button>
