@@ -2313,12 +2313,42 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleSearchValue", function (ev) {
+      var _this$setState;
+
+      var _ev$target = ev.target,
+          name = _ev$target.name,
+          value = _ev$target.value;
+
+      _this.setState((_this$setState = {}, _defineProperty(_this$setState, name, value), _defineProperty(_this$setState, "onSearch", false), _this$setState));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onScopeSearch", function () {
+      console.log("sc", _this.state.scopeStatus);
+
+      _this.setState({
+        onSearch: true,
+        page: 0
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleChangeStatus", function (ev) {
+      var _ev$target2 = ev.target,
+          name = _ev$target2.name,
+          value = _ev$target2.value;
+
+      _this.setState(_defineProperty({}, name, value));
+    });
+
     _this.state = {
       appointmentList: [],
       page: 1,
       rowsPerPage: 20,
       message: "",
-      errorMessage: ""
+      errorMessage: "",
+      searchValue: "",
+      onSearch: false,
+      scopeStatus: ""
     };
     return _this;
   }
@@ -2338,7 +2368,23 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
       var _this$state = this.state,
           appointmentList = _this$state.appointmentList,
           page = _this$state.page,
-          rowsPerPage = _this$state.rowsPerPage;
+          rowsPerPage = _this$state.rowsPerPage,
+          searchValue = _this$state.searchValue,
+          onSearch = _this$state.onSearch,
+          scopeStatus = _this$state.scopeStatus;
+
+      if (onSearch) {
+        if (scopeStatus !== "") {
+          appointmentList = appointmentList.filter(function (item) {
+            return item.appointment_status == scopeStatus;
+          });
+        }
+
+        appointmentList = appointmentList.filter(function (item) {
+          if (item.appointment_title.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 || item.appointment_time.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) return item;
+        });
+      }
+
       var loop = 1;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -2354,6 +2400,72 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
               message: this.state.message
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_2__.default, {
               message: this.state.errorMessage
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+              className: "row",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                className: "col-sm-12",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                    className: "col-sm-4",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("label", {
+                      className: "sr-only",
+                      htmlFor: "inlineFormInputGroupUsername2",
+                      children: "Search"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                      className: "input-group mb-2 mr-sm-2",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                        className: "input-group-prepend",
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                          className: "input-group-text",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                            className: "mdi mdi-magnify"
+                          })
+                        })
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("input", {
+                        type: "text",
+                        name: "searchValue",
+                        className: "form-control",
+                        id: "inlineFormInputGroupUsername2",
+                        placeholder: "Search title, datetime ...",
+                        value: this.state.searchValue,
+                        onChange: this.handleSearchValue
+                      })]
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                    className: "col-sm-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("select", {
+                      className: "form-control",
+                      name: "scopeStatus",
+                      style: {
+                        fontSize: "16px"
+                      },
+                      value: this.state.scopeStatus,
+                      onChange: this.handleChangeStatus,
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("option", {
+                        style: {
+                          fontSize: "16px"
+                        },
+                        value: "",
+                        children: "Select status"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("option", {
+                        value: 0,
+                        children: "Pending"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("option", {
+                        value: 1,
+                        children: "Done"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("option", {
+                        value: 2,
+                        children: "Rejected"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+                    onClick: this.onScopeSearch,
+                    className: "btn btn-primary mb-2",
+                    children: "Submit"
+                  })]
+                })
+              })
             }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
               className: "btn-group-list",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
@@ -2440,8 +2552,8 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
                 marginTop: "45px"
               },
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_3__.default, {
-                data: this.state.appointmentList,
-                page: this.state.page,
+                data: appointmentList,
+                page: page,
                 rowsPerPage: this.state.rowsPerPage,
                 onChangePage: this.onChangePage
               })
@@ -4325,12 +4437,31 @@ var CustomerList = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleSearchValue", function (ev) {
+      var _this$setState;
+
+      var _ev$target = ev.target,
+          name = _ev$target.name,
+          value = _ev$target.value;
+
+      _this.setState((_this$setState = {}, _defineProperty(_this$setState, name, value), _defineProperty(_this$setState, "onSearch", false), _this$setState));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onScopeSearch", function () {
+      _this.setState({
+        onSearch: true,
+        page: 0
+      });
+    });
+
     _this.state = {
       customerList: [],
       page: 1,
       rowsPerPage: 20,
       message: "",
-      errorMessage: ""
+      errorMessage: "",
+      searchValue: "",
+      onSearch: false
     };
     return _this;
   }
@@ -4346,8 +4477,16 @@ var CustomerList = /*#__PURE__*/function (_Component) {
       var _this$state = this.state,
           customerList = _this$state.customerList,
           page = _this$state.page,
-          rowsPerPage = _this$state.rowsPerPage;
-      console.log("CUS", customerList);
+          rowsPerPage = _this$state.rowsPerPage,
+          searchValue = _this$state.searchValue,
+          onSearch = _this$state.onSearch;
+
+      if (onSearch) {
+        customerList = customerList.filter(function (item) {
+          return item.customer_name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 || item.customer_email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 || item.customer_phone.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
+        });
+      }
+
       var loop = 1;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -4363,6 +4502,45 @@ var CustomerList = /*#__PURE__*/function (_Component) {
               message: this.state.message
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_2__.default, {
               message: this.state.errorMessage
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+              className: "row",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                className: "col-sm-12",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                    className: "col-sm-5",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("label", {
+                      className: "sr-only",
+                      htmlFor: "inlineFormInputGroupUsername2",
+                      children: "Search"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                      className: "input-group mb-2 mr-sm-2",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                        className: "input-group-prepend",
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                          className: "input-group-text",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                            className: "mdi mdi-magnify"
+                          })
+                        })
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("input", {
+                        type: "text",
+                        name: "searchValue",
+                        className: "form-control",
+                        id: "inlineFormInputGroupUsername2",
+                        placeholder: "Search name, email, phone ...",
+                        value: this.state.searchValue,
+                        onChange: this.handleSearchValue
+                      })]
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
+                    onClick: this.onScopeSearch,
+                    className: "btn btn-primary mb-2",
+                    children: "Submit"
+                  })]
+                })
+              })
             }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
               className: "btn-group-list",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
@@ -4434,8 +4612,8 @@ var CustomerList = /*#__PURE__*/function (_Component) {
                 marginTop: "45px"
               },
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_3__.default, {
-                data: this.state.customerList,
-                page: this.state.page,
+                data: customerList,
+                page: page,
                 rowsPerPage: this.state.rowsPerPage,
                 onChangePage: this.onChangePage
               })
@@ -5839,7 +6017,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Modal_ModalConfirm__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../Shared/Modal/ModalConfirm */ "./resources/js/frontend/Shared/Modal/ModalConfirm.js");
 /* harmony import */ var _Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../Shared/Alert/AlertDanger */ "./resources/js/frontend/Shared/Alert/AlertDanger.js");
 /* harmony import */ var _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../Shared/AuthService/AuthService */ "./resources/js/frontend/Shared/AuthService/AuthService.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Modules_Staff_Shared_StaffService__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../Modules/Staff/Shared/StaffService */ "./resources/js/frontend/Modules/Staff/Shared/StaffService.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -5869,6 +6048,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -5918,6 +6098,14 @@ var DepartmentList = /*#__PURE__*/function (_Component) {
       }, _callee);
     })));
 
+    _defineProperty(_assertThisInitialized(_this), "getAllPic", function () {
+      _Modules_Staff_Shared_StaffService__WEBPACK_IMPORTED_MODULE_12__.default.getAllStaff().then(function (res) {
+        _this.setState({
+          picList: res.data
+        });
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "addNewDepartment", function (data) {
       _Shared_DepartmentService__WEBPACK_IMPORTED_MODULE_5__.default.addNewDepartment(data).then(function (res) {
         _this.setState({
@@ -5952,12 +6140,42 @@ var DepartmentList = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleSearchValue", function (ev) {
+      var _this$setState;
+
+      var _ev$target = ev.target,
+          name = _ev$target.name,
+          value = _ev$target.value;
+
+      _this.setState((_this$setState = {}, _defineProperty(_this$setState, name, value), _defineProperty(_this$setState, "onSearch", false), _this$setState));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onScopeSearch", function () {
+      _this.setState({
+        onSearch: true,
+        page: 0
+      }); // let { searchValue, departmentList } = this.state;
+      // departmentList = departmentList.filter((item) => {
+      //     return item.department_name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
+      // });
+      // if(searchValue === "") {
+      //     this.setState({
+      //         departmentList: departmentListOrg
+      //     });
+      // }
+      // this.setState({departmentList});
+
+    });
+
     _this.state = {
       departmentList: [],
+      picList: [],
       message: "",
       errorMessage: "",
       page: 1,
-      rowsPerPage: 20
+      rowsPerPage: 20,
+      onSearch: false,
+      searchValue: ""
     };
     return _this;
   }
@@ -5966,6 +6184,7 @@ var DepartmentList = /*#__PURE__*/function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.getDepartmentList();
+      this.getAllPic();
     }
   }, {
     key: "render",
@@ -5975,45 +6194,53 @@ var DepartmentList = /*#__PURE__*/function (_Component) {
       var _this$state = this.state,
           departmentList = _this$state.departmentList,
           page = _this$state.page,
-          rowsPerPage = _this$state.rowsPerPage;
+          rowsPerPage = _this$state.rowsPerPage,
+          onSearch = _this$state.onSearch,
+          searchValue = _this$state.searchValue;
       var loop = 0;
-      console.log("render", departmentList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+
+      if (onSearch) {
+        departmentList = departmentList.filter(function (item) {
+          return item.department_name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
+        });
+      }
+
       var renderDepartmentList = departmentList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(function (item) {
         var staffs = item.staff;
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("tr", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("tr", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
             scope: "row",
             children: ++loop
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
             children: item.department_name
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
             children: item.department_code
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
             children: item.department_pic
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
             children: staffs.length
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
             children: item.department_desc
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("td", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("td", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
               className: "btn-control-department",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
                 onClick: function onClick() {
                   return _this2.viewDepartmentDetails(item.department_id);
                 },
                 className: "btn btn-primary",
                 children: "View"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
                 className: "btn btn-danger",
                 "data-toggle": "modal",
                 "data-target": staffs.length > 0 ? "#modalNoti".concat(item.department_id) : "#modalConfirm".concat(item.department_id),
                 children: "Delete"
               })]
-            }), staffs.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Modal_ModalNotice__WEBPACK_IMPORTED_MODULE_8__.default, {
+            }), staffs.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Modal_ModalNotice__WEBPACK_IMPORTED_MODULE_8__.default, {
               title: "Warning",
               idNotice: item.department_id,
               message: "Cannot delete department ".concat(item.department_name)
-            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Modal_ModalConfirm__WEBPACK_IMPORTED_MODULE_9__.default, {
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Modal_ModalConfirm__WEBPACK_IMPORTED_MODULE_9__.default, {
               answer: _this2.deleteDepartment,
               confirmId: item.department_id,
               message: "Confirm delete department ".concat(item.department_name)
@@ -6021,63 +6248,124 @@ var DepartmentList = /*#__PURE__*/function (_Component) {
           })]
         });
       });
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
         className: "department-list",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
           className: "card card-default",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
             className: "card-header card-header-border-bottom",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("h2", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h2", {
               children: "Department List"
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
             className: "card-body",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_6__.default, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_6__.default, {
               message: this.state.message
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_10__.default, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_10__.default, {
               message: this.state.errorMessage
-            }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_11__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+              className: "row",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+                className: "col-sm-12",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+                    className: "col-sm-4",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("label", {
+                      className: "sr-only",
+                      htmlFor: "inlineFormInputGroupUsername2",
+                      children: "Search"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+                      className: "input-group mb-2 mr-sm-2",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+                        className: "input-group-prepend",
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+                          className: "input-group-text",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("i", {
+                            className: "mdi mdi-magnify"
+                          })
+                        })
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("input", {
+                        type: "text",
+                        name: "searchValue",
+                        className: "form-control",
+                        id: "inlineFormInputGroupUsername2",
+                        placeholder: "Search ...",
+                        value: this.state.searchValue,
+                        onChange: this.handleSearchValue
+                      })]
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+                    className: "col-sm-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("select", {
+                      className: "form-control",
+                      style: {
+                        fontSize: "16px"
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("option", {
+                        style: {
+                          fontSize: "16px"
+                        },
+                        children: "Select pic"
+                      }), this.state.picList.map(function (item) {
+                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("option", {
+                          value: item.id,
+                          style: {
+                            fontSize: "16px"
+                          },
+                          children: item.name
+                        });
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+                    onClick: this.onScopeSearch,
+                    className: "btn btn-primary mb-2",
+                    children: "Submit"
+                  })]
+                })
+              })
+            }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_11__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
               className: "btn-group-list",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
                 className: "btn btn-primary",
                 "data-toggle": "modal",
                 "data-target": "#exampleModalForm",
                 children: "Add new department"
               })
-            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("table", {
+            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("table", {
               className: "table table-bordered",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("thead", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("tr", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("th", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("thead", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("tr", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
                     scope: "col",
                     children: "ID"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
                     scope: "col",
                     children: "Department name"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
                     scope: "col",
                     children: "Code"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
                     scope: "col",
                     children: "PIC"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
                     scope: "col",
                     children: "Staffs"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
                     scope: "col",
                     children: "Description"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
                     scope: "col"
                   })]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("tbody", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("tbody", {
                 children: renderDepartmentList
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
               style: {
                 marginTop: "45px"
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_2__.default, {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_2__.default, {
                 data: departmentList,
                 page: page,
                 rowsPerPage: rowsPerPage,
@@ -6085,7 +6373,7 @@ var DepartmentList = /*#__PURE__*/function (_Component) {
               })
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Components_DepartmentForm_AddNewDepartment__WEBPACK_IMPORTED_MODULE_4__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_DepartmentForm_AddNewDepartment__WEBPACK_IMPORTED_MODULE_4__.default, {
           onSubmitForm: this.addNewDepartment
         })]
       });
@@ -6148,13 +6436,13 @@ var DepartmentService = /*#__PURE__*/function () {
   _createClass(DepartmentService, [{
     key: "getAllDepartment",
     value: function () {
-      var _getAllDepartment = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var _getAllDepartment = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(data) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default().get(_Constances_const__WEBPACK_IMPORTED_MODULE_1__.BASE_URL + API_ENDPOINT.GET_ALL_DEPARTMENT);
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get(_Constances_const__WEBPACK_IMPORTED_MODULE_1__.BASE_URL + API_ENDPOINT.GET_ALL_DEPARTMENT, data);
 
               case 2:
                 return _context.abrupt("return", _context.sent);
@@ -6167,7 +6455,7 @@ var DepartmentService = /*#__PURE__*/function () {
         }, _callee);
       }));
 
-      function getAllDepartment() {
+      function getAllDepartment(_x) {
         return _getAllDepartment.apply(this, arguments);
       }
 
@@ -6195,7 +6483,7 @@ var DepartmentService = /*#__PURE__*/function () {
         }, _callee2);
       }));
 
-      function getOneDepartment(_x) {
+      function getOneDepartment(_x2) {
         return _getOneDepartment.apply(this, arguments);
       }
 
@@ -6223,7 +6511,7 @@ var DepartmentService = /*#__PURE__*/function () {
         }, _callee3);
       }));
 
-      function updateDepartment(_x2, _x3) {
+      function updateDepartment(_x3, _x4) {
         return _updateDepartment.apply(this, arguments);
       }
 
@@ -6251,7 +6539,7 @@ var DepartmentService = /*#__PURE__*/function () {
         }, _callee4);
       }));
 
-      function addNewDepartment(_x4) {
+      function addNewDepartment(_x5) {
         return _addNewDepartment.apply(this, arguments);
       }
 
@@ -6279,7 +6567,7 @@ var DepartmentService = /*#__PURE__*/function () {
         }, _callee5);
       }));
 
-      function removeMember(_x5, _x6) {
+      function removeMember(_x6, _x7) {
         return _removeMember.apply(this, arguments);
       }
 
@@ -6335,7 +6623,7 @@ var DepartmentService = /*#__PURE__*/function () {
         }, _callee7);
       }));
 
-      function addMember(_x7, _x8) {
+      function addMember(_x8, _x9) {
         return _addMember.apply(this, arguments);
       }
 
@@ -6363,7 +6651,7 @@ var DepartmentService = /*#__PURE__*/function () {
         }, _callee8);
       }));
 
-      function deleteDepartment(_x9) {
+      function deleteDepartment(_x10) {
         return _deleteDepartment.apply(this, arguments);
       }
 
@@ -7740,7 +8028,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_StaffForm_CreateUser__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Components/StaffForm/CreateUser */ "./resources/js/frontend/Modules/Staff/Components/StaffForm/CreateUser.js");
 /* harmony import */ var _Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Shared/Alert/AlertDanger */ "./resources/js/frontend/Shared/Alert/AlertDanger.js");
 /* harmony import */ var _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Shared/AuthService/AuthService */ "./resources/js/frontend/Shared/AuthService/AuthService.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Modules_Department_Shared_DepartmentService__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Modules/Department/Shared/DepartmentService */ "./resources/js/frontend/Modules/Department/Shared/DepartmentService.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7781,6 +8070,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var Staff = /*#__PURE__*/function (_Component) {
   _inherits(Staff, _Component);
 
@@ -7800,6 +8090,14 @@ var Staff = /*#__PURE__*/function (_Component) {
         });
       })["catch"](function (err) {
         console.log(err);
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "getDepartmentList", function () {
+      _Modules_Department_Shared_DepartmentService__WEBPACK_IMPORTED_MODULE_13__.default.getAllDepartment().then(function (res) {
+        _this.setState({
+          departmentList: res.data.data
+        });
       });
     });
 
@@ -7837,8 +8135,34 @@ var Staff = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleSearchValue", function (ev) {
+      var _this$setState;
+
+      var _ev$target = ev.target,
+          name = _ev$target.name,
+          value = _ev$target.value;
+
+      _this.setState((_this$setState = {}, _defineProperty(_this$setState, name, value), _defineProperty(_this$setState, "onSearch", false), _this$setState));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onScopeSearch", function () {
+      _this.setState({
+        onSearch: true,
+        page: 0
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleChangeDepartment", function (ev) {
+      var _ev$target2 = ev.target,
+          name = _ev$target2.name,
+          value = _ev$target2.value;
+
+      _this.setState(_defineProperty({}, name, value));
+    });
+
     _this.state = {
       listStaff: [],
+      departmentList: [],
       message: "",
       errorMessage: "",
       page: 1,
@@ -7846,7 +8170,10 @@ var Staff = /*#__PURE__*/function (_Component) {
       loop: 1,
       totalPage: 1,
       lastFirstGroupPage: 3,
-      firstLastGroupPage: 0
+      firstLastGroupPage: 0,
+      searchValue: "",
+      onSearch: false,
+      scopeDepartment: ""
     };
     return _this;
   }
@@ -7855,6 +8182,7 @@ var Staff = /*#__PURE__*/function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.getListStaff();
+      this.getDepartmentList();
     }
   }, {
     key: "render",
@@ -7864,42 +8192,62 @@ var Staff = /*#__PURE__*/function (_Component) {
       var _this$state = this.state,
           listStaff = _this$state.listStaff,
           page = _this$state.page,
-          rowsPerPage = _this$state.rowsPerPage;
+          rowsPerPage = _this$state.rowsPerPage,
+          onSearch = _this$state.onSearch,
+          searchValue = _this$state.searchValue,
+          departmentList = _this$state.departmentList,
+          scopeDepartment = _this$state.scopeDepartment;
+      console.log("dd", scopeDepartment);
+
+      if (onSearch) {
+        if (scopeDepartment !== "0") {
+          listStaff = listStaff.filter(function (item) {
+            return item.department_id === scopeDepartment;
+          });
+        }
+
+        listStaff = listStaff.filter(function (item) {
+          if (item.name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 || item.email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 || item.phone.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) {
+            return item;
+          }
+        });
+      }
+
       var loop = 1;
       var elmStaff = listStaff.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(function (item) {
         var departmentName = item.department.department_name;
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("tr", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("tr", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             scope: "row",
             children: loop++
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             children: item.name
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             children: item.birthday
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             children: item.department.department_name
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             children: item.email
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             children: item.phone
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             children: item.address
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("td", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("td", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
               className: "btn-control",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("button", {
                 onClick: function onClick() {
                   return _this2.viewStaffDetails(item.id);
                 },
                 className: "btn btn-primary",
                 children: "View"
-              }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_12__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+              }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_12__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("button", {
                 className: "btn btn-danger",
                 "data-toggle": "modal",
                 "data-target": "#modalConfirm".concat(item.id),
                 children: "Delete"
               }) : ""]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Modal_ModalConfirm__WEBPACK_IMPORTED_MODULE_4__.default, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Shared_Modal_ModalConfirm__WEBPACK_IMPORTED_MODULE_4__.default, {
               answer: _this2.onDeleteStaff,
               confirmId: item.id,
               userInfo: item,
@@ -7908,63 +8256,125 @@ var Staff = /*#__PURE__*/function (_Component) {
           })]
         }, item.id);
       });
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
           className: "card card-default",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
             className: "card-header card-header-border-bottom",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h2", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("h2", {
               children: "List staff"
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
             className: "card-body",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_7__.default, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_7__.default, {
               message: this.state.message
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_11__.default, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_11__.default, {
               message: this.state.errorMessage
-            }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_12__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
+              className: "row",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
+                className: "col-sm-12",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+                  className: "row",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+                    className: "col-sm-4",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("label", {
+                      className: "sr-only",
+                      htmlFor: "inlineFormInputGroupUsername2",
+                      children: "Search"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+                      className: "input-group mb-2 mr-sm-2",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
+                        className: "input-group-prepend",
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
+                          className: "input-group-text",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("i", {
+                            className: "mdi mdi-magnify"
+                          })
+                        })
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("input", {
+                        type: "text",
+                        name: "searchValue",
+                        className: "form-control",
+                        id: "inlineFormInputGroupUsername2",
+                        placeholder: "Search name, email, phone ...",
+                        value: this.state.searchValue,
+                        onChange: this.handleSearchValue
+                      })]
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
+                    className: "col-sm-3",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("select", {
+                      className: "form-control",
+                      name: "scopeDepartment",
+                      style: {
+                        fontSize: "16px"
+                      },
+                      value: this.state.scopeDepartment,
+                      onChange: this.handleChangeDepartment,
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("option", {
+                        style: {
+                          fontSize: "16px"
+                        },
+                        value: "0",
+                        children: "Select department"
+                      }), departmentList.map(function (item) {
+                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("option", {
+                          value: item.department_id,
+                          children: item.department_name
+                        });
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("button", {
+                    onClick: this.onScopeSearch,
+                    className: "btn btn-primary mb-2",
+                    children: "Submit"
+                  })]
+                })
+              })
+            }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_12__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
               className: "btn-group-list",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("button", {
                 className: "btn btn-primary",
                 "data-toggle": "modal",
                 "data-target": "#exampleModalForm",
                 children: "Create new user"
               })
-            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Components_StaffForm_CreateUser__WEBPACK_IMPORTED_MODULE_10__.default, {
+            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Components_StaffForm_CreateUser__WEBPACK_IMPORTED_MODULE_10__.default, {
               onSubmitForm: this.onCreateNewUser
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("table", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("table", {
               className: "table",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("thead", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("tr", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("thead", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("tr", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("th", {
                     scope: "col",
                     children: "ID"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("th", {
                     scope: "col",
                     children: "Staff Name"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("th", {
                     scope: "col",
                     children: "Birthday"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("th", {
                     scope: "col",
                     children: "Department"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("th", {
                     scope: "col",
                     children: "Email"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("th", {
                     scope: "col",
                     children: "Phone number"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("th", {
                     scope: "col",
                     children: "Address"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {})]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("th", {})]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("tbody", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("tbody", {
                 children: elmStaff
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_8__.default, {
-                data: this.state.listStaff,
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_8__.default, {
+                data: listStaff,
                 page: page,
                 rowsPerPage: rowsPerPage,
                 onChangePage: this.onChangePage

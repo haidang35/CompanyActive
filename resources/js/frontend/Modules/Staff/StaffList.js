@@ -11,12 +11,14 @@ import { list } from "postcss";
 import CreateUser from "./Components/StaffForm/CreateUser";
 import AlertDanger from "../../Shared/Alert/AlertDanger";
 import AuthService from "../../Shared/AuthService/AuthService";
+import DepartmentService from "../../Modules/Department/Shared/DepartmentService";
 
 class Staff extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listStaff: [],
+            departmentList: [],
             message: "",
             errorMessage: "",
             page: 1,
@@ -25,11 +27,15 @@ class Staff extends Component {
             totalPage: 1,
             lastFirstGroupPage: 3,
             firstLastGroupPage: 0,
+            searchValue: "",
+            onSearch: false,
+            scopeDepartment: "",
         };
     }
 
     componentDidMount() {
         this.getListStaff();
+        this.getDepartmentList();
     }
 
     getListStaff = () => {
@@ -42,6 +48,14 @@ class Staff extends Component {
             .catch((err) => {
                 console.log(err);
             });
+    };
+
+    getDepartmentList = () => {
+        DepartmentService.getAllDepartment().then((res) => {
+            this.setState({
+                departmentList: res.data.data,
+            });
+        });
     };
 
     viewStaffDetails = (staffId) => {
@@ -80,8 +94,62 @@ class Staff extends Component {
             });
     };
 
+    handleSearchValue = (ev) => {
+        const { name, value } = ev.target;
+        this.setState({
+            [name]: value,
+            onSearch: false,
+        });
+    };
+
+    onScopeSearch = () => {
+        this.setState({
+            onSearch: true,
+            page: 0,
+        });
+    };
+
+    handleChangeDepartment = (ev) => {
+        const { name, value } = ev.target;
+        this.setState({
+            [name]: value,
+        });
+    };
+
     render() {
-        const { listStaff, page, rowsPerPage } = this.state;
+        let {
+            listStaff,
+            page,
+            rowsPerPage,
+            onSearch,
+            searchValue,
+            departmentList,
+            scopeDepartment,
+        } = this.state;
+        console.log("dd", scopeDepartment);
+        if (onSearch) {
+            if (scopeDepartment !== "0") {
+                listStaff = listStaff.filter((item) => {
+                    return item.department_id === scopeDepartment;
+                });
+            }
+
+            listStaff = listStaff.filter((item) => {
+                if (
+                    item.name
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1 ||
+                    item.email
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1 ||
+                    item.phone
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1
+                ) {
+                    return item;
+                }
+            });
+        }
         let loop = 1;
         const elmStaff = listStaff
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -138,6 +206,73 @@ class Staff extends Component {
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
                         <AlertDanger message={this.state.errorMessage} />
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="row">
+                                    <div className="col-sm-4">
+                                        <label
+                                            className="sr-only"
+                                            htmlFor="inlineFormInputGroupUsername2"
+                                        >
+                                            Search
+                                        </label>
+                                        <div className="input-group mb-2 mr-sm-2">
+                                            <div className="input-group-prepend">
+                                                <div className="input-group-text">
+                                                    <i className="mdi mdi-magnify"></i>
+                                                </div>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="searchValue"
+                                                className="form-control"
+                                                id="inlineFormInputGroupUsername2"
+                                                placeholder="Search name, email, phone ..."
+                                                value={this.state.searchValue}
+                                                onChange={
+                                                    this.handleSearchValue
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-3">
+                                        <select
+                                            className="form-control"
+                                            name="scopeDepartment"
+                                            style={{ fontSize: "16px" }}
+                                            value={this.state.scopeDepartment}
+                                            onChange={
+                                                this.handleChangeDepartment
+                                            }
+                                        >
+                                            <option
+                                                style={{ fontSize: "16px" }}
+                                                value="0"
+                                            >
+                                                Select department
+                                            </option>
+                                            {departmentList.map((item) => {
+                                                return (
+                                                    <option
+                                                        value={
+                                                            item.department_id
+                                                        }
+                                                    >
+                                                        {item.department_name}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    </div>
+                                    <button
+                                        onClick={this.onScopeSearch}
+                                        className="btn btn-primary mb-2"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         {AuthService.roleId === "ADMIN" ? (
                             <div className="btn-group-list">
                                 <button
@@ -170,7 +305,7 @@ class Staff extends Component {
                         </table>
                         <div>
                             <Pagination
-                                data={this.state.listStaff}
+                                data={listStaff}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
                                 onChangePage={this.onChangePage}
