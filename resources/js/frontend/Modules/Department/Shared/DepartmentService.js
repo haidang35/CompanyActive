@@ -15,9 +15,10 @@ const API_ENDPOINT = {
 class DepartmentService {
     constructor() {}
 
-    async getAllDepartment() {
-        return await axios.get(BASE_URL + API_ENDPOINT.GET_ALL_DEPARTMENT);
+    async getAllDepartment(data) {
+        return await axios.get(BASE_URL + API_ENDPOINT.GET_ALL_DEPARTMENT, data);
     }
+
 
     async getOneDepartment(departmentId) {
         return await axios.get(

@@ -93,10 +93,11 @@ Route::post('users', function (Request $request) {
 
 //Department
 
-Route::get('/departments', function () {
-    $departments = Department::all();
+Route::get('/departments', function (Request $request) {
+    $search = $request->search_value;
+    $departments = Department::with("Staff")->search($search)->get();
     //    return DepartmentCollection::collection($departments);
-    return new DepartmentCollection(Department::with("Staff")->get());
+    return new DepartmentCollection(Department::with("Staff")->search($search)->get());
     // return $departments;
 });
 

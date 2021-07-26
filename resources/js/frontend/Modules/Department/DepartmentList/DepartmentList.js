@@ -9,21 +9,26 @@ import ModalNotice from "../../../Shared/Modal/ModalNotice";
 import ModalConfirm from "../../../Shared/Modal/ModalConfirm";
 import AlertDanger from "../../../Shared/Alert/AlertDanger";
 import AuthServicce from "../../../Shared/AuthService/AuthService";
+import StaffService from "../../../Modules/Staff/Shared/StaffService";
 
 class DepartmentList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             departmentList: [],
+            picList: [],
             message: "",
             errorMessage: "",
             page: 1,
             rowsPerPage: 20,
+            onSearch: false,
+            searchValue: "",
         };
     }
 
     componentDidMount() {
         this.getDepartmentList();
+        this.getAllPic();
     }
 
     getDepartmentList = async () => {
@@ -36,6 +41,14 @@ class DepartmentList extends Component {
             .catch((err) => {
                 console.log(err);
             });
+    };
+
+    getAllPic = () => {
+        StaffService.getAllStaff().then((res) => {
+            this.setState({
+                picList: res.data,
+            });
+        });
     };
 
     addNewDepartment = (data) => {
@@ -74,16 +87,45 @@ class DepartmentList extends Component {
             });
     };
 
+    handleSearchValue = (ev) => {
+        const { name, value } = ev.target;
+        this.setState({
+            [name]: value,
+            onSearch: false,
+        });
+    };
+
+    onScopeSearch = () => {
+        this.setState({
+            onSearch: true,
+            page: 0
+        });
+        // let { searchValue, departmentList } = this.state;
+        // departmentList = departmentList.filter((item) => {
+        //     return item.department_name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
+        // });
+        // if(searchValue === "") {
+        //     this.setState({
+        //         departmentList: departmentListOrg
+        //     });
+        // }
+        // this.setState({departmentList});
+    };
+
     render() {
-        const { departmentList, page, rowsPerPage } = this.state;
+        let { departmentList, page, rowsPerPage, onSearch, searchValue } =
+            this.state;
         let loop = 0;
-        console.log(
-            "render",
-            departmentList.slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage
-            )
-        );
+        if (onSearch) {
+            departmentList  = departmentList.filter((item) => {
+                return (
+                    item.department_name
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1
+                );
+            });
+        }
+
         const renderDepartmentList = departmentList
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((item) => {
@@ -147,6 +189,72 @@ class DepartmentList extends Component {
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
                         <AlertDanger message={this.state.errorMessage} />
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="row">
+                                    <div className="col-sm-4">
+                                        <label
+                                            className="sr-only"
+                                            htmlFor="inlineFormInputGroupUsername2"
+                                        >
+                                            Search
+                                        </label>
+                                        <div className="input-group mb-2 mr-sm-2">
+                                            <div className="input-group-prepend">
+                                                <div className="input-group-text">
+                                                    <i className="mdi mdi-magnify"></i>
+                                                </div>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="searchValue"
+                                                className="form-control"
+                                                id="inlineFormInputGroupUsername2"
+                                                placeholder="Search ..."
+                                                value={this.state.searchValue}
+                                                onChange={
+                                                    this.handleSearchValue
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-3">
+                                        <select
+                                            className="form-control"
+                                            style={{ fontSize: "16px" }}
+                                        >
+                                            <option
+                                                style={{ fontSize: "16px" }}
+                                            >
+                                                Select pic
+                                            </option>
+                                            {this.state.picList.map(
+                                                (item) => {
+                                                    return (
+                                                        <option
+                                                            value={item.id}
+                                                            style={{
+                                                                fontSize:
+                                                                    "16px",
+                                                            }}
+                                                        >
+                                                            {item.name}
+                                                        </option>
+                                                    );
+                                                }
+                                            )}
+                                        </select>
+                                    </div>
+                                    <button
+                                        onClick={this.onScopeSearch}
+                                        className="btn btn-primary mb-2"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         {AuthServicce.roleId === "ADMIN" ? (
                             <div className="btn-group-list">
                                 <button

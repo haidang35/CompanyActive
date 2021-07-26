@@ -16,6 +16,8 @@ class CustomerList extends Component {
             rowsPerPage: 20,
             message: "",
             errorMessage: "",
+            searchValue: "",
+            onSearch: false,
         };
     }
 
@@ -51,9 +53,40 @@ class CustomerList extends Component {
                 });
             });
     };
+
+    handleSearchValue = (ev) => {
+        const { name, value } = ev.target;
+        this.setState({
+            [name]: value,
+            onSearch: false,
+        });
+    };
+
+    onScopeSearch = () => {
+        this.setState({
+            onSearch: true,
+            page: 0,
+        });
+    };
+
     render() {
-        const { customerList, page, rowsPerPage } = this.state;
-        console.log("CUS", customerList);
+        let { customerList, page, rowsPerPage, searchValue, onSearch } =
+            this.state;
+        if (onSearch) {
+            customerList = customerList.filter((item) => {
+                return (
+                    item.customer_name
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1 ||
+                    item.customer_email
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1 ||
+                    item.customer_phone
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1
+                );
+            });
+        }
         let loop = 1;
         return (
             <div>
@@ -65,6 +98,45 @@ class CustomerList extends Component {
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
                         <AlertDanger message={this.state.errorMessage} />
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="row">
+                                    <div className="col-sm-5">
+                                        <label
+                                            className="sr-only"
+                                            htmlFor="inlineFormInputGroupUsername2"
+                                        >
+                                            Search
+                                        </label>
+                                        <div className="input-group mb-2 mr-sm-2">
+                                            <div className="input-group-prepend">
+                                                <div className="input-group-text">
+                                                    <i className="mdi mdi-magnify"></i>
+                                                </div>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="searchValue"
+                                                className="form-control"
+                                                id="inlineFormInputGroupUsername2"
+                                                placeholder="Search name, email, phone ..."
+                                                value={this.state.searchValue}
+                                                onChange={
+                                                    this.handleSearchValue
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={this.onScopeSearch}
+                                        className="btn btn-primary mb-2"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         {AuthService.roleId === "ADMIN" ? (
                             <div className="btn-group-list">
                                 <button
@@ -127,8 +199,8 @@ class CustomerList extends Component {
                         </table>
                         <div style={{ marginTop: "45px" }}>
                             <Pagination
-                                data={this.state.customerList}
-                                page={this.state.page}
+                                data={customerList}
+                                page={page}
                                 rowsPerPage={this.state.rowsPerPage}
                                 onChangePage={this.onChangePage}
                             />

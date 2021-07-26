@@ -15,6 +15,9 @@ class AppointmentList extends Component {
             rowsPerPage: 20,
             message: "",
             errorMessage: "",
+            searchValue: "",
+            onSearch: false,
+            scopeStatus: "",
         };
     }
 
@@ -37,10 +40,10 @@ class AppointmentList extends Component {
     getAppointmentStaff = () => {
         AppointmentService.getAppointmentStaff(AuthService.userId).then(
             (res) => {
-                if((res.data).length < 20) {
+                if (res.data.length < 20) {
                     this.setState({
                         page: 0,
-                        rowsPerPage: 20
+                        rowsPerPage: 20,
                     });
                 }
                 this.setState({
@@ -69,8 +72,57 @@ class AppointmentList extends Component {
             });
     };
 
+    handleSearchValue = (ev) => {
+        const { name, value } = ev.target;
+        this.setState({
+            [name]: value,
+            onSearch: false,
+        });
+    };
+
+    onScopeSearch = () => {
+        console.log("sc", this.state.scopeStatus);
+        this.setState({
+            onSearch: true,
+            page: 0,
+        });
+    };
+
+    handleChangeStatus = (ev) => {
+        const { name, value } = ev.target;
+        this.setState({
+            [name]: value
+        });
+    };
+
     render() {
-        const { appointmentList, page, rowsPerPage } = this.state;
+        let {
+            appointmentList,
+            page,
+            rowsPerPage,
+            searchValue,
+            onSearch,
+            scopeStatus,
+        } = this.state;
+        if (onSearch) {
+            if (scopeStatus !== "") {
+                appointmentList = appointmentList.filter((item) => {
+                    return item.appointment_status == scopeStatus;
+                });
+            }
+
+            appointmentList = appointmentList.filter((item) => {
+                if (
+                    item.appointment_title
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1 ||
+                    item.appointment_time
+                        .toLowerCase()
+                        .indexOf(searchValue.toLowerCase()) !== -1
+                )
+                    return item;
+            });
+        }
         let loop = 1;
         return (
             <div>
@@ -82,6 +134,64 @@ class AppointmentList extends Component {
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
                         <AlertDanger message={this.state.errorMessage} />
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="row">
+                                    <div className="col-sm-4">
+                                        <label
+                                            className="sr-only"
+                                            htmlFor="inlineFormInputGroupUsername2"
+                                        >
+                                            Search
+                                        </label>
+                                        <div className="input-group mb-2 mr-sm-2">
+                                            <div className="input-group-prepend">
+                                                <div className="input-group-text">
+                                                    <i className="mdi mdi-magnify"></i>
+                                                </div>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="searchValue"
+                                                className="form-control"
+                                                id="inlineFormInputGroupUsername2"
+                                                placeholder="Search title, datetime ..."
+                                                value={this.state.searchValue}
+                                                onChange={
+                                                    this.handleSearchValue
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-3">
+                                        <select
+                                            className="form-control"
+                                            name="scopeStatus"
+                                            style={{ fontSize: "16px" }}
+                                            value={this.state.scopeStatus}
+                                            onChange={this.handleChangeStatus}
+                                        >
+                                            <option
+                                                style={{ fontSize: "16px" }}
+                                                value=""
+                                            >
+                                                Select status
+                                            </option>
+                                            <option value={0}>Pending</option>
+                                            <option value={1}>Done</option>
+                                            <option value={2}>Rejected</option>
+                                        </select>
+                                    </div>
+
+                                    <button
+                                        onClick={this.onScopeSearch}
+                                        className="btn btn-primary mb-2"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         {AuthService.roleId === "ADMIN" ? (
                             <div className="btn-group-list">
                                 <button
@@ -173,8 +283,8 @@ class AppointmentList extends Component {
                         </table>
                         <div style={{ marginTop: "45px" }}>
                             <Pagination
-                                data={this.state.appointmentList}
-                                page={this.state.page}
+                                data={appointmentList}
+                                page={page}
                                 rowsPerPage={this.state.rowsPerPage}
                                 onChangePage={this.onChangePage}
                             />
