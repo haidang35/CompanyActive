@@ -24,7 +24,7 @@ class Pagination extends Component {
 
     getTotalPage = (nextProps) => {
         const { data, rowsPerPage } = nextProps;
-        const totalPage = Math.ceil(data.length / rowsPerPage);
+        const totalPage = Math.ceil(data / rowsPerPage);
         const firstLastGroupPage = totalPage - 1;
         this.setState({ totalPage, firstLastGroupPage });
     };
@@ -82,7 +82,6 @@ class Pagination extends Component {
     render() {
         const { page, totalPage, firstLastGroupPage, lastFirstGroupPage } =
             this.state;
-        console.log("totalPage", totalPage);
         let firstPages = [];
         let lastPages = [];
         if (totalPage <= 5) {
@@ -94,8 +93,6 @@ class Pagination extends Component {
             firstPages = [lastFirstGroupPage - 1, lastFirstGroupPage];
             lastPages = [firstLastGroupPage, totalPage];
         }
-        console.log("firstLastpage", firstPages);
-        console.log("lastFIrstPage", lastPages);
         return (
             <div className="pagination-bar" style={{float: "right"}}>
                 <nav aria-label="Page navigation example" >

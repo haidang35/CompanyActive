@@ -33,7 +33,7 @@ class User extends Authenticatable
         'address',
         'password',
         'fb_id',
-        'google_id',  
+        'google_id',
     ];
 
     /**
@@ -68,26 +68,29 @@ class User extends Authenticatable
 
     public function receivesBroadcastNotificationsOn()
     {
-        return 'users.'.$this->id;
+        return 'users.' . $this->id;
     }
 
-    public function Department() {
+    public function Department()
+    {
         return $this->belongsTo(Department::class, "department_id", "department_id");
     }
 
+    public function scopeSearch($query, $search)
+    {
+        if ($search == '' || $search == null) {
+            return $query;
+        }
+        return $query->where("name", 'LIKE', "%" . $search . "%")
+            ->orWhere("email", 'LIKE', "%" . $search . "%")
+            ->orWhere("phone", 'LIKE', "%" . $search . "%");
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public function scopeDepartment($query, $department_id)
+    {
+        if($department_id == '' || $department_id == null) {
+            return $query;
+        }
+        return $query->where('department_id', $department_id);
+    }
 }

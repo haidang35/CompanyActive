@@ -24,7 +24,7 @@ class DepartmentFactory extends Factory
         return [
             "department_name" => $this->faker->company,
             "department_code" => $this->faker->unique()->currencyCode,
-            "department_pic"  => $this->faker->userName,
+            "department_pic"  => rand(30, 80),
             "department_desc" => $this->faker->text(50),
         ];
     }

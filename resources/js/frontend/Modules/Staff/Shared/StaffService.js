@@ -7,7 +7,9 @@ const API_ENDPOINT = {
     GET_ONE_STAFF: "users/",
     UPDATE_STAFF_INFO: "users/",
     DELETE_STAFF: "users/",
-    CREATE_NEW_STAFF: "users"
+    CREATE_NEW_STAFF: "users",
+    CHANGE_PAGE: "users/page",
+    SCOPE_SEARCH_STAFF: "users/search"
 }
 
 class StaffService {
@@ -36,6 +38,14 @@ class StaffService {
 
     async createNewStaff(data) {
         return await axios.post(BASE_URL + API_ENDPOINT.CREATE_NEW_STAFF, data);
+    }
+
+    async changePageUser(page) {
+        return await axios.post(BASE_URL + API_ENDPOINT.CHANGE_PAGE, page);
+    }
+
+    async scopeStaff(data) {
+        return await axios.post(BASE_URL + API_ENDPOINT.SCOPE_SEARCH_STAFF, data);
     }
 
 }

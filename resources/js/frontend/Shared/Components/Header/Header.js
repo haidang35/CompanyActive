@@ -1,14 +1,41 @@
 import React, { Component } from "react";
 import "./Header.scss";
+import NotificationService from "../../../Shared/NotificationService/NotificationService";
+import AuthService from "../../../Shared/AuthService/AuthService";
+import { Link } from "react-router-dom";
+import Pusher from "pusher-js";
 class Header extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            notificationList: [],
+            noticeRealtime: [],
+        };
     }
 
+    componentDidMount = () => {
+        this.getNotifications();
+    };
+
+    getNotifications = () => {
+        NotificationService.getNotificationUser(AuthService.userId).then(
+            (res) => {
+                this.setState({
+                    notificationList: res.data,
+                });
+            }
+        );
+    };
+
     showDropdownUserMenu = () => {
-        console.log("hello");
         document
             .getElementById("dropdown-user-menu")
+            .classList.toggle("active-dropdown");
+    };
+
+    showDropdownNotice = () => {
+        document
+            .getElementById("dropdown-notice")
             .classList.toggle("active-dropdown");
     };
 
@@ -22,19 +49,34 @@ class Header extends Component {
         window.location.replace(url);
     }
 
+    bindDataRealtime = (data) => {
+        if (data.message.staff_id === AuthService.userId) {
+            const { noticeRealtime } = this.state;
+            let  notices  = [];
+            notices.push(data);
+            this.setState({noticeRealtime: notices });
+        }
+    };
+
     render() {
+        const { notificationList } = this.state;
+        const dropdown = document.getElementById("dropdown-user-menu");
         document.onclick = function (event) {
-            const dropdown = document.getElementById("dropdown-user-menu");
             if (
                 event.target.id !== "dropdown-user-menu" &&
                 event.target.id !== "user-menu"
             ) {
-                console.log("hello");
                 if (dropdown.classList.contains("active-dropdown")) {
                     dropdown.classList.remove("active-dropdown");
                 }
             }
         };
+        const pusher = new Pusher("22c1e3e8a080c533ca41", {
+            cluster: "ap1",
+            encrypted: true,
+        });
+        const channel = pusher.subscribe("notify");
+        channel.bind("receive-notify", this.bindDataRealtime);
         return (
             <div>
                 <header className="main-header " id="header">
@@ -74,65 +116,114 @@ class Header extends Component {
                                 <li className="github-link mr-3"></li>
                                 <li className="dropdown notifications-menu">
                                     <button
+                                        id="btn-dropdown-notice"
+                                        onClick={this.showDropdownNotice}
                                         className="dropdown-toggle"
-                                        data-toggle="dropdown"
                                     >
                                         <i className="mdi mdi-bell-outline" />
                                     </button>
-                                    <ul className="dropdown-menu dropdown-menu-right">
+                                    <ul
+                                        id="dropdown-notice"
+                                        className="dropdown-menu dropdown-menu-right"
+                                        style={{
+                                            width: "500px",
+                                        }}
+                                    >
                                         <li className="dropdown-header">
                                             You have 5 notifications
                                         </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="mdi mdi-account-plus" />{" "}
-                                                New user registered
-                                                <span className=" font-size-12 d-inline-block float-right">
-                                                    <i className="mdi mdi-clock-outline" />{" "}
-                                                    10 AM
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="mdi mdi-account-remove" />{" "}
-                                                User deleted
-                                                <span className=" font-size-12 d-inline-block float-right">
-                                                    <i className="mdi mdi-clock-outline" />{" "}
-                                                    07 AM
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="mdi mdi-chart-areaspline" />{" "}
-                                                Sales report is ready
-                                                <span className=" font-size-12 d-inline-block float-right">
-                                                    <i className="mdi mdi-clock-outline" />{" "}
-                                                    12 PM
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="mdi mdi-account-supervisor" />{" "}
-                                                New client
-                                                <span className=" font-size-12 d-inline-block float-right">
-                                                    <i className="mdi mdi-clock-outline" />{" "}
-                                                    10 AM
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="mdi mdi-server-network-off" />{" "}
-                                                Server overloaded
-                                                <span className=" font-size-12 d-inline-block float-right">
-                                                    <i className="mdi mdi-clock-outline" />{" "}
-                                                    05 AM
-                                                </span>
-                                            </a>
-                                        </li>
+                                        {this.state.noticeRealtime.map(
+                                            (item) => {
+                                                return (
+                                                    <li>
+                                                        <Link>
+                                                            <div className="row">
+                                                                <div className="col-sm-1">
+                                                                    <i
+                                                                        style={{
+                                                                            fontSize:
+                                                                                "20px",
+                                                                        }}
+                                                                        className="mdi mdi-account-plus"
+                                                                    />{" "}
+                                                                </div>
+                                                                <div className="col-sm-11">
+                                                                    <span
+                                                                        style={{
+                                                                            fontSize:
+                                                                                "16px",
+                                                                        }}
+                                                                    >
+                                                                        {" "}
+                                                                        {
+                                                                           item.message.body
+                                                                        }
+                                                                    </span>
+
+                                                                    <div
+                                                                        style={{
+                                                                            fontSize:
+                                                                                "14px",
+                                                                        }}
+                                                                    >
+                                                                        <i className="mdi mdi-clock-outline" />{" "}
+                                                                       
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </Link>
+                                                    </li>
+                                                );
+                                            }
+                                        )}
+                                        {notificationList.map((item) => {
+                                            return (
+                                                <li key={item.id}>
+                                                    <Link>
+                                                        <div className="row">
+                                                            <div className="col-sm-1">
+                                                                <i
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "20px",
+                                                                    }}
+                                                                    className="mdi mdi-account-plus"
+                                                                />{" "}
+                                                            </div>
+                                                            <div className="col-sm-11">
+                                                                <span
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "16px",
+                                                                    }}
+                                                                >
+                                                                    {" "}
+                                                                    {
+                                                                        item
+                                                                            .data
+                                                                            .appoint
+                                                                            .body
+                                                                    }
+                                                                </span>
+
+                                                                <div
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "14px",
+                                                                    }}
+                                                                >
+                                                                    <i className="mdi mdi-clock-outline" />{" "}
+                                                                    {
+                                                                        item.created_at
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Link>
+                                                </li>
+                                            );
+                                        })}
+
                                         <li className="dropdown-footer">
                                             <a className="text-center" href="#">
                                                 {" "}
@@ -154,7 +245,7 @@ class Header extends Component {
                                             alt="User Image"
                                         />
                                         <span className="d-none d-lg-inline-block">
-                                            Abdus Salam
+                                            {AuthService.userInfo.name}
                                         </span>
                                     </button>
                                     <ul
@@ -168,7 +259,7 @@ class Header extends Component {
                                                 alt="User Image"
                                             />
                                             <div className="d-inline-block">
-                                                Abdus Salam{" "}
+                                            {AuthService.userInfo.name}
                                                 <small className="pt-1">
                                                     abdus@gmail.com
                                                 </small>

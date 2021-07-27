@@ -29,4 +29,18 @@ class Appointment extends Model
     {
         return $this->hasMany(User::class, "id", "staff_id");
     }
+
+    public function scopeSearch($query, $search) {
+        if($search == "" || $search == null) {
+            return $query;
+        }
+        return $query->where('appointment_title', 'LIKE', '%'.$search.'%');
+    }
+
+    public function scopeStatus($query, $status) {
+        if($status == '' || $status == null) {
+            return $query;
+        }
+        return $query->where('appointment_status', $status);
+    }
 }

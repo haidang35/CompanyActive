@@ -22,6 +22,8 @@ import CustomerList from "./Modules/Customer/CustomerList";
 import AppointmentList from "./Modules/Appointment/AppointmentList";
 import CustomerDetails from "./Modules/Customer/Components/CustomerDetails/CustomerDetails";
 import AppointmentDetails from "./Modules/Appointment/Components/AppointmentDetails/AppointmentDetails";
+import MissionList from "./Modules/Mission/MissionList";
+import MissionInfo from "./Modules/Mission/Components/MissionDetails/MissionInfo";
 
 class App extends Component {
     constructor(props) {
@@ -52,6 +54,8 @@ class App extends Component {
                                 <Route exact path="/app/appointments" component={AppointmentList}/>
                                 <Route exact path="/app/appointments/:id" component={AppointmentDetails}/>
                                 <Route exact path="/app/customers/:id" component={CustomerDetails}/>
+                                <Route exact path="/app/missions" component={MissionList}/>
+                                <Route exact path="/app/missions/:id" component={MissionInfo}/>
             
                             </Switch>
                             <footer className="footer mt-auto">

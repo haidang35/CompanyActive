@@ -17,8 +17,8 @@ class CreateDepartment extends Migration
             $table->increments("department_id");
             $table->string("department_name");
             $table->string("department_code")->unique();
-            $table->string("department_pic");
-            $table->string("department_desc");
+            $table->integer("department_pic");
+            $table->string("department_desc")->nullable();
             $table->timestamps();
         });
     }

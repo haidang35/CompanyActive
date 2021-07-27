@@ -30,6 +30,7 @@ class Staff extends Component {
             searchValue: "",
             onSearch: false,
             scopeDepartment: "",
+            totalData: "",
         };
     }
 
@@ -42,7 +43,8 @@ class Staff extends Component {
         StaffService.getAllStaff()
             .then((res) => {
                 this.setState({
-                    listStaff: res.data,
+                    listStaff: res.data.data,
+                    totalData: res.data.total,
                 });
             })
             .catch((err) => {
@@ -74,8 +76,15 @@ class Staff extends Component {
     };
 
     onChangePage = (page) => {
-        this.setState({
-            page: page,
+        this.setState({ page });
+        StaffService.changePageUser({
+            page,
+            search_value: this.state.searchValue,
+            department: this.state.scopeDepartment,
+        }).then((res) => {
+            this.setState({
+                listStaff: res.data.data,
+            });
         });
     };
 
@@ -103,9 +112,15 @@ class Staff extends Component {
     };
 
     onScopeSearch = () => {
-        this.setState({
-            onSearch: true,
-            page: 0,
+        const data = {
+            search_value: this.state.searchValue,
+            department: this.state.scopeDepartment,
+        };
+        StaffService.scopeStaff(data).then((res) => {
+            this.setState({
+                listStaff: res.data.data,
+                totalData: res.data.total,
+            });
         });
     };
 
@@ -126,76 +141,48 @@ class Staff extends Component {
             departmentList,
             scopeDepartment,
         } = this.state;
-        console.log("dd", scopeDepartment);
-        if (onSearch) {
-            if (scopeDepartment !== "0") {
-                listStaff = listStaff.filter((item) => {
-                    return item.department_id === scopeDepartment;
-                });
-            }
-
-            listStaff = listStaff.filter((item) => {
-                if (
-                    item.name
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1 ||
-                    item.email
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1 ||
-                    item.phone
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1
-                ) {
-                    return item;
-                }
-            });
-        }
         let loop = 1;
-        const elmStaff = listStaff
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((item) => {
-                let departmentName = item.department.department_name;
-                return (
-                    <tr key={item.id}>
-                        <td scope="row">{loop++}</td>
-                        <td>{item.name}</td>
-                        <td>{item.birthday}</td>
-                        <td>{item.department.department_name}</td>
-                        <td>{item.email}</td>
-                        <td>{item.phone}</td>
-                        <td>{item.address}</td>
-                        <td>
-                            <div className="btn-control">
+        const elmStaff = listStaff.map((item) => {
+            let departmentName = item.department.department_name;
+            return (
+                <tr key={item.id}>
+                    <td scope="row">{loop++}</td>
+                    <td>{item.name}</td>
+                    <td>{item.birthday}</td>
+                    <td>{item.department.department_name}</td>
+                    <td>{item.email}</td>
+                    <td>{item.phone}</td>
+                    <td>{item.address}</td>
+                    <td>
+                        <div className="btn-control">
+                            <button
+                                onClick={() => this.viewStaffDetails(item.id)}
+                                className="btn btn-primary"
+                            >
+                                View
+                            </button>
+                            {AuthService.roleId === "ADMIN" ? (
                                 <button
-                                    onClick={() =>
-                                        this.viewStaffDetails(item.id)
-                                    }
-                                    className="btn btn-primary"
+                                    className="btn btn-danger"
+                                    data-toggle="modal"
+                                    data-target={`#modalConfirm${item.id}`}
                                 >
-                                    View
+                                    Delete
                                 </button>
-                                {AuthService.roleId === "ADMIN" ? (
-                                    <button
-                                        className="btn btn-danger"
-                                        data-toggle="modal"
-                                        data-target={`#modalConfirm${item.id}`}
-                                    >
-                                        Delete
-                                    </button>
-                                ) : (
-                                    ""
-                                )}
-                            </div>
-                            <ModalConfirm
-                                answer={this.onDeleteStaff}
-                                confirmId={item.id}
-                                userInfo={item}
-                                message={`Confirm delete staff ${item.name} ?`}
-                            />
-                        </td>
-                    </tr>
-                );
-            });
+                            ) : (
+                                ""
+                            )}
+                        </div>
+                        <ModalConfirm
+                            answer={this.onDeleteStaff}
+                            confirmId={item.id}
+                            userInfo={item}
+                            message={`Confirm delete staff ${item.name} ?`}
+                        />
+                    </td>
+                </tr>
+            );
+        });
         return (
             <div>
                 <div className="card card-default">
@@ -247,7 +234,7 @@ class Staff extends Component {
                                         >
                                             <option
                                                 style={{ fontSize: "16px" }}
-                                                value="0"
+                                                value=""
                                             >
                                                 Select department
                                             </option>
@@ -305,7 +292,7 @@ class Staff extends Component {
                         </table>
                         <div>
                             <Pagination
-                                data={listStaff}
+                                data={this.state.totalData}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
                                 onChangePage={this.onChangePage}

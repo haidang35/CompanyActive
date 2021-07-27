@@ -110,6 +110,14 @@ class SideBar extends Component {
                                         </span>{" "}
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link to={"/app/missions"}>
+                                        <i className="mdi mdi-chart-pie" />
+                                        <span className="nav-text">
+                                            Missions
+                                        </span>{" "}
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
 

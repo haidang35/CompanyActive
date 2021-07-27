@@ -17,7 +17,7 @@ class CustomerList extends Component {
             message: "",
             errorMessage: "",
             searchValue: "",
-            onSearch: false,
+            totalData: ""
         };
     }
 
@@ -29,7 +29,8 @@ class CustomerList extends Component {
         CustomerService.getAllCustomer()
             .then((res) => {
                 this.setState({
-                    customerList: res.data,
+                    customerList: res.data.data,
+                    totalData: res.data.total
                 });
             })
             .catch((err) => {});
@@ -37,6 +38,12 @@ class CustomerList extends Component {
 
     onChangePage = (page) => {
         this.setState({ page });
+        CustomerService.changePageCustomer({page, search_value: this.state.searchValue}).then((res) => {
+            this.setState({
+                customerList: res.data.data
+            });
+        })
+
     };
 
     addNewCustomer = (data) => {
@@ -63,30 +70,20 @@ class CustomerList extends Component {
     };
 
     onScopeSearch = () => {
-        this.setState({
-            onSearch: true,
-            page: 0,
-        });
+        const data = {
+            search_value: this.state.searchValue
+        }
+        CustomerService.scopeCustomer(data).then((res) => {
+            this.setState({
+                customerList: res.data.data,
+                totalData: res.data.total
+            });
+        })
     };
 
     render() {
-        let { customerList, page, rowsPerPage, searchValue, onSearch } =
+        let { customerList, page, rowsPerPage, searchValue } =
             this.state;
-        if (onSearch) {
-            customerList = customerList.filter((item) => {
-                return (
-                    item.customer_name
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1 ||
-                    item.customer_email
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1 ||
-                    item.customer_phone
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1
-                );
-            });
-        }
         let loop = 1;
         return (
             <div>
@@ -166,10 +163,6 @@ class CustomerList extends Component {
                             </thead>
                             <tbody>
                                 {customerList
-                                    .slice(
-                                        page * rowsPerPage,
-                                        page * rowsPerPage + rowsPerPage
-                                    )
                                     .map((item) => {
                                         return (
                                             <tr>
@@ -199,7 +192,7 @@ class CustomerList extends Component {
                         </table>
                         <div style={{ marginTop: "45px" }}>
                             <Pagination
-                                data={customerList}
+                                data={this.state.totalData}
                                 page={page}
                                 rowsPerPage={this.state.rowsPerPage}
                                 onChangePage={this.onChangePage}
