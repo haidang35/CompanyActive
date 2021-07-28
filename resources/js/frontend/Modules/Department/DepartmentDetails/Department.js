@@ -39,6 +39,7 @@ class Department extends Component {
                     getDepartmentInfo={this.getDepartmentInfo}
                 />
                 <Member
+                    departmentId={id}
                     departmentInfo={this.state.departmentInfo}
                 />
             </div>

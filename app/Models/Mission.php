@@ -55,7 +55,7 @@ class Mission extends Model
         $startOfWeek = $today->startOfWeek();
         $endOfWeek = $today->endOfWeek();
         if ($timeId == 1) {
-            return $query->whereDay('mission_deadline', '=', $today->toDateString());
+            return $query->whereDate('mission_deadline','=' , Carbon::today()->toDateString());
         } else if ($timeId == 2) {
             return $query->whereDate('mission_deadline', '=', $tomorrow->toDateString());
         } else if ($timeId == 3) {
@@ -65,5 +65,13 @@ class Mission extends Model
         } else {
             return $query;
         }
+    }
+
+    public function scopeDate($query, $date) {
+        if($date == null || $date == "") {
+            return $query;
+        }
+        return $query->whereDate('mission_deadline','=' ,$date);
+        
     }
 }

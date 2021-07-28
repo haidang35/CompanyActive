@@ -9,7 +9,7 @@ import FormError from "../../Shared/Form/FormError";
 import AlertSuccess from "../../Shared/Alert/AlertSuccess";
 import AlertDanger from "../../Shared/Alert/AlertDanger";
 import { Link } from "react-router-dom";
-import { convertDateTime } from "../../Helper/DateTime/ConvertDateTime";
+import { convertDateTime, getDateNow } from "../../Helper/DateTime/ConvertDateTime";
 import LoadingEffect from "../../Shared/Loading/LoadingEffect";
 
 class MissionList extends Form {
@@ -40,6 +40,8 @@ class MissionList extends Form {
             searchValue: "",
             scopeStatus: "",
             scopeDate: "",
+            datePicker: false,
+            scopeDatePicker: getDateNow()
         };
     }
 
@@ -85,6 +87,7 @@ class MissionList extends Form {
             search_value: this.state.searchValue,
             status: this.state.scopeStatus,
             date_time: this.state.scopeDate,
+            date_picker: this.state.datePicker ? this.state.scopeDatePicker : ""
         };
         MissionService.ChangePage(changePage).then((res) => {
             this.setState({
@@ -170,11 +173,12 @@ class MissionList extends Form {
     };
 
     onScopeSearch = () => {
-        const { searchValue, scopeStatus, scopeDate } = this.state;
+        const { searchValue, scopeStatus, scopeDate, scopeDatePicker, datePicker } = this.state;
         const data = {
             search_value: searchValue,
             status: scopeStatus,
             date_time: scopeDate,
+            date_picker: datePicker ? scopeDatePicker : ""
         };
         MissionService.searchMission(data).then((res) => {
             this.setState({
@@ -194,7 +198,7 @@ class MissionList extends Form {
     handleScopeDate = (ev) => {
         const { name, value } = ev.target;
         this.setState({
-            [name]: value,
+            [name]: value
         });
     };
 
@@ -205,6 +209,24 @@ class MissionList extends Form {
             this.getMissionStaff();
         }
     };
+
+    changeDatePicker = () => {
+        if(this.state.datePicker) {
+            this.setState({
+                scopeDatePicker: ""
+            });
+        } 
+        this.setState({
+            datePicker: !this.state.datePicker,
+            scopeDatePicker: getDateNow()
+        });
+        
+    };
+
+    handleChangeDatePicker = (ev) => {
+        const { name, value } = ev.target;
+        this.setState({[name]: value});
+    }
 
     render() {
         let {
@@ -322,27 +344,50 @@ class MissionList extends Form {
                                             <option value={2}>Rejected</option>
                                         </select>
                                     </div>
-
-                                    <div className="col-sm-3">
-                                        <select
-                                            className="form-control"
-                                            name="scopeDate"
-                                            style={{ fontSize: "16px" }}
-                                            onChange={this.handleScopeDate}
+                                    <div className="col-sm-1">
+                                        <button
+                                            onClick={this.changeDatePicker}
+                                            className="btn btn-info"
                                         >
-                                            <option
+                                            {
+                                                this.state.datePicker ? "List View" : "Calendar"
+                                            }
+                                        </button>
+                                    </div>
+                                    <div className="col-sm-3">
+                                        {this.state.datePicker ? (
+                                            <input
+                                                type="date"
+                                                name="scopeDatePicker"
+                                                className="form-control"
+                                                value={this.state.scopeDatePicker}
+                                                onChange={this.handleChangeDatePicker}
+                                            />
+                                        ) : (
+                                            <select
+                                                className="form-control"
+                                                name="scopeDate"
                                                 style={{ fontSize: "16px" }}
-                                                value=""
+                                                onChange={this.handleScopeDate}
                                             >
-                                                Select Deadline Time
-                                            </option>
-                                            <option value={1}>Today</option>
-                                            <option value={2}>Tomorrow</option>
-                                            <option value={3}>This week</option>
-                                            <option value={4}>
-                                                This month
-                                            </option>
-                                        </select>
+                                                <option
+                                                    style={{ fontSize: "16px" }}
+                                                    value=""
+                                                >
+                                                    Select Deadline Time
+                                                </option>
+                                                <option value={1}>Today</option>
+                                                <option value={2}>
+                                                    Tomorrow
+                                                </option>
+                                                <option value={3}>
+                                                    This week
+                                                </option>
+                                                <option value={4}>
+                                                    This month
+                                                </option>
+                                            </select>
+                                        )}
                                     </div>
 
                                     <button

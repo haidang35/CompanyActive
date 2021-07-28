@@ -22,6 +22,14 @@ class Member extends Component {
         });
     };
 
+    getStaffList = () => {
+        DepartmentService.getOneDepartment(this.props.departmentId).then((res) => {
+            this.setState({
+                staffs: res.data.staff
+            });
+        })
+    }
+
     viewStaffDetails(staffId) {
         goTo(`app/staffs/${staffId}`);
     }
@@ -29,6 +37,7 @@ class Member extends Component {
     removeMember(departmentId, staffId) {
         DepartmentService.removeMember(departmentId, staffId)
             .then((res) => {
+                this.getStaffList();
                 this.setState({
                     message: `Remove member ${res.data.name} successfully !!`,
                 });

@@ -40,7 +40,7 @@ class MissionInfo extends Form {
                 title: res.data.mission_title,
                 content: res.data.mission_content,
                 deadline: res.data.mission_deadline,
-                note: res.data.misson_note,
+                note: res.data.mission_note,
                 status: res.data.mission_status,
                 progress: res.data.progress,
                 pic: res.data.pic,
@@ -78,6 +78,7 @@ class MissionInfo extends Form {
                 .then((res) => {
                     this.setState({
                         messageUpdate: `Update mission ${res.data.mission_title} successfull !!`,
+                        onEdit: false
                     });
                 })
                 .catch((err) => {

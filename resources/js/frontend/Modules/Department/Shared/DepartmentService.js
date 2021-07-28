@@ -12,7 +12,8 @@ const API_ENDPOINT = {
     DELETE_DEPARTMENT: "departments/",
     CHANGE_PAGE: "departments/page",
     SCOPE_DEPARTMENT: "departments/search",
-    GET_ALL_PIC: "departments/pics"
+    GET_ALL_PIC: "departments/pics",
+
 };
 
 class DepartmentService {
@@ -30,7 +31,7 @@ class DepartmentService {
     }
 
     async updateDepartment(departmentId, data) {
-        return await axios.put(
+        return await axios.patch(
             BASE_URL + API_ENDPOINT.UPDATE_DEPARTMENT + departmentId,
             data
         );

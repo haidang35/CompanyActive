@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import AddNewAppointment from "./Components/AppointmentForm/AddNewAppointment";
 import AuthService from "../../Shared/AuthService/AuthService";
 import LoadingEffect from "../../Shared/Loading/LoadingEffect";
+import { convertDateTime } from "../../Helper/DateTime/ConvertDateTime";
 class AppointmentList extends Component {
     constructor(props) {
         super(props);
@@ -162,7 +163,7 @@ class AppointmentList extends Component {
                                                 name="searchValue"
                                                 className="form-control"
                                                 id="inlineFormInputGroupUsername2"
-                                                placeholder="Search title, datetime ..."
+                                                placeholder="Search title ..."
                                                 value={this.state.searchValue}
                                                 onChange={
                                                     this.handleSearchValue
@@ -234,7 +235,7 @@ class AppointmentList extends Component {
                                         <tr key={item.id}>
                                             <td>{loop++}</td>
                                             <td>{item.appointment_title}</td>
-                                            <td>{item.appointment_time}</td>
+                                            <td>{convertDateTime(item.appointment_time)}</td>
                                             <td>{item.appointment_desc}</td>
                                             <td>
                                                 <div class="btn-control">
