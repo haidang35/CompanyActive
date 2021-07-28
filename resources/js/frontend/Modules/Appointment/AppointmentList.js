@@ -274,7 +274,7 @@ class AppointmentList extends Component {
                                                     style={{ fontSize: "16px" }}
                                                     value=""
                                                 >
-                                                    Select Deadline Time
+                                                    Select Appointment Time
                                                 </option>
                                                 <option value={1}>Today</option>
                                                 <option value={2}>

@@ -2607,7 +2607,7 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
                           fontSize: "16px"
                         },
                         value: "",
-                        children: "Select Deadline Time"
+                        children: "Select Appointment Time"
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
                         value: 1,
                         children: "Today"
