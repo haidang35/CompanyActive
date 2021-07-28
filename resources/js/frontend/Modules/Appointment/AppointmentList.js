@@ -41,6 +41,7 @@ class AppointmentList extends Component {
         });
     };
 
+
     getAppointmentStaff = () => {
         AppointmentService.getAppointmentStaff(AuthService.userId).then(
             (res) => {
