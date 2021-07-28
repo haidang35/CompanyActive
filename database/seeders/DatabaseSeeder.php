@@ -32,5 +32,6 @@ class DatabaseSeeder extends Seeder
          Customer::factory(200)->create();
          Appointment::factory(2000)->create();
 
+
     }
 }
