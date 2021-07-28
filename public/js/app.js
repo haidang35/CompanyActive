@@ -2419,11 +2419,11 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
   }
 
   _createClass(AppointmentList, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "componentWillMount",
+    value: function componentWillMount() {
       if (_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId === "ADMIN") {
         this.getAppointmentList();
-      } else {
+      } else if (_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId === "USER") {
         this.getAppointmentStaff();
       }
     }
@@ -4263,7 +4263,7 @@ var CustomerInfo = /*#__PURE__*/function (_Form) {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_6__.default, {
                 message: this.state.errorMessage
               })]
-            }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_7__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
               className: "col-sm-12",
               style: {
                 marginBottom: "35px"
@@ -4286,7 +4286,7 @@ var CustomerInfo = /*#__PURE__*/function (_Form) {
                   })]
                 })
               })
-            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
               className: "detail-content",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                 className: "row",
@@ -4661,7 +4661,7 @@ var CustomerList = /*#__PURE__*/function (_Component) {
                   })]
                 })
               })
-            }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
               className: "btn-group-list",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
                 className: "btn btn-primary",
@@ -4669,7 +4669,7 @@ var CustomerList = /*#__PURE__*/function (_Component) {
                 "data-target": "#addNewCustomer",
                 children: "Add new customer"
               })
-            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_CustomerForm_AddNewCustomer__WEBPACK_IMPORTED_MODULE_5__.default, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_CustomerForm_AddNewCustomer__WEBPACK_IMPORTED_MODULE_5__.default, {
               onSubmitForm: this.addNewCustomer
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("table", {
               className: "table table-bordered",
@@ -6995,10 +6995,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../Shared/Alert/AlertSuccess */ "./resources/js/frontend/Shared/Alert/AlertSuccess.js");
 /* harmony import */ var _Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../Shared/Alert/AlertDanger */ "./resources/js/frontend/Shared/Alert/AlertDanger.js");
 /* harmony import */ var _Shared_Form_Form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../Shared/Form/Form */ "./resources/js/frontend/Shared/Form/Form.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _Shared_MissionService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Shared/MissionService */ "./resources/js/frontend/Modules/Mission/Shared/MissionService.js");
 /* harmony import */ var _MissionProgress__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MissionProgress */ "./resources/js/frontend/Modules/Mission/Components/MissionDetails/MissionProgress.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../Shared/AuthService/AuthService */ "./resources/js/frontend/Shared/AuthService/AuthService.js");
+/* harmony import */ var _Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../Shared/Form/FormError */ "./resources/js/frontend/Shared/Form/FormError.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7022,6 +7024,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -7071,26 +7075,53 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
       _this.setState({
         onEdit: false
       });
+
+      _this.getMissionInfo();
     });
 
     _defineProperty(_assertThisInitialized(_this), "onSaveChangeInfo", function () {
+      _this._validateForm();
+
+      _this.state.form["dirty"] = true;
       var id = _this.props.match.params.id;
+      var form = _this.state.form;
+      var data = {
+        mission_title: form.title.value,
+        mission_content: form.content.value,
+        mission_deadline: form.deadline.value,
+        mission_note: form.note.value
+      };
+
+      if (_this._isFormValid()) {
+        _Shared_MissionService__WEBPACK_IMPORTED_MODULE_4__.default.updateMissionAll(id, data).then(function (res) {
+          _this.setState({
+            messageUpdate: "Update mission ".concat(res.data.mission_title, " successfull !!")
+          });
+        })["catch"](function (err) {
+          _this.setState({
+            errorMessage: "Update mission failed !!"
+          });
+        });
+
+        _this.getMissionInfo();
+      }
     });
 
     _this.state = {
       form: _this._getInitFormData({
-        title: '',
-        content: '',
-        deadline: '',
-        note: '',
-        status: '',
-        progress: '',
-        pic: '',
-        staff: ''
+        title: "",
+        content: "",
+        deadline: "",
+        note: "",
+        status: "",
+        progress: "",
+        pic: "",
+        staff: ""
       }),
       onEdit: false,
       message: "",
-      errorMessage: ""
+      errorMessage: "",
+      messageUpdate: ""
     };
     return _this;
   }
@@ -7117,66 +7148,66 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
           staff = _this$state$form.staff,
           dirty = _this$state$form.dirty,
           progress = _this$state$form.progress;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
           className: "card card-default",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
             className: "card-header card-header-border-bottom",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h2", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
               children: "Mission Details"
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
             className: "card-body detail-info",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_1__.default, {
-                message: this.state.message
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_2__.default, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_1__.default, {
+                message: this.state.messageUpdate
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_2__.default, {
                 message: this.state.errorMessage
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
               className: "col-sm-12",
               style: {
                 marginBottom: "35px"
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
                 className: "btn-control-right",
-                children: !onEdit ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+                children: !onEdit && _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId == "ADMIN" && status.value == 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
                   onClick: this.onEditInfo,
                   className: " btn btn-primary",
                   children: "Edit"
-                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+                }) : _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId == "ADMIN" && status.value == 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
                     className: " btn btn-success",
                     onClick: this.onSaveChangeInfo,
                     children: "Save"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
                     onClick: this.onCancelEditInfo,
                     className: " btn btn-warning",
                     children: "Cancel"
                   })]
-                })
+                }) : ""
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
               className: "detail-content",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                 className: "row",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                   className: "col-sm-6",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
                     className: "text-dark mt-4 font-weight-medium",
                     htmlFor: true,
                     children: "Mission Title"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                     className: "input-group mb-2",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
                       className: "input-group-prepend",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                         className: "input-group-text",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
                           className: "mdi mdi-phone"
                         })
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
                       type: "text",
                       required: true,
                       name: "title",
@@ -7187,24 +7218,28 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
                         return _this2._setValue(ev, "title");
                       }
                     })]
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), title.err == "*" && dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                    errorMessage: "Mission title cannot be empty"
+                  }) : dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                    errorMessage: title.err
+                  }) : ""]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                   className: "col-sm-6",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
                     className: "text-dark mt-4 font-weight-medium",
                     htmlFor: true,
                     children: "Deadline"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                     className: "input-group mb-2",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
                       className: "input-group-prepend",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                         className: "input-group-text",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
                           className: "mdi mdi-currency-usd"
                         })
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
                       type: "text",
                       name: "deadline",
                       required: true,
@@ -7215,24 +7250,28 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
                         return _this2._setValue(ev, "deaddline");
                       }
                     })]
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), deadline.err == "*" && dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                    errorMessage: "Mission deadline cannot be empty"
+                  }) : dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                    errorMessage: deadline.err
+                  }) : ""]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                   className: "col-sm-8",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
                     className: "text-dark mt-4 font-weight-medium",
                     htmlFor: true,
                     children: "Content"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                     className: "input-group mb-2",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
                       className: "input-group-prepend",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                         className: "input-group-text",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
                           className: "mdi mdi-security-account-outline"
                         })
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("textarea", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("textarea", {
                       name: "content",
                       required: true,
                       rows: 5,
@@ -7243,24 +7282,28 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
                         return _this2._setValue(ev, "content");
                       }
                     })]
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), content.err == "*" && dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                    errorMessage: "Mission content cannot be empty"
+                  }) : dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                    errorMessage: content.err
+                  }) : ""]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                   className: "col-sm-4",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
                     className: "text-dark mt-4 font-weight-medium",
                     htmlFor: true,
                     children: "Note"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                     className: "input-group mb-2",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
                       className: "input-group-prepend",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                         className: "input-group-text",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
                           className: "mdi mdi-eye"
                         })
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("textarea", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("textarea", {
                       name: "note",
                       rows: 5,
                       disabled: !onEdit,
@@ -7271,63 +7314,63 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
                       }
                     })]
                   })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                   className: "col-sm-6",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
                     className: "text-dark mt-4 font-weight-medium",
                     htmlFor: true,
                     children: "Manager"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                     className: "input-group mb-2",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
                       className: "input-group-prepend",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                         className: "input-group-text mb-2",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
                           className: "mdi mdi-eye"
                         })
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
                       type: "text",
                       name: "pic",
                       required: true,
                       disabled: true,
                       className: "form-control",
                       value: pic.value.name ? pic.value.name : ""
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Link, {
                       to: "/app/staffs/".concat(pic.value.id),
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
                         className: "btn btn-primary mb-2",
                         children: "View"
                       })
                     })]
                   })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                   className: "col-sm-6",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
                     className: "text-dark mt-4 font-weight-medium",
                     htmlFor: true,
                     children: "Staff"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                     className: "input-group mb-2",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
                       className: "input-group-prepend",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                         className: "input-group-text mb-2",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
                           className: "mdi mdi-eye"
                         })
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
                       type: "text",
                       name: "staff",
                       required: true,
                       disabled: true,
                       className: "form-control",
                       value: staff.value.name ? staff.value.name : ""
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Link, {
                       to: "/app/staffs/".concat(staff.value.id),
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
                         className: "btn btn-primary mb-2",
                         children: "View"
                       })
@@ -7337,7 +7380,7 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
               })
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_MissionProgress__WEBPACK_IMPORTED_MODULE_5__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_MissionProgress__WEBPACK_IMPORTED_MODULE_5__.default, {
           status: status.value,
           progress: progress.value,
           missionId: id
@@ -7831,9 +7874,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Shared/Form/FormError */ "./resources/js/frontend/Shared/Form/FormError.js");
 /* harmony import */ var _Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/Alert/AlertSuccess */ "./resources/js/frontend/Shared/Alert/AlertSuccess.js");
 /* harmony import */ var _Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Shared/Alert/AlertDanger */ "./resources/js/frontend/Shared/Alert/AlertDanger.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _Helper_DateTime_ConvertDateTime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Helper/DateTime/ConvertDateTime */ "./resources/js/frontend/Helper/DateTime/ConvertDateTime.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Shared_Loading_LoadingEffect__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Shared/Loading/LoadingEffect */ "./resources/js/frontend/Shared/Loading/LoadingEffect.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7873,6 +7917,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var MissionList = /*#__PURE__*/function (_Form) {
   _inherits(MissionList, _Form);
 
@@ -7887,6 +7932,15 @@ var MissionList = /*#__PURE__*/function (_Form) {
 
     _defineProperty(_assertThisInitialized(_this), "getMissionList", function () {
       _Shared_MissionService__WEBPACK_IMPORTED_MODULE_1__.default.getAllMission().then(function (res) {
+        _this.setState({
+          missionList: res.data.data,
+          dataTotal: res.data.total
+        });
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "getMissionStaff", function () {
+      _Shared_MissionService__WEBPACK_IMPORTED_MODULE_1__.default.getMissionStaff(_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.userId).then(function (res) {
         _this.setState({
           missionList: res.data.data,
           dataTotal: res.data.total
@@ -8032,7 +8086,11 @@ var MissionList = /*#__PURE__*/function (_Form) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "refreshData", function () {
-      _this.getMissionList();
+      if (_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId == "ADMIN") {
+        _this.getMissionList();
+      } else if (_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId == "USER") {
+        _this.getMissionStaff();
+      }
     });
 
     _this.state = {
@@ -8065,9 +8123,14 @@ var MissionList = /*#__PURE__*/function (_Form) {
   }
 
   _createClass(MissionList, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.getMissionList();
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      if (_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId == "ADMIN") {
+        this.getMissionList();
+      } else if (_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId == "USER") {
+        this.getMissionStaff();
+      }
+
       this.getStaffList();
     }
   }, {
@@ -8100,66 +8163,73 @@ var MissionList = /*#__PURE__*/function (_Form) {
         }, 5000);
       }
 
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
         className: "card card-default",
         "data-scroll-height": 1650,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
           className: "card-header justify-content-between align-items-center card-header-border-bottom",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("h2", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("h2", {
             children: "Mission List"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
             className: "btn-control",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
               onClick: this.refreshData,
               className: "btn btn-success",
               style: {
                 marginRight: "15px"
               },
               children: "Refresh"
-            }), !onOpenForm ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+            }), !onOpenForm && _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId == "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
               onClick: this.onOpenMissionForm,
               className: "btn btn-primary",
               children: "Create new mission"
-            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+            }) : _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId == "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
                 onClick: this.onSubmitForm,
                 className: "btn btn-info",
                 style: {
                   marginRight: "15px"
                 },
                 children: "Submit"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
                 onClick: this.onCancelMissionForm,
                 className: "btn btn-danger",
                 children: "Cancel"
               })]
-            })]
+            }) : ""]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
           className: "card-body slim-scroll",
-          children: [!onOpenForm ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Loading_LoadingEffect__WEBPACK_IMPORTED_MODULE_11__.default, {
+            onLoad: this.state.onLoad,
+            title: "Creating mission"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_8__.default, {
+            message: this.state.message
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_9__.default, {
+            message: this.state.errorMessage
+          }), !onOpenForm ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
             className: "row",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
               className: "col-sm-12",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                 className: "row",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                   className: "col-sm-4",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
                     className: "sr-only",
                     htmlFor: "inlineFormInputGroupUsername2",
                     children: "Search"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                     className: "input-group mb-2 mr-sm-2",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                       className: "input-group-prepend",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                         className: "input-group-text",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("i", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
                           className: "mdi mdi-magnify"
                         })
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
                       type: "text",
                       name: "searchValue",
                       className: "form-control",
@@ -8168,127 +8238,78 @@ var MissionList = /*#__PURE__*/function (_Form) {
                       onChange: this.handleSearchValue
                     })]
                   })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                   className: "col-sm-3",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("select", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("select", {
                     className: "form-control",
                     name: "scopeStatus",
                     style: {
                       fontSize: "16px"
                     },
                     onChange: this.handleChangeStatus,
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       style: {
                         fontSize: "16px"
                       },
                       value: "",
                       children: "Select status"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       value: 0,
                       children: "Pending"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       value: 1,
                       children: "Finished"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       value: 2,
                       children: "Rejected"
                     })]
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                   className: "col-sm-3",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("select", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("select", {
                     className: "form-control",
                     name: "scopeDate",
                     style: {
                       fontSize: "16px"
                     },
                     onChange: this.handleScopeDate,
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       style: {
                         fontSize: "16px"
                       },
                       value: "",
                       children: "Select Deadline Time"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       value: 1,
                       children: "Today"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       value: 2,
                       children: "Tomorrow"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       value: 3,
                       children: "This week"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       value: 4,
                       children: "This month"
                     })]
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
                   onClick: this.onScopeSearch,
                   className: "btn btn-primary mb-2",
                   children: "Submit"
                 })]
               })
             })
-          }) : "", this.state.onLoad ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-            style: {
-              display: "flex"
-            },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-              style: {
-                marginRight: "15px",
-                paddingTop: "5px"
-              },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("h4", {
-                children: "Creating mission ..."
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-              className: "sk-wave",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                className: "rect1",
-                style: {
-                  marginRight: "5px",
-                  backgroundColor: "#4c84ff"
-                }
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                className: "rect2",
-                style: {
-                  marginRight: "5px",
-                  backgroundColor: "#4c84ff"
-                }
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                className: "rect3",
-                style: {
-                  marginRight: "5px",
-                  backgroundColor: "#4c84ff"
-                }
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                className: "rect4",
-                style: {
-                  marginRight: "5px",
-                  backgroundColor: "#4c84ff"
-                }
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-                className: "rect5",
-                style: {
-                  backgroundColor: "#4c84ff"
-                }
-              })]
-            })]
-          }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_8__.default, {
-            message: this.state.message
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_9__.default, {
-            message: this.state.errorMessage
-          }), onOpenForm ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+          }) : "", onOpenForm ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
               className: "row",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 className: "col-sm-4",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                   className: "form-group",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
                     children: "Mission Title"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
                     type: "text",
                     name: "title",
                     required: true,
@@ -8299,17 +8320,17 @@ var MissionList = /*#__PURE__*/function (_Form) {
                     onChange: function onChange(ev) {
                       return _this2._setValue(ev, "title");
                     }
-                  }), dirty && title.err === "*" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                  }), dirty && title.err === "*" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
                     errorMessage: "Title cannot be empty"
                   }) : ""]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 className: "col-sm-4",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                   className: "form-group",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
                     children: "Deadline"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("input", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("input", {
                     type: "date",
                     name: "deadline",
                     required: true,
@@ -8320,17 +8341,17 @@ var MissionList = /*#__PURE__*/function (_Form) {
                     onChange: function onChange(ev) {
                       return _this2._setValue(ev, "deadline");
                     }
-                  }), dirty && deadline.err === "*" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                  }), dirty && deadline.err === "*" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
                     errorMessage: "Title cannot be empty"
                   }) : ""]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 className: "col-sm-4",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                   className: "form-group",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
                     children: "Staff"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("select", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("select", {
                     name: "staffId",
                     required: true,
                     className: "form-control",
@@ -8340,25 +8361,25 @@ var MissionList = /*#__PURE__*/function (_Form) {
                     onChange: function onChange(ev) {
                       return _this2._setValue(ev, "staffId");
                     },
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                       children: "Select staff"
                     }), staffList.map(function (item) {
-                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("option", {
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("option", {
                         value: item.id,
                         children: item.name
                       }, item.id);
                     })]
-                  }), dirty && staffId.err === "*" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                  }), dirty && staffId.err === "*" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
                     errorMessage: "Title cannot be empty"
                   }) : ""]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 className: "col-sm-8",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                   className: "form-group",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
                     children: "Content"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("textarea", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("textarea", {
                     name: "content",
                     required: true,
                     className: "form-control",
@@ -8370,17 +8391,17 @@ var MissionList = /*#__PURE__*/function (_Form) {
                     onChange: function onChange(ev) {
                       return _this2._setValue(ev, "content");
                     }
-                  }), dirty && content.err === "*" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
+                  }), dirty && content.err === "*" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_7__.default, {
                     errorMessage: "Title cannot be empty"
                   }) : ""]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 className: "col-sm-4",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
                   className: "form-group",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("label", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("label", {
                     children: "Note"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("textarea", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("textarea", {
                     name: "note",
                     className: "form-control",
                     id: "exampleFormControlInput3",
@@ -8396,93 +8417,93 @@ var MissionList = /*#__PURE__*/function (_Form) {
               })]
             })
           }) : "", missionList.map(function (item) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
               className: "media py-3 align-items-center justify-content-between",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 className: "d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-success text-white",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("i", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
                   className: "mdi mdi-email-outline font-size-20"
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 className: "media-body pr-3",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("a", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("a", {
                   className: "mt-0 mb-1 font-size-15 text-dark",
                   href: "#",
                   children: item.mission_title
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 style: {
                   marginRight: "150px"
                 },
-                children: item.mission_status === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+                children: item.mission_status === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
                   className: "btn btn-sm btn-warning",
                   style: {
                     color: "white"
                   },
                   children: "Pending"
-                }) : item.mission_status === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+                }) : item.mission_status === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
                   className: "btn btn-sm btn-success",
                   style: {
                     color: "white"
                   },
                   children: "Finished"
-                }) : item.mission_status === 2 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+                }) : item.mission_status === 2 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
                   className: "btn btn-sm btn-danger",
                   style: {
                     color: "white"
                   },
                   children: "Rejected"
                 }) : ""
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 style: {
                   marginRight: "50px"
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
                   className: " font-size-12 d-inline-block",
                   style: {
                     fontSize: "16px"
                   },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
                     children: "Created at: "
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("i", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
                     className: "mdi mdi-clock-outline"
                   }), " ", (0,_Helper_DateTime_ConvertDateTime__WEBPACK_IMPORTED_MODULE_10__.convertDateTime)(item.created_at)]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("span", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("span", {
                 className: " font-size-12 d-inline-block",
                 style: {
                   fontSize: "16px"
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("span", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("span", {
                   children: "Deadline : "
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("i", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("i", {
                   className: "mdi mdi-clock-outline"
                 }), " ", (0,_Helper_DateTime_ConvertDateTime__WEBPACK_IMPORTED_MODULE_10__.convertDateTime)(item.mission_deadline)]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                 style: {
                   marginLeft: "45px"
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_12__.Link, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_13__.Link, {
                   to: "/app/missions/".concat(item.id),
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
                     className: "btn btn-success",
                     children: "View details"
                   })
                 })
               })]
             }, item.id);
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
             style: {
               marginTop: "30px"
             },
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_2__.default, {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_2__.default, {
               data: this.state.dataTotal,
               page: page,
               rowsPerPage: rowPerPage,
               onChangePage: this.onChangePage
             })
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
           className: "mt-3"
         })]
       });
@@ -8534,7 +8555,9 @@ var API_ENPOINT = {
   GET_ONE_MISSION: "missions/",
   UPDATE_MISSION: "missions/",
   UPDATE_PROGRESS: "missions/",
-  SEARCH_MISSION: "missions/search"
+  SEARCH_MISSION: "missions/search",
+  GET_MISSION_STAFF: "missions/staffs/",
+  UPDATE_MISSION_ALL: "missions/"
 };
 
 var MissionService = /*#__PURE__*/function () {
@@ -8577,15 +8600,15 @@ var MissionService = /*#__PURE__*/function () {
       return getAllMission;
     }()
   }, {
-    key: "ChangePage",
+    key: "getMissionStaff",
     value: function () {
-      var _ChangePage = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(page) {
+      var _getMissionStaff = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(staffId) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.GET_ALL_MISSION, page);
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.GET_MISSION_STAFF + staffId);
 
               case 2:
                 return _context2.abrupt("return", _context2.sent);
@@ -8598,22 +8621,22 @@ var MissionService = /*#__PURE__*/function () {
         }, _callee2);
       }));
 
-      function ChangePage(_x) {
-        return _ChangePage.apply(this, arguments);
+      function getMissionStaff(_x) {
+        return _getMissionStaff.apply(this, arguments);
       }
 
-      return ChangePage;
+      return getMissionStaff;
     }()
   }, {
-    key: "createNewMission",
+    key: "ChangePage",
     value: function () {
-      var _createNewMission = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(data) {
+      var _ChangePage = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(page) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.ADD_NEW_MISSION, data);
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.GET_ALL_MISSION, page);
 
               case 2:
                 return _context3.abrupt("return", _context3.sent);
@@ -8626,22 +8649,22 @@ var MissionService = /*#__PURE__*/function () {
         }, _callee3);
       }));
 
-      function createNewMission(_x2) {
-        return _createNewMission.apply(this, arguments);
+      function ChangePage(_x2) {
+        return _ChangePage.apply(this, arguments);
       }
 
-      return createNewMission;
+      return ChangePage;
     }()
   }, {
-    key: "getOneMission",
+    key: "createNewMission",
     value: function () {
-      var _getOneMission = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(missionId) {
+      var _createNewMission = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(data) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().get(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.GET_ONE_MISSION + missionId);
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.ADD_NEW_MISSION, data);
 
               case 2:
                 return _context4.abrupt("return", _context4.sent);
@@ -8654,22 +8677,22 @@ var MissionService = /*#__PURE__*/function () {
         }, _callee4);
       }));
 
-      function getOneMission(_x3) {
-        return _getOneMission.apply(this, arguments);
+      function createNewMission(_x3) {
+        return _createNewMission.apply(this, arguments);
       }
 
-      return getOneMission;
+      return createNewMission;
     }()
   }, {
-    key: "updateMission",
+    key: "getOneMission",
     value: function () {
-      var _updateMission = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(missionId, data) {
+      var _getOneMission = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(missionId) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
                 _context5.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().patch(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.UPDATE_MISSION + missionId, data);
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.GET_ONE_MISSION + missionId);
 
               case 2:
                 return _context5.abrupt("return", _context5.sent);
@@ -8682,22 +8705,22 @@ var MissionService = /*#__PURE__*/function () {
         }, _callee5);
       }));
 
-      function updateMission(_x4, _x5) {
-        return _updateMission.apply(this, arguments);
+      function getOneMission(_x4) {
+        return _getOneMission.apply(this, arguments);
       }
 
-      return updateMission;
+      return getOneMission;
     }()
   }, {
-    key: "updateProgress",
+    key: "updateMission",
     value: function () {
-      var _updateProgress = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(missonId, data) {
+      var _updateMission = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(missionId, data) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
                 _context6.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().put(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.UPDATE_PROGRESS + missonId, data);
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().patch(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.UPDATE_MISSION + missionId, data);
 
               case 2:
                 return _context6.abrupt("return", _context6.sent);
@@ -8710,22 +8733,22 @@ var MissionService = /*#__PURE__*/function () {
         }, _callee6);
       }));
 
-      function updateProgress(_x6, _x7) {
-        return _updateProgress.apply(this, arguments);
+      function updateMission(_x5, _x6) {
+        return _updateMission.apply(this, arguments);
       }
 
-      return updateProgress;
+      return updateMission;
     }()
   }, {
-    key: "searchMission",
+    key: "updateProgress",
     value: function () {
-      var _searchMission = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7(data) {
+      var _updateProgress = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7(missonId, data) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
                 _context7.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.SEARCH_MISSION, data);
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().put(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.UPDATE_PROGRESS + missonId, data);
 
               case 2:
                 return _context7.abrupt("return", _context7.sent);
@@ -8738,11 +8761,67 @@ var MissionService = /*#__PURE__*/function () {
         }, _callee7);
       }));
 
-      function searchMission(_x8) {
+      function updateProgress(_x7, _x8) {
+        return _updateProgress.apply(this, arguments);
+      }
+
+      return updateProgress;
+    }()
+  }, {
+    key: "searchMission",
+    value: function () {
+      var _searchMission = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8(data) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                _context8.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.SEARCH_MISSION, data);
+
+              case 2:
+                return _context8.abrupt("return", _context8.sent);
+
+              case 3:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8);
+      }));
+
+      function searchMission(_x9) {
         return _searchMission.apply(this, arguments);
       }
 
       return searchMission;
+    }()
+  }, {
+    key: "updateMissionAll",
+    value: function () {
+      var _updateMissionAll = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9(missionId, data) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                _context9.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().patch(_Constances_const__WEBPACK_IMPORTED_MODULE_3__.BASE_URL + API_ENPOINT.UPDATE_MISSION_ALL + missionId + "/update", data);
+
+              case 2:
+                return _context9.abrupt("return", _context9.sent);
+
+              case 3:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9);
+      }));
+
+      function updateMissionAll(_x10, _x11) {
+        return _updateMissionAll.apply(this, arguments);
+      }
+
+      return updateMissionAll;
     }()
   }]);
 
@@ -13084,7 +13163,7 @@ var SideBar = /*#__PURE__*/function (_Component) {
                       className: "mdi mdi-chart-pie"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
                       className: "nav-text",
-                      children: "Department"
+                      children: "My Department"
                     }), " "]
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {

@@ -17,7 +17,7 @@ class CustomerList extends Component {
             message: "",
             errorMessage: "",
             searchValue: "",
-            totalData: ""
+            totalData: "",
         };
     }
 
@@ -30,7 +30,7 @@ class CustomerList extends Component {
             .then((res) => {
                 this.setState({
                     customerList: res.data.data,
-                    totalData: res.data.total
+                    totalData: res.data.total,
                 });
             })
             .catch((err) => {});
@@ -38,12 +38,14 @@ class CustomerList extends Component {
 
     onChangePage = (page) => {
         this.setState({ page });
-        CustomerService.changePageCustomer({page, search_value: this.state.searchValue}).then((res) => {
+        CustomerService.changePageCustomer({
+            page,
+            search_value: this.state.searchValue,
+        }).then((res) => {
             this.setState({
-                customerList: res.data.data
+                customerList: res.data.data,
             });
-        })
-
+        });
     };
 
     addNewCustomer = (data) => {
@@ -71,19 +73,18 @@ class CustomerList extends Component {
 
     onScopeSearch = () => {
         const data = {
-            search_value: this.state.searchValue
-        }
+            search_value: this.state.searchValue,
+        };
         CustomerService.scopeCustomer(data).then((res) => {
             this.setState({
                 customerList: res.data.data,
-                totalData: res.data.total
+                totalData: res.data.total,
             });
-        })
+        });
     };
 
     render() {
-        let { customerList, page, rowsPerPage, searchValue } =
-            this.state;
+        let { customerList, page, rowsPerPage, searchValue } = this.state;
         let loop = 1;
         return (
             <div>
@@ -134,19 +135,15 @@ class CustomerList extends Component {
                                 </div>
                             </div>
                         </div>
-                        {AuthService.roleId === "ADMIN" ? (
-                            <div className="btn-group-list">
-                                <button
-                                    className="btn btn-primary"
-                                    data-toggle="modal"
-                                    data-target="#addNewCustomer"
-                                >
-                                    Add new customer
-                                </button>
-                            </div>
-                        ) : (
-                            ""
-                        )}
+                        <div className="btn-group-list">
+                            <button
+                                className="btn btn-primary"
+                                data-toggle="modal"
+                                data-target="#addNewCustomer"
+                            >
+                                Add new customer
+                            </button>
+                        </div>
 
                         <AddNewCustomer onSubmitForm={this.addNewCustomer} />
                         <table className="table table-bordered">
@@ -162,32 +159,29 @@ class CustomerList extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {customerList
-                                    .map((item) => {
-                                        return (
-                                            <tr>
-                                                <td>{loop++}</td>
-                                                <td>{item.customer_name}</td>
-                                                <td>{item.customer_phone}</td>
-                                                <td>{item.customer_email}</td>
-                                                <td>{item.customer_address}</td>
-                                                <td>
-                                                    {item.appointment.length}
-                                                </td>
-                                                <td>
-                                                    <div className="btn-control">
-                                                        <Link
-                                                            to={`/app/customers/${item.id}`}
-                                                        >
-                                                            <button className="btn btn-primary">
-                                                                View
-                                                            </button>
-                                                        </Link>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
+                                {customerList.map((item) => {
+                                    return (
+                                        <tr>
+                                            <td>{loop++}</td>
+                                            <td>{item.customer_name}</td>
+                                            <td>{item.customer_phone}</td>
+                                            <td>{item.customer_email}</td>
+                                            <td>{item.customer_address}</td>
+                                            <td>{item.appointment.length}</td>
+                                            <td>
+                                                <div className="btn-control">
+                                                    <Link
+                                                        to={`/app/customers/${item.id}`}
+                                                    >
+                                                        <button className="btn btn-primary">
+                                                            View
+                                                        </button>
+                                                    </Link>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                         <div style={{ marginTop: "45px" }}>

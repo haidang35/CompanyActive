@@ -10,6 +10,7 @@ import AlertSuccess from "../../Shared/Alert/AlertSuccess";
 import AlertDanger from "../../Shared/Alert/AlertDanger";
 import { Link } from "react-router-dom";
 import { convertDateTime } from "../../Helper/DateTime/ConvertDateTime";
+import LoadingEffect from "../../Shared/Loading/LoadingEffect";
 
 class MissionList extends Form {
     constructor(props) {
@@ -42,13 +43,27 @@ class MissionList extends Form {
         };
     }
 
-    componentDidMount() {
-        this.getMissionList();
+    componentWillMount() {
+        if (AuthService.roleId == "ADMIN") {
+            this.getMissionList();
+        } else if (AuthService.roleId == "USER") {
+            this.getMissionStaff();
+        }
+
         this.getStaffList();
     }
 
     getMissionList = () => {
         MissionService.getAllMission().then((res) => {
+            this.setState({
+                missionList: res.data.data,
+                dataTotal: res.data.total,
+            });
+        });
+    };
+
+    getMissionStaff = () => {
+        MissionService.getMissionStaff(AuthService.userId).then((res) => {
             this.setState({
                 missionList: res.data.data,
                 dataTotal: res.data.total,
@@ -184,7 +199,11 @@ class MissionList extends Form {
     };
 
     refreshData = () => {
-        this.getMissionList();
+        if (AuthService.roleId == "ADMIN") {
+            this.getMissionList();
+        } else if (AuthService.roleId == "USER") {
+            this.getMissionStaff();
+        }
     };
 
     render() {
@@ -220,14 +239,14 @@ class MissionList extends Form {
                         >
                             Refresh
                         </button>
-                        {!onOpenForm ? (
+                        {!onOpenForm && AuthService.roleId == "ADMIN" ? (
                             <button
                                 onClick={this.onOpenMissionForm}
                                 className="btn btn-primary"
                             >
                                 Create new mission
                             </button>
-                        ) : (
+                        ) : AuthService.roleId == "ADMIN" ? (
                             <div>
                                 <button
                                     onClick={this.onSubmitForm}
@@ -243,10 +262,19 @@ class MissionList extends Form {
                                     Cancel
                                 </button>
                             </div>
+                        ) : (
+                            ""
                         )}
                     </div>
                 </div>
                 <div className="card-body slim-scroll">
+                    <LoadingEffect
+                        onLoad={this.state.onLoad}
+                        title={"Creating mission"}
+                    />
+
+                    <AlertSuccess message={this.state.message} />
+                    <AlertDanger message={this.state.errorMessage} />
                     {!onOpenForm ? (
                         <div className="row">
                             <div className="col-sm-12">
@@ -330,56 +358,6 @@ class MissionList extends Form {
                         ""
                     )}
 
-                    {this.state.onLoad ? (
-                        <div style={{ display: "flex" }}>
-                            <div
-                                style={{
-                                    marginRight: "15px",
-                                    paddingTop: "5px",
-                                }}
-                            >
-                                <h4>Creating mission ...</h4>
-                            </div>
-                            <div className="sk-wave">
-                                <div
-                                    className="rect1"
-                                    style={{
-                                        marginRight: "5px",
-                                        backgroundColor: "#4c84ff",
-                                    }}
-                                />
-                                <div
-                                    className="rect2"
-                                    style={{
-                                        marginRight: "5px",
-                                        backgroundColor: "#4c84ff",
-                                    }}
-                                />
-                                <div
-                                    className="rect3"
-                                    style={{
-                                        marginRight: "5px",
-                                        backgroundColor: "#4c84ff",
-                                    }}
-                                />
-                                <div
-                                    className="rect4"
-                                    style={{
-                                        marginRight: "5px",
-                                        backgroundColor: "#4c84ff",
-                                    }}
-                                />
-                                <div
-                                    className="rect5"
-                                    style={{ backgroundColor: "#4c84ff" }}
-                                />
-                            </div>
-                        </div>
-                    ) : (
-                        ""
-                    )}
-                    <AlertSuccess message={this.state.message} />
-                    <AlertDanger message={this.state.errorMessage} />
                     {onOpenForm ? (
                         <div>
                             <div className="row">

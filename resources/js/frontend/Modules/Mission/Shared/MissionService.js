@@ -8,7 +8,9 @@ const API_ENPOINT = {
     GET_ONE_MISSION: "missions/",
     UPDATE_MISSION: "missions/",
     UPDATE_PROGRESS: "missions/",
-    SEARCH_MISSION: "missions/search"
+    SEARCH_MISSION: "missions/search",
+    GET_MISSION_STAFF: "missions/staffs/",
+    UPDATE_MISSION_ALL: "missions/"
 }
 
 class MissionService {
@@ -21,6 +23,10 @@ class MissionService {
 
     async getAllMission() {
         return await axios.get(BASE_URL + API_ENPOINT.GET_ALL_MISSION);
+    }
+
+    async getMissionStaff(staffId) {
+        return await axios.get(BASE_URL + API_ENPOINT.GET_MISSION_STAFF + staffId);
     }
 
     async ChangePage(page) {
@@ -45,6 +51,10 @@ class MissionService {
 
     async searchMission(data) {
         return await axios.post(BASE_URL + API_ENPOINT.SEARCH_MISSION, data);
+    }
+
+    async updateMissionAll(missionId, data) {
+        return await axios.patch(BASE_URL + API_ENPOINT.UPDATE_MISSION_ALL + missionId + "/update", data );
     }
 
 

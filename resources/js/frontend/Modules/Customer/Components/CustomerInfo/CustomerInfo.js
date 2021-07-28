@@ -98,7 +98,7 @@ class CustomerInfo extends Form {
                             <AlertSuccess message={this.state.message} />
                             <AlertDanger message={this.state.errorMessage} />
                         </div>
-                        {AuthService.roleId === "ADMIN" ? (
+
                             <div
                                 className="col-sm-12"
                                 style={{ marginBottom: "35px" }}
@@ -129,9 +129,7 @@ class CustomerInfo extends Form {
                                     )}
                                 </div>
                             </div>
-                        ) : (
-                            ""
-                        )}
+                       
 
                         <div className="detail-content">
                             <div className="row">

@@ -40,7 +40,7 @@ Route::get('/users', function () {
     return $users;
 });
 
-Route::get('users/all', function() {
+Route::get('users/all', function () {
     $users = User::all();
     return $users;
 });
@@ -96,20 +96,16 @@ Route::delete('users/{userId}', function ($userId) {
 });
 
 Route::post('users', function (Request $request) {
-    try {
-        $user = User::create([
-            "name" => $request->name,
-            "birthday" => $request->birthday,
-            "email" => $request->email,
-            "phone" => $request->phone,
-            "address" => $request->address,
-            "password" => $request->password,
-            "department_id" => $request->department_id
-        ]);
-        return $user;
-    } catch (\Exception $exception) {
-        return "Create user failed";
-    }
+    $user = User::create([
+        "name" => $request->name,
+        "birthday" => $request->birthday,
+        "email" => $request->email,
+        "phone" => $request->phone,
+        "address" => $request->address,
+        "password" => Hash::make($request->password),
+        "department_id" => $request->department_id
+    ]);
+    return $user;
 });
 
 //Department
@@ -122,12 +118,12 @@ Route::get('/departments', function (Request $request) {
     return $departments;
 });
 
-Route::get('/departments/pics', function() {
+Route::get('/departments/pics', function () {
     $departments = Department::with("Manager")->get();
     $pics = [];
-    foreach($departments as $item) {
+    foreach ($departments as $item) {
         $pic = User::find($item->department_pic);
-        if($pic) $pics[] = $pic;
+        if ($pic) $pics[] = $pic;
     }
     return $pics;
 });
@@ -249,15 +245,15 @@ Route::put("/staffs/{staff_id}", function ($staff_id, Request $request) {
 
 //Login
 Route::post('/login', function (Request $request) {
-        $username = $request->get("username");
-        $password = $request->get("password");
-        $user = User::where("email", $username)->first();
-        if ($user &&  Hash::check($password, $user->password) == true) {
-            return $user;
-        } else {
-            $userStaff = Staff::where("staff_email", $username)->first();
-            if ($userStaff->password == $password) return $userStaff;
-        }
+    $username = $request->get("username");
+    $password = $request->get("password");
+    $user = User::where("email", $username)->first();
+    if ($user &&  Hash::check($password, $user->password) == true) {
+        return $user;
+    } else {
+        $userStaff = Staff::where("staff_email", $username)->first();
+        if ($userStaff->password == $password) return $userStaff;
+    }
 });
 
 Route::post('register', function (Request $request) {
@@ -283,7 +279,7 @@ Route::get('customers', function () {
     return $customers;
 });
 
-Route::get('customers/all', function() {
+Route::get('customers/all', function () {
     $customers = Customer::all();
     return $customers;
 });
@@ -398,6 +394,11 @@ Route::get('missions', function () {
     return $missions;
 });
 
+Route::get('missions/staffs/{staffId}', function ($staffId) {
+    $missions = Mission::where("staff_id", $staffId)->paginate(20);
+    return $missions;
+});
+
 Route::post('missions/search', function (Request $request) {
     $search = $request->search_value;
     $status = $request->status;
@@ -419,6 +420,17 @@ Route::post('missions', function (Request $request) {
     $timeId = $request->date_time;
     $missions = Mission::search($search_value)->status($status)->time($timeId)->paginate(20, ['*'], 'page', $page);
     return $missions;
+});
+
+Route::patch("missions/{missionId}/update", function ($missionId, Request $request) {
+    $mission = Mission::find($missionId);
+    $mission->update([
+        "mission_title" => $request->mission_title,
+        "mission_content" => $request->mission_content,
+        "mission_deadline" => $request->mission_deadline,
+        "mission_note" => $request->mission_note,
+    ]);
+    return $mission;
 });
 
 Route::patch('missions/{missionId}', function (Request $request, $missionId) {
