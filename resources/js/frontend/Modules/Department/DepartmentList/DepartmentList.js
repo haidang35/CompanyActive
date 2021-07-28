@@ -299,3 +299,4 @@ class DepartmentList extends Component {
     }
 }
 export default DepartmentList;
+
