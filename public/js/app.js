@@ -3631,8 +3631,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _Shared_Form_Form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../Shared/Form/Form */ "./resources/js/frontend/Shared/Form/Form.js");
+/* harmony import */ var _Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../Shared/Form/FormError */ "./resources/js/frontend/Shared/Form/FormError.js");
+/* harmony import */ var _Staff_Shared_StaffService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../Staff/Shared/StaffService */ "./resources/js/frontend/Modules/Staff/Shared/StaffService.js");
+/* harmony import */ var _Appointment_Shared_AppointmentService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../Appointment/Shared/AppointmentService */ "./resources/js/frontend/Modules/Appointment/Shared/AppointmentService.js");
+/* harmony import */ var _Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../Shared/Alert/AlertSuccess */ "./resources/js/frontend/Shared/Alert/AlertSuccess.js");
+/* harmony import */ var _Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../Shared/Alert/AlertDanger */ "./resources/js/frontend/Shared/Alert/AlertDanger.js");
+/* harmony import */ var _Shared_Loading_LoadingEffect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../Shared/Loading/LoadingEffect */ "./resources/js/frontend/Shared/Loading/LoadingEffect.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3655,13 +3662,22 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
 
-var CustomerAppointment = /*#__PURE__*/function (_Component) {
-  _inherits(CustomerAppointment, _Component);
+
+
+
+
+
+
+
+
+var CustomerAppointment = /*#__PURE__*/function (_Form) {
+  _inherits(CustomerAppointment, _Form);
 
   var _super = _createSuper(CustomerAppointment);
 
@@ -3671,63 +3687,263 @@ var CustomerAppointment = /*#__PURE__*/function (_Component) {
     _classCallCheck(this, CustomerAppointment);
 
     _this = _super.call(this, props);
-    _this.state = {};
+
+    _defineProperty(_assertThisInitialized(_this), "getAllStaff", function () {
+      _Staff_Shared_StaffService__WEBPACK_IMPORTED_MODULE_3__.default.getAllStaffNotPaginate().then(function (res) {
+        _this.setState({
+          staffList: res.data
+        });
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onOpenForm", function () {
+      _this.setState({
+        openForm: true
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onCancelMissionForm", function () {
+      _this.setState({
+        openForm: false
+      });
+
+      _this._fillForm({
+        title: "",
+        time: "",
+        staffId: "",
+        desc: ""
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onSubmitForm", function () {
+      _this._validateForm();
+
+      _this.state.form["dirty"] = true;
+      var form = _this.state.form;
+      var customerId = _this.props.customerId;
+      var data = {
+        appointment_title: form.title.value,
+        appointment_time: form.time.value,
+        appointment_desc: form.desc.value,
+        appointment_status: 0,
+        staff_id: form.staffId.value,
+        customer_id: customerId
+      };
+
+      if (_this._isFormValid()) {
+        _this.setState({
+          onLoad: true,
+          openForm: false
+        });
+
+        _Appointment_Shared_AppointmentService__WEBPACK_IMPORTED_MODULE_4__.default.createAppointment(data).then(function (res) {
+          _this.setState({
+            message: "Create new appointment ".concat(res.data.appointment_title, " successfull !!"),
+            onLoad: false
+          });
+
+          _this._fillForm({
+            title: "",
+            time: "",
+            staffId: "",
+            desc: ""
+          });
+        })["catch"](function (err) {
+          _this.setState({
+            errorMessage: "Create new appointment failed, try again please !!",
+            onLoad: false
+          });
+        });
+      }
+    });
+
+    _this.state = {
+      staffList: [],
+      form: _this._getInitFormData({
+        title: "",
+        time: "",
+        staffId: "",
+        desc: ""
+      }),
+      openForm: false,
+      message: "",
+      errorMessage: "",
+      onLoad: false
+    };
     return _this;
   }
 
   _createClass(CustomerAppointment, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.getAllStaff();
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var appointments = this.props.appointments;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      var _this$state = this.state,
+          staffList = _this$state.staffList,
+          openForm = _this$state.openForm;
+      var _this$state$form = this.state.form,
+          title = _this$state$form.title,
+          time = _this$state$form.time,
+          desc = _this$state$form.desc,
+          staffId = _this$state$form.staffId,
+          dirty = _this$state$form.dirty;
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
           className: "card card-default todo-table",
           id: "todo",
           "data-scroll-height": 500,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
             className: "card-header justify-content-between align-items-center card-header-border-bottom",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h2", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
               className: "d-inline-block",
               children: "Appointments of customer"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("a", {
+            }), !this.state.openForm ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("button", {
+              onClick: this.onOpenForm,
               className: "btn btn-primary btn-pill",
               id: "add-task",
-              href: "#",
               role: "button",
-              children: [" ", "Add task", " "]
+              children: [" ", "Add new appointment", " "]
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+                onClick: this.onSubmitForm,
+                className: "btn btn-info",
+                style: {
+                  marginRight: "15px"
+                },
+                children: "Submit"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+                onClick: this.onCancelMissionForm,
+                className: "btn btn-danger",
+                children: "Cancel"
+              })]
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
             className: "card-body slim-scroll",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-              className: "todo-single-item d-none",
-              id: "todo-input",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("form", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Loading_LoadingEffect__WEBPACK_IMPORTED_MODULE_7__.default, {
+              onLoad: this.state.onLoad,
+              title: "Creating new appointment"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_5__.default, {
+              message: this.state.message
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_6__.default, {
+              message: this.state.errorMessage
+            }), openForm ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+              className: "row",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+                className: "col-sm-4",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                   className: "form-group",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+                    children: "Appointment Title"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
                     type: "text",
+                    name: "title",
+                    required: true,
                     className: "form-control",
-                    placeholder: "Enter Todo",
-                    autofocus: true
-                  })
-                })
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+                    id: "exampleFormControlInput3",
+                    placeholder: "Appointment title ",
+                    value: title.value,
+                    onChange: function onChange(ev) {
+                      return _this2._setValue(ev, "title");
+                    }
+                  })]
+                }), title.err == "*" && dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_2__.default, {
+                  errorMessage: "Appointment title cannot be empty"
+                }) : ""]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+                className: "col-sm-4",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+                  className: "form-group",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+                    children: "Time"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
+                    type: "date",
+                    name: "time",
+                    required: true,
+                    className: "form-control",
+                    id: "exampleFormControlInput3",
+                    placeholder: "Appointment time ",
+                    value: time.value,
+                    onChange: function onChange(ev) {
+                      return _this2._setValue(ev, "time");
+                    }
+                  })]
+                }), time.err == "*" && dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_2__.default, {
+                  errorMessage: "Appointment time cannot be empty"
+                }) : ""]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+                className: "col-sm-4",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+                  className: "form-group",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+                    children: "Staff"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("select", {
+                    name: "staffId",
+                    required: true,
+                    className: "form-control",
+                    id: "exampleFormControlInput3",
+                    placeholder: "Appointment Content ",
+                    value: staffId.value,
+                    onChange: function onChange(ev) {
+                      return _this2._setValue(ev, "staffId");
+                    },
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                      value: "",
+                      children: "Select staff"
+                    }), staffList.map(function (item) {
+                      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                        value: item.id,
+                        children: item.name
+                      }, item.id);
+                    })]
+                  })]
+                }), staffId.err == "*" && dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_2__.default, {
+                  errorMessage: "Staff cannot be empty"
+                }) : ""]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+                className: "col-sm-12",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+                  className: "form-group",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+                    children: "Content"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("textarea", {
+                    name: "desc",
+                    required: true,
+                    className: "form-control",
+                    id: "exampleFormControlInput3",
+                    cols: "6",
+                    rows: "6",
+                    placeholder: "Description ",
+                    value: desc.value,
+                    onChange: function onChange(ev) {
+                      return _this2._setValue(ev, "desc");
+                    }
+                  })]
+                }), desc.err == "*" && dirty ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_Shared_Form_FormError__WEBPACK_IMPORTED_MODULE_2__.default, {
+                  errorMessage: "Description cannot be empty"
+                }) : ""]
+              })]
+            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
               className: "todo-list",
               id: "todo-list",
               children: appointments.map(function (item) {
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Link, {
                   to: "/app/appointments/".concat(item.id),
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
                     className: "todo-single-item d-flex flex-row justify-content-between current alert alert-primary",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
                       className: "mdi"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                       children: item.appointment_title
-                    }), item.appointment_status ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                    }), item.appointment_status ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                       className: "badge badge-success",
                       children: "Done"
-                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
                       className: "badge badge-warning",
                       children: "Pending"
                     })]
@@ -3735,7 +3951,7 @@ var CustomerAppointment = /*#__PURE__*/function (_Component) {
                 });
               })
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
             className: "mt-3"
           })]
         })
@@ -3744,7 +3960,7 @@ var CustomerAppointment = /*#__PURE__*/function (_Component) {
   }]);
 
   return CustomerAppointment;
-}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+}(_Shared_Form_Form__WEBPACK_IMPORTED_MODULE_1__.default);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomerAppointment);
 
@@ -3830,6 +4046,7 @@ var CustomerDetails = /*#__PURE__*/function (_Component) {
           customerId: id,
           getAppointment: this.getAppointment
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Appointment_CustomerAppointment__WEBPACK_IMPORTED_MODULE_2__.default, {
+          customerId: id,
           appointments: this.state.appointments
         })]
       });
