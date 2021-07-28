@@ -8,7 +8,8 @@ const API_ENDPOINT = {
     UPDATE_CUSTOMER: "customers/",
     ADD_NEW_CUSTOMER: "customers",
     CHANGE_PAGE: "customers/page",
-    SCOPE_CUSTOMER: "customers/search"
+    SCOPE_CUSTOMER: "customers/search",
+    GET_ALL_CUSTOMER_NOT_PAGINATE: "customers/all"
 }
 
 class CustomerService {
@@ -41,6 +42,10 @@ class CustomerService {
 
     async scopeCustomer(data) {
         return await axios.post(BASE_URL + API_ENDPOINT.SCOPE_CUSTOMER, data);
+    }
+
+    async getAllCustomerNotPaginate() {
+        return await axios.get(BASE_URL + API_ENDPOINT.GET_ALL_CUSTOMER_NOT_PAGINATE);
     }
 
 

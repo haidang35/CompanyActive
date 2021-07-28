@@ -40,6 +40,11 @@ Route::get('/users', function () {
     return $users;
 });
 
+Route::get('users/all', function() {
+    $users = User::all();
+    return $users;
+});
+
 Route::post('users/page', function (Request $request) {
     $page = $request->page;
     $search = $request->search_value;
@@ -131,7 +136,7 @@ Route::post('departments/page', function (Request $request) {
     $page = $request->page;
     $search = $request->search_value;
     $pic = $request->pic;
-    $departments = Department::with("Staff")->search($search)->pic($pic)->paginate(20, ['*'], 'page', $page);
+    $departments = Department::with("Staff")->with("Manager")->search($search)->pic($pic)->paginate(20, ['*'], 'page', $page);
     return $departments;
 });
 
@@ -275,6 +280,11 @@ Route::post('register', function (Request $request) {
 // Customer
 Route::get('customers', function () {
     $customers = Customer::with("Appointment")->paginate(20);
+    return $customers;
+});
+
+Route::get('customers/all', function() {
+    $customers = Customer::all();
     return $customers;
 });
 

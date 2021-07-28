@@ -30,7 +30,7 @@ class AddNewMission extends Form {
     getStaffList = () => {
         StaffService.getAllStaff().then((res) => {
             this.setState({
-                staffList: res.data,
+                staffList: res.data.data,
             });
         });
     };

@@ -27,17 +27,17 @@ class AddNewAppointment extends Form {
     }
 
     getAllStaff = () => {
-        StaffService.getAllStaff().then((res) => {
+        StaffService.getAllStaffNotPaginate().then((res) => {
             this.setState({
-                staffs: res.data.data,
+                staffs: res.data,
             });
         });
     };
 
     getAllCustomer = () => {
-        CustomerService.getAllCustomer().then((res) => {
+        CustomerService.getAllCustomerNotPaginate().then((res) => {
             this.setState({
-                customers: res.data.data,
+                customers: res.data,
             });
         });
     };
