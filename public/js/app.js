@@ -7242,6 +7242,10 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
           pic: res.data.pic,
           staff: res.data.staff
         });
+
+        _this.setState({
+          errorMessage: res.data.message
+        });
       });
     });
 
@@ -7564,6 +7568,7 @@ var MissionInfo = /*#__PURE__*/function (_Form) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_MissionProgress__WEBPACK_IMPORTED_MODULE_5__.default, {
           status: status.value,
           progress: progress.value,
+          deadline: deadline.value,
           missionId: id
         })]
       });
@@ -7657,7 +7662,7 @@ var MissionProgress = /*#__PURE__*/function (_Component) {
           missionId = _this$state.missionId;
 
       if (progress + 10 === 100) {
-        _this.updateMissionStatus();
+        _this.updateMissionStatus(1);
       }
 
       if (progress < 100) {
@@ -7693,10 +7698,10 @@ var MissionProgress = /*#__PURE__*/function (_Component) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_this), "updateMissionStatus", function () {
+    _defineProperty(_assertThisInitialized(_this), "updateMissionStatus", function (status) {
       var missionId = _this.state.missionId;
       var data = {
-        mission_status: 1
+        mission_status: status
       };
       _Shared_MissionService__WEBPACK_IMPORTED_MODULE_2__.default.updateMission(missionId, data).then(function (res) {
         _this.setState({
@@ -7717,7 +7722,6 @@ var MissionProgress = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var progress = this.state.progress;
-      console.log("pro", progress);
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "card card-default",
