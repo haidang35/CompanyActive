@@ -7,7 +7,11 @@ import { Link } from "react-router-dom";
 import AddNewAppointment from "./Components/AppointmentForm/AddNewAppointment";
 import AuthService from "../../Shared/AuthService/AuthService";
 import LoadingEffect from "../../Shared/Loading/LoadingEffect";
-import { convertDateTime } from "../../Helper/DateTime/ConvertDateTime";
+import ModalConfirm from "../../Shared/Modal/ModalConfirm";
+import {
+    convertDateTime,
+    getDateNow,
+} from "../../Helper/DateTime/ConvertDateTime";
 class AppointmentList extends Component {
     constructor(props) {
         super(props);
@@ -21,14 +25,17 @@ class AppointmentList extends Component {
             onSearch: false,
             scopeStatus: "",
             totalData: "",
-            onLoad: false
+            onLoad: false,
+            scopeTime: "",
+            datePicker: false,
+            scopeDatePicker: "",
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (AuthService.roleId === "ADMIN") {
             this.getAppointmentList();
-        } else if(AuthService.roleId === "USER") {
+        } else if (AuthService.roleId === "USER") {
             this.getAppointmentStaff();
         }
     }
@@ -64,6 +71,8 @@ class AppointmentList extends Component {
             page,
             search_value: this.state.searchValue,
             status: this.state.scopeStatus,
+            scope_time: this.state.scopeTime,
+            scope_date: this.state.scopeDatePicker,
         };
         AppointmentService.changePageAppointment(data).then((res) => {
             this.setState({
@@ -74,14 +83,14 @@ class AppointmentList extends Component {
 
     addNewAppointment = (data) => {
         this.setState({
-            onLoad: true
+            onLoad: true,
         });
         AppointmentService.createAppointment(data)
             .then((res) => {
                 this.getAppointmentList();
                 this.setState({
                     message: `Create a new appointment ${res.data.appointment_title} successful !!`,
-                    onLoad: false
+                    onLoad: false,
                 });
             })
             .catch((err) => {
@@ -100,11 +109,15 @@ class AppointmentList extends Component {
     };
 
     onScopeSearch = () => {
-        const { searchValue, scopeStatus } = this.state;
+        const { searchValue, scopeStatus, scopeTime, scopeDatePicker } =
+            this.state;
         const data = {
             search_value: searchValue,
             status: scopeStatus,
+            scope_time: scopeTime,
+            scope_date: scopeDatePicker,
         };
+        console.log(data);
         AppointmentService.scopeAppointment(data).then((res) => {
             this.setState({
                 appointmentList: res.data.data,
@@ -120,28 +133,64 @@ class AppointmentList extends Component {
         });
     };
 
+    changeDatePicker = () => {
+        if (this.state.datePicker) {
+            this.setState({
+                scopeDatePicker: "",
+            });
+        }
+        this.setState({
+            datePicker: !this.state.datePicker,
+            scopeDatePicker: getDateNow(),
+        });
+    };
+
+    handleChangeDatePicker = (ev) => {
+        const { name, value } = ev.target;
+        this.setState({ [name]: value });
+    };
+
+    onDeleteAppointment = (appointmentId) => {
+        AppointmentService.deleteAppointment(appointmentId)
+            .then((res) => {
+                this.setState({
+                    message: `Delete appointment with title ${res.data.appointment_title} successful !!`,
+                });
+            })
+            .catch((err) => {
+                this.setState({
+                    errorMessage: `Delete appointment failed`,
+                });
+            });
+    };
+
     render() {
-        let {
-            appointmentList,
-            page,
-            rowsPerPage,
-            searchValue,
-            onSearch,
-            scopeStatus,
-        } = this.state;
+        let { appointmentList, page } = this.state;
         let loop = 1;
         return (
             <div>
                 <div className="card card-default">
                     <div className="card-header card-header-border-bottom">
                         <h2>Appointment List</h2>
+                        <div style={{ marginLeft: "1230px" }}>
+                            <button
+                                className="btn btn-primary"
+                                data-toggle="modal"
+                                data-target="#addNewAppointment"
+                            >
+                                Add new appointment
+                            </button>
+                        </div>
                     </div>
 
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
                         <AlertDanger message={this.state.errorMessage} />
-                        <LoadingEffect onLoad={this.state.onLoad} title={"Creating appointment"} />
-                        <div className="row">
+                        <LoadingEffect
+                            onLoad={this.state.onLoad}
+                            title={"Creating appointment"}
+                        />
+                        <div className="row" style={{ marginBottom: "25px" }}>
                             <div className="col-sm-12">
                                 <div className="row">
                                     <div className="col-sm-4">
@@ -189,6 +238,57 @@ class AppointmentList extends Component {
                                             <option value={2}>Rejected</option>
                                         </select>
                                     </div>
+                                    <div className="col-sm-1">
+                                        <button
+                                            onClick={this.changeDatePicker}
+                                            className="btn btn-info"
+                                        >
+                                            {this.state.datePicker
+                                                ? "List Time"
+                                                : "Calendar"}
+                                        </button>
+                                    </div>
+                                    <div className="col-sm-3">
+                                        {this.state.datePicker ? (
+                                            <input
+                                                type="date"
+                                                name="scopeDatePicker"
+                                                className="form-control"
+                                                value={
+                                                    this.state.scopeDatePicker
+                                                }
+                                                onChange={
+                                                    this.handleChangeDatePicker
+                                                }
+                                            />
+                                        ) : (
+                                            <select
+                                                className="form-control"
+                                                name="scopeTime"
+                                                style={{ fontSize: "16px" }}
+                                                onChange={
+                                                    this.handleChangeDatePicker
+                                                }
+                                            >
+                                                <option
+                                                    style={{ fontSize: "16px" }}
+                                                    value=""
+                                                >
+                                                    Select Deadline Time
+                                                </option>
+                                                <option value={1}>Today</option>
+                                                <option value={2}>
+                                                    Tomorrow
+                                                </option>
+                                                <option value={3}>
+                                                    This week
+                                                </option>
+                                                <option value={4}>
+                                                    This month
+                                                </option>
+                                            </select>
+                                        )}
+                                    </div>
 
                                     <button
                                         onClick={this.onScopeSearch}
@@ -199,19 +299,6 @@ class AppointmentList extends Component {
                                 </div>
                             </div>
                         </div>
-                        {AuthService.roleId === "ADMIN" ? (
-                            <div className="btn-group-list">
-                                <button
-                                    className="btn btn-primary"
-                                    data-toggle="modal"
-                                    data-target="#addNewAppointment"
-                                >
-                                    Add new appointment
-                                </button>
-                            </div>
-                        ) : (
-                            ""
-                        )}
 
                         <AddNewAppointment
                             onSubmitForm={this.addNewAppointment}
@@ -234,7 +321,11 @@ class AppointmentList extends Component {
                                         <tr key={item.id}>
                                             <td>{loop++}</td>
                                             <td>{item.appointment_title}</td>
-                                            <td>{convertDateTime(item.appointment_time)}</td>
+                                            <td>
+                                                {convertDateTime(
+                                                    item.appointment_time
+                                                )}
+                                            </td>
                                             <td>{item.appointment_desc}</td>
                                             <td>
                                                 <div class="btn-control">
@@ -268,11 +359,22 @@ class AppointmentList extends Component {
                                                         </button>
                                                     </Link>
 
-                                                    <button className="btn btn-danger">
+                                                    <button
+                                                        className="btn btn-danger"
+                                                        data-toggle="modal"
+                                                        data-target={`#modalConfirm${item.id}`}
+                                                    >
                                                         Delete
                                                     </button>
                                                 </div>
                                             </td>
+                                            <ModalConfirm
+                                                answer={
+                                                    this.onDeleteAppointment
+                                                }
+                                                message={`Are you sure delete ${item.appointment_title}`}
+                                                confirmId={item.id}
+                                            />
                                         </tr>
                                     );
                                 })}

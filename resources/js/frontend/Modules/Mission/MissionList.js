@@ -350,7 +350,7 @@ class MissionList extends Form {
                                             className="btn btn-info"
                                         >
                                             {
-                                                this.state.datePicker ? "List View" : "Calendar"
+                                                this.state.datePicker ? "List Time" : "Calendar"
                                             }
                                         </button>
                                     </div>

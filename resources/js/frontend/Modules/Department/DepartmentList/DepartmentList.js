@@ -128,7 +128,7 @@ class DepartmentList extends Component {
                     <td scope="row">{++loop}</td>
                     <td>{item.department_name}</td>
                     <td>{item.department_code}</td>
-                    <td>{item.manager.name}</td>
+                    <td>{ item.manager !== null ? item.manager.name : ""}</td>
                     <td>{staffs.length}</td>
                     <td>{item.department_desc}</td>
                     <td>

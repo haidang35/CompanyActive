@@ -2264,12 +2264,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/Alert/AlertDanger */ "./resources/js/frontend/Shared/Alert/AlertDanger.js");
 /* harmony import */ var _Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Shared/Pagination/Pagination */ "./resources/js/frontend/Shared/Pagination/Pagination.js");
 /* harmony import */ var _Shared_AppointmentService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Shared/AppointmentService */ "./resources/js/frontend/Modules/Appointment/Shared/AppointmentService.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _Components_AppointmentForm_AddNewAppointment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/AppointmentForm/AddNewAppointment */ "./resources/js/frontend/Modules/Appointment/Components/AppointmentForm/AddNewAppointment.js");
 /* harmony import */ var _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Shared/AuthService/AuthService */ "./resources/js/frontend/Shared/AuthService/AuthService.js");
 /* harmony import */ var _Shared_Loading_LoadingEffect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Shared/Loading/LoadingEffect */ "./resources/js/frontend/Shared/Loading/LoadingEffect.js");
-/* harmony import */ var _Helper_DateTime_ConvertDateTime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Helper/DateTime/ConvertDateTime */ "./resources/js/frontend/Helper/DateTime/ConvertDateTime.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Shared_Modal_ModalConfirm__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Shared/Modal/ModalConfirm */ "./resources/js/frontend/Shared/Modal/ModalConfirm.js");
+/* harmony import */ var _Helper_DateTime_ConvertDateTime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Helper/DateTime/ConvertDateTime */ "./resources/js/frontend/Helper/DateTime/ConvertDateTime.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2293,6 +2294,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -2351,7 +2353,9 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
       var data = {
         page: page,
         search_value: _this.state.searchValue,
-        status: _this.state.scopeStatus
+        status: _this.state.scopeStatus,
+        scope_time: _this.state.scopeTime,
+        scope_date: _this.state.scopeDatePicker
       };
       _Shared_AppointmentService__WEBPACK_IMPORTED_MODULE_4__.default.changePageAppointment(data).then(function (res) {
         _this.setState({
@@ -2392,11 +2396,16 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "onScopeSearch", function () {
       var _this$state = _this.state,
           searchValue = _this$state.searchValue,
-          scopeStatus = _this$state.scopeStatus;
+          scopeStatus = _this$state.scopeStatus,
+          scopeTime = _this$state.scopeTime,
+          scopeDatePicker = _this$state.scopeDatePicker;
       var data = {
         search_value: searchValue,
-        status: scopeStatus
+        status: scopeStatus,
+        scope_time: scopeTime,
+        scope_date: scopeDatePicker
       };
+      console.log(data);
       _Shared_AppointmentService__WEBPACK_IMPORTED_MODULE_4__.default.scopeAppointment(data).then(function (res) {
         _this.setState({
           appointmentList: res.data.data,
@@ -2413,6 +2422,39 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
       _this.setState(_defineProperty({}, name, value));
     });
 
+    _defineProperty(_assertThisInitialized(_this), "changeDatePicker", function () {
+      if (_this.state.datePicker) {
+        _this.setState({
+          scopeDatePicker: ""
+        });
+      }
+
+      _this.setState({
+        datePicker: !_this.state.datePicker,
+        scopeDatePicker: (0,_Helper_DateTime_ConvertDateTime__WEBPACK_IMPORTED_MODULE_9__.getDateNow)()
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleChangeDatePicker", function (ev) {
+      var _ev$target3 = ev.target,
+          name = _ev$target3.name,
+          value = _ev$target3.value;
+
+      _this.setState(_defineProperty({}, name, value));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "onDeleteAppointment", function (appointmentId) {
+      _Shared_AppointmentService__WEBPACK_IMPORTED_MODULE_4__.default.deleteAppointment(appointmentId).then(function (res) {
+        _this.setState({
+          message: "Delete appointment with title ".concat(res.data.appointment_title, " successful !!")
+        });
+      })["catch"](function (err) {
+        _this.setState({
+          errorMessage: "Delete appointment failed"
+        });
+      });
+    });
+
     _this.state = {
       appointmentList: [],
       page: 1,
@@ -2423,14 +2465,17 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
       onSearch: false,
       scopeStatus: "",
       totalData: "",
-      onLoad: false
+      onLoad: false,
+      scopeTime: "",
+      datePicker: false,
+      scopeDatePicker: ""
     };
     return _this;
   }
 
   _createClass(AppointmentList, [{
-    key: "componentWillMount",
-    value: function componentWillMount() {
+    key: "componentDidMount",
+    value: function componentDidMount() {
       if (_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId === "ADMIN") {
         this.getAppointmentList();
       } else if (_Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId === "USER") {
@@ -2440,54 +2485,65 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var _this$state2 = this.state,
           appointmentList = _this$state2.appointmentList,
-          page = _this$state2.page,
-          rowsPerPage = _this$state2.rowsPerPage,
-          searchValue = _this$state2.searchValue,
-          onSearch = _this$state2.onSearch,
-          scopeStatus = _this$state2.scopeStatus;
+          page = _this$state2.page;
       var loop = 1;
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
           className: "card card-default",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
             className: "card-header card-header-border-bottom",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("h2", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("h2", {
               children: "Appointment List"
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+              style: {
+                marginLeft: "1230px"
+              },
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
+                className: "btn btn-primary",
+                "data-toggle": "modal",
+                "data-target": "#addNewAppointment",
+                children: "Add new appointment"
+              })
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
             className: "card-body",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_1__.default, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Alert_AlertSuccess__WEBPACK_IMPORTED_MODULE_1__.default, {
               message: this.state.message
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_2__.default, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Alert_AlertDanger__WEBPACK_IMPORTED_MODULE_2__.default, {
               message: this.state.errorMessage
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Loading_LoadingEffect__WEBPACK_IMPORTED_MODULE_7__.default, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Loading_LoadingEffect__WEBPACK_IMPORTED_MODULE_7__.default, {
               onLoad: this.state.onLoad,
               title: "Creating appointment"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
               className: "row",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+              style: {
+                marginBottom: "25px"
+              },
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
                 className: "col-sm-12",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
                   className: "row",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
                     className: "col-sm-4",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("label", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("label", {
                       className: "sr-only",
                       htmlFor: "inlineFormInputGroupUsername2",
                       children: "Search"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
                       className: "input-group mb-2 mr-sm-2",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
                         className: "input-group-prepend",
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
                           className: "input-group-text",
-                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("i", {
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("i", {
                             className: "mdi mdi-magnify"
                           })
                         })
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("input", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("input", {
                         type: "text",
                         name: "searchValue",
                         className: "form-control",
@@ -2497,9 +2553,9 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
                         onChange: this.handleSearchValue
                       })]
                     })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
                     className: "col-sm-3",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("select", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("select", {
                       className: "form-control",
                       name: "scopeStatus",
                       style: {
@@ -2507,116 +2563,156 @@ var AppointmentList = /*#__PURE__*/function (_Component) {
                       },
                       value: this.state.scopeStatus,
                       onChange: this.handleChangeStatus,
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("option", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
                         style: {
                           fontSize: "16px"
                         },
                         value: "",
                         children: "Select status"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("option", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
                         value: 0,
                         children: "Pending"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("option", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
                         value: 1,
                         children: "Done"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("option", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
                         value: 2,
                         children: "Rejected"
                       })]
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+                    className: "col-sm-1",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
+                      onClick: this.changeDatePicker,
+                      className: "btn btn-info",
+                      children: this.state.datePicker ? "List Time" : "Calendar"
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+                    className: "col-sm-3",
+                    children: this.state.datePicker ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("input", {
+                      type: "date",
+                      name: "scopeDatePicker",
+                      className: "form-control",
+                      value: this.state.scopeDatePicker,
+                      onChange: this.handleChangeDatePicker
+                    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("select", {
+                      className: "form-control",
+                      name: "scopeTime",
+                      style: {
+                        fontSize: "16px"
+                      },
+                      onChange: this.handleChangeDatePicker,
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
+                        style: {
+                          fontSize: "16px"
+                        },
+                        value: "",
+                        children: "Select Deadline Time"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
+                        value: 1,
+                        children: "Today"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
+                        value: 2,
+                        children: "Tomorrow"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
+                        value: 3,
+                        children: "This week"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("option", {
+                        value: 4,
+                        children: "This month"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
                     onClick: this.onScopeSearch,
                     className: "btn btn-primary mb-2",
                     children: "Submit"
                   })]
                 })
               })
-            }), _Shared_AuthService_AuthService__WEBPACK_IMPORTED_MODULE_6__.default.roleId === "ADMIN" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
-              className: "btn-group-list",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
-                className: "btn btn-primary",
-                "data-toggle": "modal",
-                "data-target": "#addNewAppointment",
-                children: "Add new appointment"
-              })
-            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Components_AppointmentForm_AddNewAppointment__WEBPACK_IMPORTED_MODULE_5__.default, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Components_AppointmentForm_AddNewAppointment__WEBPACK_IMPORTED_MODULE_5__.default, {
               onSubmitForm: this.addNewAppointment
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("table", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("table", {
               className: "table table-bordered",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("thead", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("tr", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("thead", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tr", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
                     scope: "col",
                     children: "ID"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
                     scope: "col",
                     children: "Appointment Title"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
                     scope: "col",
                     children: "Date Time"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
                     scope: "col",
                     children: "Description"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
                     scope: "col",
                     children: "Status"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
                     scope: "col",
                     children: "Customer"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
                     scope: "col"
                   })]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("tbody", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("tbody", {
                 children: appointmentList.map(function (item) {
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("tr", {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tr", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
                       children: loop++
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
                       children: item.appointment_title
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
-                      children: (0,_Helper_DateTime_ConvertDateTime__WEBPACK_IMPORTED_MODULE_8__.convertDateTime)(item.appointment_time)
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
+                      children: (0,_Helper_DateTime_ConvertDateTime__WEBPACK_IMPORTED_MODULE_9__.convertDateTime)(item.appointment_time)
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
                       children: item.appointment_desc
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
                         "class": "btn-control",
-                        children: item.appointment_status === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+                        children: item.appointment_status === 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
                           className: "btn btn-sm btn-success",
                           children: "Done"
-                        }) : item.appointment_status === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+                        }) : item.appointment_status === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
                           className: "btn btn-sm btn-warning",
                           children: "Pending"
-                        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+                        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
                           className: "btn btn-sm btn-danger",
                           children: "Rejected"
                         })
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
                       children: item.customer.customer_name
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("td", {
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
                         className: "btn-control",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Link, {
                           to: "/app/appointments/".concat(item.id),
-                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
                             className: "btn btn-primary",
                             children: "View"
                           })
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
                           className: "btn btn-danger",
+                          "data-toggle": "modal",
+                          "data-target": "#modalConfirm".concat(item.id),
                           children: "Delete"
                         })]
                       })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Modal_ModalConfirm__WEBPACK_IMPORTED_MODULE_8__.default, {
+                      answer: _this2.onDeleteAppointment,
+                      message: "Are you sure delete ".concat(item.appointment_title),
+                      confirmId: item.id
                     })]
                   }, item.id);
                 })
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
               style: {
                 marginTop: "45px"
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_3__.default, {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_Shared_Pagination_Pagination__WEBPACK_IMPORTED_MODULE_3__.default, {
                 data: this.state.totalData,
                 page: page,
                 rowsPerPage: this.state.rowsPerPage,
@@ -3410,7 +3506,8 @@ var API_ENDPOINT = {
   UPDATE_APPOINTMENT: "appointments/",
   GET_APPOINTMENT_STAFF: "appointments/staff/",
   CHANGE_PAGE: "appointments/page",
-  SCOPE_APPOINTMENT: "appointments/search"
+  SCOPE_APPOINTMENT: "appointments/search",
+  DELETE_APPOINTMENT: "appointments/"
 };
 
 var AppointmentService = /*#__PURE__*/function () {
@@ -3619,6 +3716,34 @@ var AppointmentService = /*#__PURE__*/function () {
       }
 
       return scopeAppointment;
+    }()
+  }, {
+    key: "deleteAppointment",
+    value: function () {
+      var _deleteAppointment = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8(appointmenId) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                _context8.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().delete(_Constances_const__WEBPACK_IMPORTED_MODULE_2__.BASE_URL + API_ENDPOINT.DELETE_APPOINTMENT + appointmenId);
+
+              case 2:
+                return _context8.abrupt("return", _context8.sent);
+
+              case 3:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8);
+      }));
+
+      function deleteAppointment(_x8) {
+        return _deleteAppointment.apply(this, arguments);
+      }
+
+      return deleteAppointment;
     }()
   }]);
 
@@ -6619,7 +6744,7 @@ var DepartmentList = /*#__PURE__*/function (_Component) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
             children: item.department_code
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
-            children: item.manager.name
+            children: item.manager !== null ? item.manager.name : ""
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
             children: staffs.length
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
@@ -8481,7 +8606,7 @@ var MissionList = /*#__PURE__*/function (_Form) {
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
                     onClick: this.changeDatePicker,
                     className: "btn btn-info",
-                    children: this.state.datePicker ? "List View" : "Calendar"
+                    children: this.state.datePicker ? "List Time" : "Calendar"
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
                   className: "col-sm-3",
@@ -10706,7 +10831,6 @@ var Staff = /*#__PURE__*/function (_Component) {
           scopeDepartment = _this$state.scopeDepartment;
       var loop = 1;
       var elmStaff = listStaff.map(function (item) {
-        var departmentName = item.department.department_name;
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("tr", {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             scope: "row",
@@ -10716,7 +10840,7 @@ var Staff = /*#__PURE__*/function (_Component) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             children: item.birthday
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
-            children: item.department.department_name
+            children: item.department_id !== null ? item.department.department_name : ""
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
             children: item.email
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("td", {
@@ -10829,7 +10953,7 @@ var Staff = /*#__PURE__*/function (_Component) {
                 className: "btn btn-primary",
                 "data-toggle": "modal",
                 "data-target": "#exampleModalForm",
-                children: "Create new user"
+                children: "Create new staff"
               })
             }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_Components_StaffForm_CreateUser__WEBPACK_IMPORTED_MODULE_10__.default, {
               onSubmitForm: this.onCreateNewUser

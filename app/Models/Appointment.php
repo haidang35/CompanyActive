@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,5 +43,32 @@ class Appointment extends Model
             return $query;
         }
         return $query->where('appointment_status', $status);
+    }
+
+    public function scopeTime($query, $timeId)
+    {
+        $tomorrow = Carbon::tomorrow();
+        $today = Carbon::today();
+        $startOfWeek = $today->startOfWeek();
+        $endOfWeek = $today->endOfWeek();
+        if ($timeId == 1) {
+            return $query->whereDate('appointment_time','=' , Carbon::today()->toDateString());
+        } else if ($timeId == 2) {
+            return $query->whereDate('appointment_time', '=', $tomorrow->toDateString());
+        } else if ($timeId == 3) {
+            return $query->whereDay('appointment_time', '>=', $startOfWeek)->whereDate('appointment_time', '<=', $endOfWeek);
+        } else if ($timeId == 4) {
+            return $query->whereMonth('appointment_time', Carbon::now()->month);
+        } else {
+            return $query;
+        }
+    }
+
+    public function scopeDate($query, $date) {
+        if($date == null || $date == "") {
+            return $query;
+        }
+        return $query->whereDate('appointment_time','=' ,$date);
+        
     }
 }

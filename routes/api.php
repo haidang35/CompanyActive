@@ -345,19 +345,29 @@ Route::post('appointments/page', function (Request $request) {
     $page = $request->page;
     $search_value = $request->search_value;
     $status = $request->status;
-    $appointments = Appointment::with("Customer")->search($search_value)->status($status)->paginate(20, ['*'], 'page', $page);
+    $scopeDate = $request->scope_date;
+    $scopeTime = $request->scope_time;
+    $appointments = Appointment::with("Customer")->time($scopeTime)->date($scopeDate)->search($search_value)->status($status)->paginate(20, ['*'], 'page', $page);
     return $appointments;
 });
 
 Route::post('appointments/search', function (Request $request) {
     $search_value = $request->search_value;
     $status = $request->status;
-    $appointments = Appointment::with("Customer")->search($search_value)->status($status)->paginate(20);
+    $scopeDate = $request->scope_date;
+    $scopeTime = $request->scope_time;
+    $appointments = Appointment::with("Customer")->time($scopeTime)->date($scopeDate)->search($search_value)->status($status)->paginate(20);
     return $appointments;
 });
 
 Route::get('appointments/{appointmentId}', function ($appointmentId) {
     $appointment = Appointment::with("Customer")->with("Staff")->findOrFail($appointmentId);
+    return $appointment;
+});
+
+Route::delete('appointments/{appointmentId}', function($appointmentId) {
+    $appointment = Appointment::findOrFail($appointmentId);
+    $appointment->delete();
     return $appointment;
 });
 

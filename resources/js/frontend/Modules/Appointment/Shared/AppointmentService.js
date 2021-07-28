@@ -8,7 +8,8 @@ const API_ENDPOINT = {
     UPDATE_APPOINTMENT: "appointments/",
     GET_APPOINTMENT_STAFF: "appointments/staff/",
     CHANGE_PAGE: "appointments/page",
-    SCOPE_APPOINTMENT: "appointments/search"
+    SCOPE_APPOINTMENT: "appointments/search",
+    DELETE_APPOINTMENT: "appointments/"
 }
 
 class AppointmentService {
@@ -45,6 +46,10 @@ class AppointmentService {
 
     async scopeAppointment(data) {
         return await axios.post(BASE_URL + API_ENDPOINT.SCOPE_APPOINTMENT, data);
+    }
+
+    async deleteAppointment(appointmenId) {
+        return await axios.delete(BASE_URL + API_ENDPOINT.DELETE_APPOINTMENT + appointmenId);
     }
 }
 

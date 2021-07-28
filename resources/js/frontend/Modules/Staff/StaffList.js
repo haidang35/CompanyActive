@@ -143,13 +143,12 @@ class Staff extends Component {
         } = this.state;
         let loop = 1;
         const elmStaff = listStaff.map((item) => {
-            let departmentName = item.department.department_name;
             return (
                 <tr key={item.id}>
                     <td scope="row">{loop++}</td>
                     <td>{item.name}</td>
                     <td>{item.birthday}</td>
-                    <td>{item.department.department_name}</td>
+                    <td>{item.department_id !== null ? item.department.department_name : ""}</td>
                     <td>{item.email}</td>
                     <td>{item.phone}</td>
                     <td>{item.address}</td>
@@ -267,7 +266,7 @@ class Staff extends Component {
                                     data-toggle="modal"
                                     data-target="#exampleModalForm"
                                 >
-                                    Create new user
+                                    Create new staff
                                 </button>
                             </div>
                         ) : (
