@@ -24,10 +24,10 @@ class AppointmentList extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (AuthService.roleId === "ADMIN") {
             this.getAppointmentList();
-        } else {
+        } else if(AuthService.roleId === "USER") {
             this.getAppointmentStaff();
         }
     }

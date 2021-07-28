@@ -5,24 +5,27 @@ import Form from "../../../../Shared/Form/Form";
 import { Link } from "react-router-dom";
 import MissionService from "../../Shared/MissionService";
 import MissionProgress from "./MissionProgress";
+import AuthService from "../../../../Shared/AuthService/AuthService";
+import FormError from "../../../../Shared/Form/FormError";
 
 class MissionInfo extends Form {
     constructor(props) {
         super(props);
         this.state = {
             form: this._getInitFormData({
-                title: '',
-                content: '',
-                deadline: '',
-                note: '',
-                status: '',
-                progress: '',
-                pic: '',
-                staff: ''
+                title: "",
+                content: "",
+                deadline: "",
+                note: "",
+                status: "",
+                progress: "",
+                pic: "",
+                staff: "",
             }),
             onEdit: false,
             message: "",
             errorMessage: "",
+            messageUpdate: "",
         };
     }
 
@@ -41,7 +44,7 @@ class MissionInfo extends Form {
                 status: res.data.mission_status,
                 progress: res.data.progress,
                 pic: res.data.pic,
-                staff: res.data.staff
+                staff: res.data.staff,
             });
         });
     };
@@ -56,16 +59,50 @@ class MissionInfo extends Form {
         this.setState({
             onEdit: false,
         });
+        this.getMissionInfo();
     };
 
     onSaveChangeInfo = () => {
+        this._validateForm();
+        this.state.form["dirty"] = true;
         const { id } = this.props.match.params;
+        const { form } = this.state;
+        const data = {
+            mission_title: form.title.value,
+            mission_content: form.content.value,
+            mission_deadline: form.deadline.value,
+            mission_note: form.note.value,
+        };
+        if (this._isFormValid()) {
+            MissionService.updateMissionAll(id, data)
+                .then((res) => {
+                    this.setState({
+                        messageUpdate: `Update mission ${res.data.mission_title} successfull !!`,
+                    });
+                })
+                .catch((err) => {
+                    this.setState({
+                        errorMessage: "Update mission failed !!",
+                    });
+                });
+            this.getMissionInfo();
+        }
     };
 
     render() {
         const { id } = this.props.match.params;
         const { onEdit } = this.state;
-        const { title, content, deadline, note, status, pic, staff, dirty, progress } = this.state.form;
+        const {
+            title,
+            content,
+            deadline,
+            note,
+            status,
+            pic,
+            staff,
+            dirty,
+            progress,
+        } = this.state.form;
         return (
             <div>
                 <div className="card card-default">
@@ -74,7 +111,7 @@ class MissionInfo extends Form {
                     </div>
                     <div className="card-body detail-info">
                         <div>
-                            <AlertSuccess message={this.state.message} />
+                            <AlertSuccess message={this.state.messageUpdate} />
                             <AlertDanger message={this.state.errorMessage} />
                         </div>
                         <div
@@ -82,14 +119,14 @@ class MissionInfo extends Form {
                             style={{ marginBottom: "35px" }}
                         >
                             <div className="btn-control-right">
-                                {!onEdit ? (
+                                {!onEdit && AuthService.roleId  == "ADMIN" && status.value == 0 ? (
                                     <button
                                         onClick={this.onEditInfo}
                                         className=" btn btn-primary"
                                     >
                                         Edit
                                     </button>
-                                ) : (
+                                ) : AuthService.roleId == "ADMIN" && status.value == 0 ? (
                                     <div>
                                         <button
                                             className=" btn btn-success"
@@ -104,6 +141,8 @@ class MissionInfo extends Form {
                                             Cancel
                                         </button>
                                     </div>
+                                ) : (
+                                    ""
                                 )}
                             </div>
                         </div>
@@ -130,9 +169,20 @@ class MissionInfo extends Form {
                                             className="form-control"
                                             disabled={!onEdit}
                                             value={title.value}
-                                            onChange={(ev) => this._setValue(ev, "title")}
+                                            onChange={(ev) =>
+                                                this._setValue(ev, "title")
+                                            }
                                         />
                                     </div>
+                                    {title.err == "*" && dirty ? (
+                                        <FormError
+                                            errorMessage={
+                                                "Mission title cannot be empty"
+                                            }
+                                        />
+                                    ) : dirty ? (
+                                        <FormError errorMessage={title.err} />
+                                    ) : ""}
                                 </div>
                                 <div className="col-sm-6">
                                     <label
@@ -154,9 +204,20 @@ class MissionInfo extends Form {
                                             disabled={!onEdit}
                                             className="form-control"
                                             value={deadline.value}
-                                            onChange={(ev) => this._setValue(ev, "deaddline")}
+                                            onChange={(ev) =>
+                                                this._setValue(ev, "deaddline")
+                                            }
                                         />
                                     </div>
+                                    {deadline.err == "*" && dirty? (
+                                        <FormError
+                                            errorMessage={
+                                                "Mission deadline cannot be empty"
+                                            }
+                                        />
+                                    ) : dirty ? (
+                                        <FormError errorMessage={deadline.err} />
+                                    ) : ""}
                                 </div>
                                 <div className="col-sm-8">
                                     <label
@@ -178,9 +239,20 @@ class MissionInfo extends Form {
                                             disabled={!onEdit}
                                             className="form-control"
                                             value={content.value}
-                                            onChange={(ev) => this._setValue(ev, "content")}
+                                            onChange={(ev) =>
+                                                this._setValue(ev, "content")
+                                            }
                                         ></textarea>
                                     </div>
+                                    {content.err == "*" && dirty ? (
+                                        <FormError
+                                            errorMessage={
+                                                "Mission content cannot be empty"
+                                            }
+                                        />
+                                    ) : dirty ? (
+                                        <FormError errorMessage={content.err} />
+                                    ) : ""}
                                 </div>
                                 <div className="col-sm-4">
                                     <label
@@ -201,7 +273,9 @@ class MissionInfo extends Form {
                                             disabled={!onEdit}
                                             className="form-control"
                                             value={note.value}
-                                            onChange={(ev) => this._setValue(ev, "note")}
+                                            onChange={(ev) =>
+                                                this._setValue(ev, "note")
+                                            }
                                         ></textarea>
                                     </div>
                                 </div>
@@ -225,9 +299,15 @@ class MissionInfo extends Form {
                                             required
                                             disabled
                                             className="form-control"
-                                            value={pic.value.name ? pic.value.name : ""}
+                                            value={
+                                                pic.value.name
+                                                    ? pic.value.name
+                                                    : ""
+                                            }
                                         />
-                                        <Link to={`/app/staffs/${pic.value.id}`}>
+                                        <Link
+                                            to={`/app/staffs/${pic.value.id}`}
+                                        >
                                             <button className="btn btn-primary mb-2">
                                                 View
                                             </button>
@@ -253,9 +333,15 @@ class MissionInfo extends Form {
                                             required
                                             disabled
                                             className="form-control"
-                                            value={staff.value.name ? staff.value.name : ""}
+                                            value={
+                                                staff.value.name
+                                                    ? staff.value.name
+                                                    : ""
+                                            }
                                         />
-                                        <Link to={`/app/staffs/${staff.value.id}`}>
+                                        <Link
+                                            to={`/app/staffs/${staff.value.id}`}
+                                        >
                                             <button className="btn btn-primary mb-2">
                                                 View
                                             </button>
@@ -266,7 +352,11 @@ class MissionInfo extends Form {
                         </div>
                     </div>
                 </div>
-                <MissionProgress status={status.value} progress={progress.value} missionId={id}/>
+                <MissionProgress
+                    status={status.value}
+                    progress={progress.value}
+                    missionId={id}
+                />
             </div>
         );
     }

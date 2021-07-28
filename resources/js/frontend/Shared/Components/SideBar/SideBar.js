@@ -82,11 +82,12 @@ class SideBar extends Component {
                                     <Link to={`/app/departments/${userInfo.department_id}`}>
                                         <i className="mdi mdi-chart-pie" />
                                         <span className="nav-text">
-                                            Department
+                                            My Department
                                         </span>{" "}
                                     </Link>
                                 </li>
                                 <li>
+                                   
                                     <Link to={"/app/staffs"}>
                                         <i className="mdi mdi-chart-pie" />
                                         <span className="nav-text">
