@@ -29,7 +29,7 @@ class AddNewAppointment extends Form {
     getAllStaff = () => {
         StaffService.getAllStaff().then((res) => {
             this.setState({
-                staffs: res.data,
+                staffs: res.data.data,
             });
         });
     };
@@ -37,7 +37,7 @@ class AddNewAppointment extends Form {
     getAllCustomer = () => {
         CustomerService.getAllCustomer().then((res) => {
             this.setState({
-                customers: res.data,
+                customers: res.data.data,
             });
         });
     };
@@ -240,6 +240,7 @@ class AddNewAppointment extends Form {
                                 >
                                     Submit
                                 </button>
+                                
                             </div>
                         </div>
                     </div>

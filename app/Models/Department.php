@@ -19,6 +19,10 @@ class Department extends Model
         "department_desc",
     ];
 
+    public function Manager() {
+        return $this->belongsTo(User::class, "department_pic", "id");
+    }
+
     public function Staff() {
         return $this->hasMany(User::class, "department_id", "department_id");
     }
@@ -27,24 +31,17 @@ class Department extends Model
         if($search == "" || $search == null) {
             return $query;
         }
-        return $query->where("department_name", "LIKE", "%".$search."%");
+        return $query->where("department_name", "LIKE", "%".$search."%")
+                    ->orWhere("department_code", "LIKE","%".$search."%" );
 
     }
 
-    public function scopeCode($query, $department_code) {
-        if($department_code == 0 || $department_code == null ) {
+
+    public function scopePic($query, $pic) {
+        if($pic == 0 || $pic == null) {
             return $query;
         }
-        return $query->where("department_code", $department_code);
-
-
-    }
-
-    public function scopePic($query, $department_pic) {
-        if($department_pic == 0 || $department_pic == null) {
-            return $query;
-        }
-        return $query->where("department_pic", $department_pic);
+        return $query->where("department_pic", $pic);
 
     }
 }

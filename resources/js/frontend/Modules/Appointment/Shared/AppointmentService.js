@@ -6,7 +6,9 @@ const API_ENDPOINT = {
     GET_ONE_APPOINTMENT: "appointments/",
     CREATE_APPOINTMENT:  "appointments",
     UPDATE_APPOINTMENT: "appointments/",
-    GET_APPOINTMENT_STAFF: "appointments/staff/"
+    GET_APPOINTMENT_STAFF: "appointments/staff/",
+    CHANGE_PAGE: "appointments/page",
+    SCOPE_APPOINTMENT: "appointments/search"
 }
 
 class AppointmentService {
@@ -37,7 +39,13 @@ class AppointmentService {
         return await axios.get(BASE_URL + API_ENDPOINT.GET_APPOINTMENT_STAFF + staffId);
     }
 
+    async changePageAppointment(page) {
+        return await axios.post(BASE_URL + API_ENDPOINT.CHANGE_PAGE, page);
+    }
 
+    async scopeAppointment(data) {
+        return await axios.post(BASE_URL + API_ENDPOINT.SCOPE_APPOINTMENT, data);
+    }
 }
 
 const constance = new AppointmentService();

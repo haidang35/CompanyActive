@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import AlertDanger from "../../../Shared/Alert/AlertDanger";
 import AuthService from "../../../Shared/AuthService/AuthService";
+import ModalNotice from "../../../Shared/Modal/ModalNotice";
 
 class Login extends Component {
     constructor(props) {
@@ -7,6 +9,7 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
+            message: "",
         };
     }
 
@@ -27,7 +30,9 @@ class Login extends Component {
                 this.goTo("app");
             })
             .catch((err) => {
-                console.log(err);
+                this.setState({
+                    message: "Login failed. Try again, please !!",
+                });
             });
     };
 
@@ -41,6 +46,17 @@ class Login extends Component {
                 <div className="container d-flex flex-column justify-content-between vh-100">
                     <div className="row justify-content-center mt-5">
                         <div className="col-xl-5 col-lg-6 col-md-10">
+                            {this.state.message ? (
+                                <div
+                                    className="alert alert-danger alert-highlighted"
+                                    role="alert"
+                                >
+                                    {this.state.message}
+                                </div>
+                            ) : (
+                                ""
+                            )}
+
                             <div className="card">
                                 <div className="card-header bg-primary">
                                     <div className="app-brand">

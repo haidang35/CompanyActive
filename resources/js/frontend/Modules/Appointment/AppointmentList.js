@@ -18,6 +18,7 @@ class AppointmentList extends Component {
             searchValue: "",
             onSearch: false,
             scopeStatus: "",
+            totalData: "",
         };
     }
 
@@ -32,7 +33,8 @@ class AppointmentList extends Component {
     getAppointmentList = () => {
         AppointmentService.getAllAppointment().then((res) => {
             this.setState({
-                appointmentList: res.data,
+                appointmentList: res.data.data,
+                totalData: res.data.total,
             });
         });
     };
@@ -55,6 +57,16 @@ class AppointmentList extends Component {
 
     onChangePage = (page) => {
         this.setState({ page });
+        const data = {
+            page,
+            search_value: this.state.searchValue,
+            status: this.state.scopeStatus,
+        };
+        AppointmentService.changePageAppointment(data).then((res) => {
+            this.setState({
+                appointmentList: res.data.data,
+            });
+        });
     };
 
     addNewAppointment = (data) => {
@@ -81,17 +93,23 @@ class AppointmentList extends Component {
     };
 
     onScopeSearch = () => {
-        console.log("sc", this.state.scopeStatus);
-        this.setState({
-            onSearch: true,
-            page: 0,
+        const { searchValue, scopeStatus } = this.state;
+        const data = {
+            search_value: searchValue,
+            status: scopeStatus,
+        };
+        AppointmentService.scopeAppointment(data).then((res) => {
+            this.setState({
+                appointmentList: res.data.data,
+                totalData: res.data.total,
+            });
         });
     };
 
     handleChangeStatus = (ev) => {
         const { name, value } = ev.target;
         this.setState({
-            [name]: value
+            [name]: value,
         });
     };
 
@@ -104,25 +122,6 @@ class AppointmentList extends Component {
             onSearch,
             scopeStatus,
         } = this.state;
-        if (onSearch) {
-            if (scopeStatus !== "") {
-                appointmentList = appointmentList.filter((item) => {
-                    return item.appointment_status == scopeStatus;
-                });
-            }
-
-            appointmentList = appointmentList.filter((item) => {
-                if (
-                    item.appointment_title
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1 ||
-                    item.appointment_time
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1
-                )
-                    return item;
-            });
-        }
         let loop = 1;
         return (
             <div>
@@ -222,68 +221,58 @@ class AppointmentList extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {appointmentList
-                                    .slice(
-                                        page * rowsPerPage,
-                                        page * rowsPerPage + rowsPerPage
-                                    )
-                                    .map((item) => {
-                                        return (
-                                            <tr key={item.id}>
-                                                <td>{loop++}</td>
-                                                <td>
-                                                    {item.appointment_title}
-                                                </td>
-                                                <td>{item.appointment_time}</td>
-                                                <td>{item.appointment_desc}</td>
-                                                <td>
-                                                    <div class="btn-control">
-                                                        {item.appointment_status ===
-                                                        1 ? (
-                                                            <button className="btn btn-sm btn-success">
-                                                                Done
-                                                            </button>
-                                                        ) : item.appointment_status ===
-                                                          0 ? (
-                                                            <button className="btn btn-sm btn-warning">
-                                                                Pending
-                                                            </button>
-                                                        ) : (
-                                                            <button className="btn btn-sm btn-danger">
-                                                                Rejected
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    {
-                                                        item.customer
-                                                            .customer_name
-                                                    }
-                                                </td>
-                                                <td>
-                                                    <div className="btn-control">
-                                                        <Link
-                                                            to={`/app/appointments/${item.id}`}
-                                                        >
-                                                            <button className="btn btn-primary">
-                                                                View
-                                                            </button>
-                                                        </Link>
-
-                                                        <button className="btn btn-danger">
-                                                            Delete
+                                {appointmentList.map((item) => {
+                                    return (
+                                        <tr key={item.id}>
+                                            <td>{loop++}</td>
+                                            <td>{item.appointment_title}</td>
+                                            <td>{item.appointment_time}</td>
+                                            <td>{item.appointment_desc}</td>
+                                            <td>
+                                                <div class="btn-control">
+                                                    {item.appointment_status ===
+                                                    1 ? (
+                                                        <button className="btn btn-sm btn-success">
+                                                            Done
                                                         </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
+                                                    ) : item.appointment_status ===
+                                                      0 ? (
+                                                        <button className="btn btn-sm btn-warning">
+                                                            Pending
+                                                        </button>
+                                                    ) : (
+                                                        <button className="btn btn-sm btn-danger">
+                                                            Rejected
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {item.customer.customer_name}
+                                            </td>
+                                            <td>
+                                                <div className="btn-control">
+                                                    <Link
+                                                        to={`/app/appointments/${item.id}`}
+                                                    >
+                                                        <button className="btn btn-primary">
+                                                            View
+                                                        </button>
+                                                    </Link>
+
+                                                    <button className="btn btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                         <div style={{ marginTop: "45px" }}>
                             <Pagination
-                                data={appointmentList}
+                                data={this.state.totalData}
                                 page={page}
                                 rowsPerPage={this.state.rowsPerPage}
                                 onChangePage={this.onChangePage}

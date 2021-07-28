@@ -23,6 +23,8 @@ class DepartmentList extends Component {
             rowsPerPage: 20,
             onSearch: false,
             searchValue: "",
+            totalData: "",
+            scopePic: "",
         };
     }
 
@@ -36,6 +38,7 @@ class DepartmentList extends Component {
             .then((res) => {
                 this.setState({
                     departmentList: res.data.data,
+                    totalData: res.data.total,
                 });
             })
             .catch((err) => {
@@ -44,7 +47,7 @@ class DepartmentList extends Component {
     };
 
     getAllPic = () => {
-        StaffService.getAllStaff().then((res) => {
+        DepartmentService.getAllPic().then((res) => {
             this.setState({
                 picList: res.data,
             });
@@ -68,6 +71,12 @@ class DepartmentList extends Component {
     onChangePage = (page) => {
         this.setState({
             page: page,
+            search_value: this.state.searchValue,
+        });
+        DepartmentService.changePageDepartment({ page }).then((res) => {
+            this.setState({
+                departmentList: res.data.data,
+            });
         });
     };
 
@@ -91,94 +100,78 @@ class DepartmentList extends Component {
         const { name, value } = ev.target;
         this.setState({
             [name]: value,
-            onSearch: false,
         });
     };
 
     onScopeSearch = () => {
-        this.setState({
-            onSearch: true,
-            page: 0
+        const data = {
+            search_value: this.state.searchValue,
+            pic: this.state.scopePic,
+        };
+        DepartmentService.scopeDepartment(data).then((res) => {
+            this.setState({
+                departmentList: res.data.data,
+                totalData: res.data.total,
+            });
         });
-        // let { searchValue, departmentList } = this.state;
-        // departmentList = departmentList.filter((item) => {
-        //     return item.department_name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
-        // });
-        // if(searchValue === "") {
-        //     this.setState({
-        //         departmentList: departmentListOrg
-        //     });
-        // }
-        // this.setState({departmentList});
     };
 
-    render() {
-        let { departmentList, page, rowsPerPage, onSearch, searchValue } =
-            this.state;
-        let loop = 0;
-        if (onSearch) {
-            departmentList  = departmentList.filter((item) => {
-                return (
-                    item.department_name
-                        .toLowerCase()
-                        .indexOf(searchValue.toLowerCase()) !== -1
-                );
-            });
-        }
+   
 
-        const renderDepartmentList = departmentList
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((item) => {
-                const staffs = item.staff;
-                return (
-                    <tr>
-                        <td scope="row">{++loop}</td>
-                        <td>{item.department_name}</td>
-                        <td>{item.department_code}</td>
-                        <td>{item.department_pic}</td>
-                        <td>{staffs.length}</td>
-                        <td>{item.department_desc}</td>
-                        <td>
-                            <div className="btn-control-department">
-                                <button
-                                    onClick={() =>
-                                        this.viewDepartmentDetails(
-                                            item.department_id
-                                        )
-                                    }
-                                    className="btn btn-primary"
-                                >
-                                    View
-                                </button>
-                                <button
-                                    className="btn btn-danger"
-                                    data-toggle="modal"
-                                    data-target={
-                                        staffs.length > 0
-                                            ? `#modalNoti${item.department_id}`
-                                            : `#modalConfirm${item.department_id}`
-                                    }
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                            {staffs.length > 0 ? (
-                                <ModalNotice
-                                    title="Warning"
-                                    idNotice={item.department_id}
-                                    message={`Cannot delete department ${item.department_name}`}
-                                />
-                            ) : (
-                                <ModalConfirm
-                                    answer={this.deleteDepartment}
-                                    confirmId={item.department_id}
-                                    message={`Confirm delete department ${item.department_name}`}
-                                />
-                            )}
-                        </td>
-                    </tr>
-                );
-            });
+    render() {
+        let { departmentList, page, rowsPerPage } = this.state;
+        let loop = 0;
+        const renderDepartmentList = departmentList.map((item) => {
+            const staffs = item.staff;
+            return (
+                <tr key={item.department_id}>
+                    <td scope="row">{++loop}</td>
+                    <td>{item.department_name}</td>
+                    <td>{item.department_code}</td>
+                    <td>{item.manager.name}</td>
+                    <td>{staffs.length}</td>
+                    <td>{item.department_desc}</td>
+                    <td>
+                        <div className="btn-control-department">
+                            <button
+                                onClick={() =>
+                                    this.viewDepartmentDetails(
+                                        item.department_id
+                                    )
+                                }
+                                className="btn btn-primary"
+                            >
+                                View
+                            </button>
+                            <button
+                                className="btn btn-danger"
+                                data-toggle="modal"
+                                data-target={
+                                    staffs.length > 0
+                                        ? `#modalNoti${item.department_id}`
+                                        : `#modalConfirm${item.department_id}`
+                                }
+                            >
+                                Delete
+                            </button>
+                        </div>
+                        {staffs.length > 0 ? (
+                            <ModalNotice
+                                title="Warning"
+                                idNotice={item.department_id}
+                                message={`Cannot delete department ${item.department_name}`}
+                            />
+                        ) : (
+                            <ModalConfirm
+                                answer={this.deleteDepartment}
+                                confirmId={item.department_id}
+                                message={`Confirm delete department ${item.department_name}`}
+                            />
+                        )}
+                    </td>
+                </tr>
+            );
+        });
         return (
             <div className="department-list">
                 <div className="card card-default">
@@ -220,29 +213,29 @@ class DepartmentList extends Component {
                                     </div>
                                     <div className="col-sm-3">
                                         <select
+                                            name="scopePic"
                                             className="form-control"
                                             style={{ fontSize: "16px" }}
+                                            onChange={this.handleSearchValue}
                                         >
                                             <option
                                                 style={{ fontSize: "16px" }}
+                                                value="0"
                                             >
                                                 Select pic
                                             </option>
-                                            {this.state.picList.map(
-                                                (item) => {
-                                                    return (
-                                                        <option
-                                                            value={item.id}
-                                                            style={{
-                                                                fontSize:
-                                                                    "16px",
-                                                            }}
-                                                        >
-                                                            {item.name}
-                                                        </option>
-                                                    );
-                                                }
-                                            )}
+                                            {this.state.picList.map((item) => {
+                                                return (
+                                                    <option
+                                                        value={item.id}
+                                                        style={{
+                                                            fontSize: "16px",
+                                                        }}
+                                                    >
+                                                        {item.name}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                     </div>
                                     <button
@@ -285,7 +278,7 @@ class DepartmentList extends Component {
                         </table>
                         <div style={{ marginTop: "45px" }}>
                             <Pagination
-                                data={departmentList}
+                                data={this.state.totalData}
                                 page={page}
                                 rowsPerPage={rowsPerPage}
                                 onChangePage={this.onChangePage}

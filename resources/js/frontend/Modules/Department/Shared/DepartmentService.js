@@ -9,7 +9,10 @@ const API_ENDPOINT = {
     REMOVE_MEMBER: "departments/",
     GET_STAFF_PENDING: "staffs/pending",
     ADD_MEMBER: "departments/",
-    DELETE_DEPARTMENT: "departments/"
+    DELETE_DEPARTMENT: "departments/",
+    CHANGE_PAGE: "departments/page",
+    SCOPE_DEPARTMENT: "departments/search",
+    GET_ALL_PIC: "departments/pics"
 };
 
 class DepartmentService {
@@ -51,6 +54,18 @@ class DepartmentService {
 
     async deleteDepartment(departmentId) {
         return await axios.delete(BASE_URL + API_ENDPOINT.DELETE_DEPARTMENT + departmentId );
+    }
+
+    async changePageDepartment(page) {
+        return await axios.post(BASE_URL + API_ENDPOINT.CHANGE_PAGE, page);
+    }
+    
+    async scopeDepartment(data) {
+        return await axios.post(BASE_URL + API_ENDPOINT.SCOPE_DEPARTMENT, data);
+    }
+
+    async getAllPic() {
+        return await axios.get(BASE_URL + API_ENDPOINT.GET_ALL_PIC);
     }
 }
 

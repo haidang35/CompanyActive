@@ -57,8 +57,7 @@ class Message extends Notification implements ShouldBroadcast
     public function toDatabase($notifiable)
     {
         return[
-            'appoint'=>$this->appointment,
-            'user'=>auth()->user(),
+            'appoint'=>$this->appointment
         ];
 
     }

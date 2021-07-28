@@ -29,4 +29,6 @@ class CustomerFactory extends Factory
             "appointment_id" => rand(1, 200),
         ];
     }
+
+ 
 }
