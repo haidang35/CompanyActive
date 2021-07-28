@@ -46,6 +46,9 @@ class MissionInfo extends Form {
                 pic: res.data.pic,
                 staff: res.data.staff,
             });
+            this.setState({
+                errorMessage: res.data.message
+            });
         });
     };
 
@@ -78,7 +81,7 @@ class MissionInfo extends Form {
                 .then((res) => {
                     this.setState({
                         messageUpdate: `Update mission ${res.data.mission_title} successfull !!`,
-                        onEdit: false
+                        onEdit: false,
                     });
                 })
                 .catch((err) => {
@@ -89,6 +92,8 @@ class MissionInfo extends Form {
             this.getMissionInfo();
         }
     };
+
+    
 
     render() {
         const { id } = this.props.match.params;
@@ -104,6 +109,7 @@ class MissionInfo extends Form {
             dirty,
             progress,
         } = this.state.form;
+
         return (
             <div>
                 <div className="card card-default">
@@ -120,14 +126,17 @@ class MissionInfo extends Form {
                             style={{ marginBottom: "35px" }}
                         >
                             <div className="btn-control-right">
-                                {!onEdit && AuthService.roleId  == "ADMIN" && status.value == 0 ? (
+                                {!onEdit &&
+                                AuthService.roleId == "ADMIN" &&
+                                status.value == 0 ? (
                                     <button
                                         onClick={this.onEditInfo}
                                         className=" btn btn-primary"
                                     >
                                         Edit
                                     </button>
-                                ) : AuthService.roleId == "ADMIN" && status.value == 0 ? (
+                                ) : AuthService.roleId == "ADMIN" &&
+                                  status.value == 0 ? (
                                     <div>
                                         <button
                                             className=" btn btn-success"
@@ -183,7 +192,9 @@ class MissionInfo extends Form {
                                         />
                                     ) : dirty ? (
                                         <FormError errorMessage={title.err} />
-                                    ) : ""}
+                                    ) : (
+                                        ""
+                                    )}
                                 </div>
                                 <div className="col-sm-6">
                                     <label
@@ -210,15 +221,19 @@ class MissionInfo extends Form {
                                             }
                                         />
                                     </div>
-                                    {deadline.err == "*" && dirty? (
+                                    {deadline.err == "*" && dirty ? (
                                         <FormError
                                             errorMessage={
                                                 "Mission deadline cannot be empty"
                                             }
                                         />
                                     ) : dirty ? (
-                                        <FormError errorMessage={deadline.err} />
-                                    ) : ""}
+                                        <FormError
+                                            errorMessage={deadline.err}
+                                        />
+                                    ) : (
+                                        ""
+                                    )}
                                 </div>
                                 <div className="col-sm-8">
                                     <label
@@ -253,7 +268,9 @@ class MissionInfo extends Form {
                                         />
                                     ) : dirty ? (
                                         <FormError errorMessage={content.err} />
-                                    ) : ""}
+                                    ) : (
+                                        ""
+                                    )}
                                 </div>
                                 <div className="col-sm-4">
                                     <label
@@ -356,6 +373,7 @@ class MissionInfo extends Form {
                 <MissionProgress
                     status={status.value}
                     progress={progress.value}
+                    deadline={deadline.value}
                     missionId={id}
                 />
             </div>

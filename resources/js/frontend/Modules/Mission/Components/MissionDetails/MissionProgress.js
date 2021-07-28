@@ -31,7 +31,7 @@ class MissionProgress extends Component {
     increaseProgress = () => {
         let { progress, missionId } = this.state;
         if (progress + 10 === 100) {
-            this.updateMissionStatus();
+            this.updateMissionStatus(1);
         }
         if (progress < 100) {
             progress += 10;
@@ -48,15 +48,17 @@ class MissionProgress extends Component {
             progress = progress - 10;
             this.setState({ progress });
             MissionService.updateProgress(missionId, { progress }).then(
-                (res) => {console.log(progress)}
+                (res) => {
+                    console.log(progress);
+                }
             );
         }
     };
 
-    updateMissionStatus = () => {
+    updateMissionStatus = (status) => {
         let { missionId } = this.state;
         let data = {
-            mission_status: 1,
+            mission_status: status,
         };
         MissionService.updateMission(missionId, data)
             .then((res) => {
@@ -69,7 +71,6 @@ class MissionProgress extends Component {
 
     render() {
         let { progress } = this.state;
-        console.log("pro", progress);
         return (
             <div>
                 <div className="card card-default">

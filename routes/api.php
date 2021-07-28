@@ -18,6 +18,7 @@ use Illuminate\Contracts\Pagination\Paginator as PaginationPaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 /*
 |--------------------------------------------------------------------------
@@ -400,12 +401,33 @@ Route::get("appointments/staff/{staffId}", function ($staffId) {
 });
 
 //Mission
+
 Route::get('missions', function () {
+    $missionList = Mission::all();
+    foreach($missionList as $item) {
+        $deadline_time = new Carbon($item->mission_deadline);
+        if($deadline_time->isPast() && $item->mission_status == 0) {
+            $mission = Mission::find($item->id);
+            $mission->update([
+                "mission_status" => 2
+            ]);
+        }
+    }
     $missions = Mission::paginate(20);
     return $missions;
 });
 
 Route::get('missions/staffs/{staffId}', function ($staffId) {
+    $missionList = Mission::all();
+    foreach($missionList as $item) {
+        $deadline_time = new Carbon($item->mission_deadline);
+        if($deadline_time->isPast() && $item->mission_status == 0) {
+            $mission = Mission::find($item->id);
+            $mission->update([
+                "mission_status" => 2
+            ]);
+        }
+    }
     $missions = Mission::where("staff_id", $staffId)->paginate(20);
     return $missions;
 });
@@ -421,6 +443,17 @@ Route::post('missions/search', function (Request $request) {
 
 Route::get('missions/{missionId}', function ($missionId) {
     $mission = Mission::with('Pic')->with('Staff')->findOrFail($missionId);
+    $now = Carbon::now();
+    $message = "";
+    $deadline = new Carbon($mission->mission_deadline);
+    if($deadline->isTomorrow() && $mission->mission_status == 0) $message = "You only have one day left to complete this mission !! ";
+    if( $now->diffInHours($deadline) < 23 && $mission->mission_status == 0) {
+        $message = "You only have ".$now->diffInHours($deadline)." hours left to complete this mission !!";
+    } 
+    if($mission->mission_status == 2) {
+        $message = "You have not completed this mission !!";
+    }
+    $mission["message"] = $message;
     return $mission;
 });
 
