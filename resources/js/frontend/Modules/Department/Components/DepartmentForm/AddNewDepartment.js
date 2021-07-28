@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Form from "../../../../Shared/Form/Form";
 import FormError from "../../../../Shared/Form/FormError";
+import DepartmentService from "../../Shared/DepartmentService";
 
 class AddNewDepartment extends Form {
     constructor(props) {
@@ -12,15 +13,25 @@ class AddNewDepartment extends Form {
                 pic: "",
                 desc: "",
             }),
+            picList: [],
         };
     }
 
     componentDidMount = () => {
+        this.getAllPic();
         this._fillForm({
             name: "",
             code: "",
             pic: 0,
             desc: "",
+        });
+    };
+
+    getAllPic = () => {
+        DepartmentService.getAllPic().then((res) => {
+            this.setState({
+                picList: res.data,
+            });
         });
     };
 
@@ -41,14 +52,14 @@ class AddNewDepartment extends Form {
                 code: "",
                 pic: "",
                 desc: "",
-                dirty: false
+                dirty: false,
             });
-            
         }
     };
 
     render() {
         const { name, code, pic, desc, dirty } = this.state.form;
+        const { picList } = this.state;
         return (
             <div>
                 <div
@@ -145,9 +156,13 @@ class AddNewDepartment extends Form {
                                             <option value={0}>
                                                 Select pic
                                             </option>
-                                            <option value={"JInner"}>
-                                                123
-                                            </option>
+                                            {picList.map((item) => {
+                                                return (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.name}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                         {dirty && pic.value === 0 ? (
                                             <FormError errorMessage="Please pick the pic" />

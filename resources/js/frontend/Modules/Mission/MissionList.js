@@ -57,7 +57,7 @@ class MissionList extends Form {
     };
 
     getStaffList = () => {
-        StaffService.getAllStaff().then((res) => {
+        StaffService.getAllStaffNotPaginate().then((res) => {
             this.setState({
                 staffList: res.data,
             });

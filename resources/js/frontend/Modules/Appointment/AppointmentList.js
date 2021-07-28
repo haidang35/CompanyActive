@@ -6,6 +6,7 @@ import AppointmentService from "./Shared/AppointmentService";
 import { Link } from "react-router-dom";
 import AddNewAppointment from "./Components/AppointmentForm/AddNewAppointment";
 import AuthService from "../../Shared/AuthService/AuthService";
+import LoadingEffect from "../../Shared/Loading/LoadingEffect";
 class AppointmentList extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +20,7 @@ class AppointmentList extends Component {
             onSearch: false,
             scopeStatus: "",
             totalData: "",
+            onLoad: false
         };
     }
 
@@ -70,11 +72,15 @@ class AppointmentList extends Component {
     };
 
     addNewAppointment = (data) => {
+        this.setState({
+            onLoad: true
+        });
         AppointmentService.createAppointment(data)
             .then((res) => {
                 this.getAppointmentList();
                 this.setState({
                     message: `Create a new appointment ${res.data.appointment_title} successful !!`,
+                    onLoad: false
                 });
             })
             .catch((err) => {
@@ -133,6 +139,7 @@ class AppointmentList extends Component {
                     <div className="card-body">
                         <AlertSuccess message={this.state.message} />
                         <AlertDanger message={this.state.errorMessage} />
+                        <LoadingEffect onLoad={this.state.onLoad} title={"Creating appointment"} />
                         <div className="row">
                             <div className="col-sm-12">
                                 <div className="row">

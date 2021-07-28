@@ -9,7 +9,8 @@ const API_ENDPOINT = {
     DELETE_STAFF: "users/",
     CREATE_NEW_STAFF: "users",
     CHANGE_PAGE: "users/page",
-    SCOPE_SEARCH_STAFF: "users/search"
+    SCOPE_SEARCH_STAFF: "users/search",
+    GET_ALL_STAFF_NOT_PAGINATE: "users/all"
 }
 
 class StaffService {
@@ -46,6 +47,10 @@ class StaffService {
 
     async scopeStaff(data) {
         return await axios.post(BASE_URL + API_ENDPOINT.SCOPE_SEARCH_STAFF, data);
+    }
+
+    async getAllStaffNotPaginate() {
+        return await axios.get(BASE_URL + API_ENDPOINT.GET_ALL_STAFF_NOT_PAGINATE);
     }
 
 }
