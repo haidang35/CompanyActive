@@ -69,7 +69,8 @@ class AppointmentDetails extends Form {
         AppointmentService.updateAppointment(id, data)
             .then((res) => {
                 this.setState({
-                    message: `Update appointment ${res.data.appointment_title} successful !!`
+                    message: `Update appointment ${res.data.appointment_title} successful !!`,
+                    onEdit: false
                 });
             })
             .catch((err) => {

@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(800)->create();
-        Department::factory(50)->create();
+        // Department::factory(50)->create();
         // Staff::factory(300)->create();
         // Mission::factory(5000)->create();
 
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         //LINH
 
         // Customer::factory(200)->create();
-        // Appointment::factory(2000)->create();
+        Appointment::factory(2000)->create();
 
     }
 }

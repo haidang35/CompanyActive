@@ -10,3 +10,11 @@ export const convertDateTime = (datetime) => {
     const dateTimeConverted = hour + ":" + min + ":" + sec + " " + dd + "/" + mm + "/" + YY;
     return dateTimeConverted;
 }
+
+export const getDateNow = () => {
+    let now = new Date();
+    const dd = String(now.getDate()).padStart(2, "0") ;
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const YY = now.getFullYear();
+    return YY + "-" + mm + "-" + dd;
+}

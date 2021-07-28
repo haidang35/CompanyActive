@@ -4,63 +4,48 @@ import "./DepartmentInfo.scss";
 import FormError from "../../../../Shared/Form/FormError";
 import AlertSuccess from "../../../../Shared/Alert/AlertSuccess";
 import AlertDanger from "../../../../Shared/Alert/AlertDanger";
-import AuthService from '../../../../Shared/AuthService/AuthService';
+import AuthService from "../../../../Shared/AuthService/AuthService";
+import Form from "../../../../Shared/Form/Form";
 
-class DepartmentInfo extends Component {
+class DepartmentInfo extends Form {
     constructor(props) {
         super(props);
         this.state = {
-            departmentId: "",
+            form: this._getInitFormData({
+                id: "",
+                name: "",
+                code: "",
+                pic: "",
+                desc: "",
+            }),
+            staffList: [],
+            manager: {},
             message: "",
+            errorMessage: "",
             onEdit: false,
-            departmentName: {
-                value: "",
-                err: "",
-                isValid: true,
-            },
-            departmentCode: {
-                value: "",
-                err: "",
-                isValid: true,
-            },
-            pic: {
-                value: "",
-                err: "",
-                isValid: true,
-            },
-            departmentDesc: {
-                value: "",
-                err: "",
-                isValid: true,
-            },
             staffs: [],
-            roleId: ""
+            roleId: "",
         };
     }
-
 
     componentDidMount() {
         this.getDepartmentInfo();
     }
 
-
     getDepartmentInfo = async () => {
         const { departmentId } = this.props;
-        let { departmentName, departmentCode, pic, departmentDesc, staffs } =
-            this.state;
         await DepartmentService.getOneDepartment(departmentId)
             .then((res) => {
-                departmentName.value = res.data.department_name;
-                departmentCode.value = res.data.department_code;
-                pic.value = res.data.department_pic;
-                departmentDesc.value = res.data.department_desc;
-                staffs = res.data.staff;
                 this.setState({
-                    departmentName,
-                    departmentCode,
-                    pic,
-                    departmentDesc,
-                    staffs,
+                    staffList: res.data.staff,
+                    manager: res.data.manager
+                });
+                this._fillForm({
+                    id: res.data.department_id,
+                    name: res.data.department_name,
+                    code: res.data.department_code,
+                    pic: res.data.department_pic,
+                    desc: res.data.department_desc,
                 });
                 this.props.getDepartmentInfo(res.data);
             })
@@ -75,85 +60,38 @@ class DepartmentInfo extends Component {
         });
     };
 
-    validateInput = (type, checkingText) => {
-        if (type) {
-            if (checkingText === "") {
-                return {
-                    isInputValid: false,
-                    errorMessage: "Field must be required",
-                };
-            } else {
-                return { isInputValid: true, errorMessage: "" };
-            }
-        } else {
-            const regexp = /^\d{10,11}$/;
-            const checkingResult = regexp.exec(checkingText);
-            if (checkingResult !== null) {
-                return { isInputValid: true, errorMessage: "" };
-            } else {
-                return {
-                    isInputValid: false,
-                    errorMessage: "Số điện thoại phải có 10 - 11 chữ số.",
-                };
-            }
+    onSaveChange = () => {
+        this._validateForm();
+        this.state.form["dirty"] = true;
+        if (this._isFormValid()) {
+            const { form } = this.state;
+            const data = {
+                department_name: form.name.value,
+                department_code: form.code.value,
+                department_pic: form.pic.value,
+                department_desc: form.desc.value,
+            };
+            DepartmentService.updateDepartment(form.id.value, data)
+                .then((res) => {
+                    this.getDepartmentInfo();
+                    this.setState({
+                        message: `Update department info successfull !!`,
+                    });
+                })
+                .catch((err) => {
+                    this.setState({
+                        errorMessage: `Update department info failed !!`,
+                    });
+                });
+            this.setState({
+                onEdit: false,
+            });
         }
     };
 
-    handleChangeInfo = (ev) => {
-        const { name, value } = ev.target;
-        const newState = { ...this.state[name] };
-        newState.value = value;
-        this.setState({ [name]: newState });
-    };
-
-    handleValidateInput = (ev) => {
-        const { name } = ev.target;
-        const { isInputValid, errorMessage } = this.validateInput(
-            name,
-            this.state[name].value
-        );
-        const newState = { ...this.state[name] };
-        newState.isValid = isInputValid;
-        newState.err = errorMessage;
-        this.setState({ [name]: newState });
-    };
-
-    onSaveChange = () => {
-        const {
-            departmentId,
-            departmentName,
-            departmentCode,
-            pic,
-            departmentDesc,
-        } = this.state;
-        const data = {
-            department_name: departmentName.value,
-            department_code: departmentCode.value,
-            department_pic: pic.value,
-            department_desc: departmentDesc.value,
-        };
-        DepartmentService.updateDepartment(departmentId, data)
-            .then((res) => {
-                console.log("Update successfully !!");
-                this.getDepartmentInfo();
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        this.setState({
-            onEdit: false,
-        });
-    };
-
     render() {
-        const {
-            onEdit,
-            departmentName,
-            departmentCode,
-            pic,
-            departmentDesc,
-            staffs,
-        } = this.state;
+        const { onEdit } = this.state;
+        const { name, code, pic, desc, dirty } = this.state.form;
         return (
             <div className="department">
                 <div className="card card-default">
@@ -163,7 +101,8 @@ class DepartmentInfo extends Component {
 
                     <div className="card-body">
                         <div>
-                            <AlertSuccess message={this.state.message}/>
+                            <AlertSuccess message={this.state.message} />
+                            <AlertDanger message={this.state.errorMessage} />
                         </div>
                         {AuthService.roleId === "ADMIN" ? (
                             <div className="btn-control-info">
@@ -215,14 +154,25 @@ class DepartmentInfo extends Component {
                                     </div>
                                     <input
                                         type="text"
+                                        name="name"
+                                        required
                                         className="form-control"
                                         name="departmentName"
-                                        value={departmentName.value}
+                                        value={name.value}
                                         disabled={!onEdit}
-                                        onChange={this.handleChangeInfo}
-                                        onBlur={this.handleValidateInput}
+                                        onChange={(ev) =>
+                                            this._setValue(ev, "name")
+                                        }
                                     />
-                                   
+                                    {name.err == "*" && dirty ? (
+                                        <FormError
+                                            errorMessage={
+                                                "Department name cannot be empty"
+                                            }
+                                        />
+                                    ) : (
+                                        ""
+                                    )}
                                 </div>
                             </div>
                             <div className="form-group">
@@ -240,14 +190,24 @@ class DepartmentInfo extends Component {
                                     </div>
                                     <input
                                         type="text"
-                                        name="departmentCode"
+                                        name="code"
+                                        required
                                         className="form-control"
                                         disabled={!onEdit}
-                                        value={departmentCode.value}
-                                        onBlur={this.handleValidateInput}
-                                        onChange={this.handleChangeInfo}
+                                        value={code.value}
+                                        onChange={(ev) =>
+                                            this._setValue(ev, "code")
+                                        }
                                     />
-                                    
+                                    {code.err == "*" && dirty ? (
+                                        <FormError
+                                            errorMessage={
+                                                "Department code cannot be empty"
+                                            }
+                                        />
+                                    ) : (
+                                        ""
+                                    )}
                                 </div>
                             </div>
                             <div className="form-group">
@@ -266,11 +226,11 @@ class DepartmentInfo extends Component {
                                     <input
                                         type="text"
                                         name="pic"
+                                        required
                                         className="form-control"
-                                        disabled={!onEdit}
-                                        value={pic.value}
-                                        onBlur={this.handleValidateInput}
-                                        onChange={this.handleChangeInfo}
+                                        disabled
+                                        value={this.state.manager.name}
+                                       
                                     />
                                     
                                 </div>
@@ -280,7 +240,7 @@ class DepartmentInfo extends Component {
                                     className="text-dark font-weight-medium"
                                     htmlFor
                                 >
-                                    Staff
+                                    Number of staffs
                                 </label>
                                 <div className="input-group">
                                     <div className="input-group-prepend">
@@ -293,7 +253,7 @@ class DepartmentInfo extends Component {
                                         name="pic"
                                         disabled
                                         className="form-control"
-                                        value={staffs.length}
+                                        value={(this.state.staffList).length}
                                     />
                                 </div>
                             </div>
@@ -312,13 +272,14 @@ class DepartmentInfo extends Component {
                                     </div>
                                     <textarea
                                         disabled={!onEdit}
-                                        name="departmentDesc"
+                                        name="desc"
                                         className="form-control"
-                                        value={departmentDesc.value}
-                                        onBlur={this.handleValidateInput}
-                                        onChange={this.handleChangeInfo}
+                                        value={desc.value}
+                                        onChange={(ev) =>
+                                            this._setValue(ev, "desc")
+                                        }
                                     />
-                                   
+                                     
                                 </div>
                             </div>
                         </form>

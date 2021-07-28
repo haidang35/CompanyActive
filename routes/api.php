@@ -118,6 +118,17 @@ Route::get('/departments', function (Request $request) {
     return $departments;
 });
 
+Route::patch('departments/{departmentId}', function ($departmentId, Request $request) {
+    $department = Department::find($departmentId);
+    $department->update([
+        "department_name" => $request->department_name,
+        "department_code" => $request->department_code,
+        "department_pic" => $request->department_pic,
+        "department_desc" => $request->department_desc
+    ]);
+    return $department;
+});
+
 Route::get('/departments/pics', function () {
     $departments = Department::with("Manager")->get();
     $pics = [];
@@ -144,7 +155,7 @@ Route::post('departments/search', function (Request $request) {
 });
 
 Route::get('/departments/{department_id}', function ($department_id) {
-    $department = Department::with("Staff")->findOrFail($department_id);
+    $department = Department::with("Staff")->with("Manager")->findOrFail($department_id);
     return $department;
 });
 
@@ -403,7 +414,8 @@ Route::post('missions/search', function (Request $request) {
     $search = $request->search_value;
     $status = $request->status;
     $timeId = $request->date_time;
-    $missions = Mission::search($search)->status($status)->time($timeId)->paginate(20);
+    $datePicker = $request->date_picker;
+    $missions = Mission::search($search)->status($status)->date($datePicker)->time($timeId)->paginate(20);
     return $missions;
 });
 
@@ -418,7 +430,8 @@ Route::post('missions', function (Request $request) {
     $search_value = $request->search_value;
     $status = $request->status;
     $timeId = $request->date_time;
-    $missions = Mission::search($search_value)->status($status)->time($timeId)->paginate(20, ['*'], 'page', $page);
+    $datePicker = $request->date_picker;
+    $missions = Mission::search($search_value)->status($status)->date($datePicker)->time($timeId)->paginate(20, ['*'], 'page', $page);
     return $missions;
 });
 
