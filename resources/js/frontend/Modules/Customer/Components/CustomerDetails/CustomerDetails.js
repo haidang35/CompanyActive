@@ -22,7 +22,7 @@ class CustomerDetails extends Component {
         return (
             <div>
                 <CustomerInfo customerId={id} getAppointment={this.getAppointment}/>
-                <CustomerAppointment appointments={this.state.appointments}/>
+                <CustomerAppointment customerId={id} appointments={this.state.appointments}/>
             </div>
         );
     }
