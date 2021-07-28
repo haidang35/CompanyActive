@@ -94,7 +94,7 @@ class CustomerAppointment extends Form {
                 });
             });
         }
-      
+
     };
 
     render() {
@@ -269,7 +269,7 @@ class CustomerAppointment extends Form {
                             ""
                         )}
 
-                       
+
                         <div className="todo-list" id="todo-list">
                             {appointments.map((item) => {
                                 return (
